@@ -1,0 +1,16 @@
+%table
+  %thead
+    %tr
+      %th Application
+      %th Composant
+      %th Message
+      %th Severity
+      %th Informations
+  %tbody
+    - @mloggers.each do |mlogger|
+      %tr
+        %td= mlogger.application
+        %td= mlogger.composant
+        %td= mlogger.message
+        %td= mlogger.severity
+        %td= mlogger.information
