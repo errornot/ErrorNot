@@ -1,0 +1,7 @@
+config/database.yml
+*.log
+db/*.sqlite*
+db/schema.rb
+.*.swp
+.DS_Store
+tmp/*
