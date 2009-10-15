@@ -8,4 +8,5 @@ MLogger.blueprint do
   application
   composant
   message
+  severity { rand(5) }
 end
