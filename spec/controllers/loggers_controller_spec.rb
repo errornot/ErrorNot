@@ -9,9 +9,18 @@ describe LoggersController do
   describe 'POST' do
     it 'should create a MLogger' do
       lambda do
-        post :create, :mlogger => MLogger.make_unsaved.attributes
+        post :create, :m_logger => MLogger.make_unsaved.attributes
       end.should change(MLogger, :count)
     end
+  end
+
+  describe 'NEW' do
+    before :each do
+      get :new
+    end
+
+    it { response.should be_success }
+
   end
 
   describe 'INDEX' do
@@ -23,7 +32,7 @@ describe LoggersController do
     it { response.should be_success }
     it { response.should render_template('index') }
     it 'should get all Logger information' do
-      assigns(:mloggers).should == @loggers
+      assigns(:mloggers).group_by(&:id).should == @loggers.group_by(&:id)
     end
   end
 

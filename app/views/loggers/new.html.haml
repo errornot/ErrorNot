@@ -1,0 +1,18 @@
+= error_messages_for :mlogger
+
+- form_for(@mlogger, :url => loggers_url) do |f|
+  %ul
+    %li
+      = f.label :application
+      = f.text_field :application
+    %li
+      = f.label :composant
+      = f.text_field :composant
+    %li
+      = f.label :message
+      = f.text_area :message
+    %li
+      = f.label :severity
+      = f.select :severity, [['CRITICAL', 0], ['ERROR', 1], ['WARNING', 2], ['NOTICE', 3], ['INFO', 4], ['DEBUG', 5]]
+    %li
+      = f.submit
