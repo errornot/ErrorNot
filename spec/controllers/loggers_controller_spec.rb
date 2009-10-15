@@ -12,7 +12,19 @@ describe LoggersController do
         post :create, :mlogger => MLogger.make_unsaved.attributes
       end.should change(MLogger, :count)
     end
+  end
 
+  describe 'INDEX' do
+    before :each do
+      @loggers = 3.of { MLogger.make }
+      get :index
+    end
+
+    it { response.should be_success }
+    it { response.should render_template('index') }
+    it 'should get all Logger information' do
+      assigns(:mloggers).should == @loggers
+    end
   end
 
 end
