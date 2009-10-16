@@ -49,6 +49,11 @@ describe LoggersController do
         get :index, :severity => 0
         assigns(:mloggers).group_by(&:id).should == @criticals.group_by(&:id)
       end
+
+      it 'should limit to only critical' do
+        get :index, :severity => [0,1]
+        assigns(:mloggers).map(&:id).sort.should == (@criticals + @errors).map(&:id).sort
+      end
     end
   end
 

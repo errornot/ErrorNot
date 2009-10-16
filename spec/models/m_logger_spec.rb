@@ -48,5 +48,9 @@ describe MLogger do
     it 'should get all critical logger if params with {:severity => 0}' do
       MLogger.search_by_params({:severity => 0}).map(&:id).sort.should == @criticals.map(&:id).sort
     end
+
+    it 'should get all critical and errors logger if params with {:severity => [0,1]}' do
+      MLogger.search_by_params({:severity => [0,1]}).map(&:id).sort.should == (@criticals + @errors).map(&:id).sort
+    end
   end
 end

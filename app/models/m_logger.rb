@@ -23,7 +23,11 @@ class MLogger
 
   def self.search_by_params(params={})
     if params[:severity]
-      all(:conditions => {:severity => params[:severity].to_i})
+      if params[:severity].is_a? Array
+        all(:conditions => {:severity => {'$in' => params[:severity].map(&:to_i)}})
+      else
+        all(:conditions => {:severity => params[:severity].to_i})
+      end
     else
       all
     end
