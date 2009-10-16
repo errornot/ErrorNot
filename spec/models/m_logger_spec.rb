@@ -31,4 +31,22 @@ describe MLogger do
       MLogger.make_unsaved(:severity => 6).should_not be_valid
     end
   end
+
+  describe '#search_by_params' do
+    before(:each) do
+      @criticals = 3.of { MLogger.make(:severity => MLogger::CRITICAL) }
+      @errors = 3.of { MLogger.make(:severity => MLogger::ERROR) }
+      @warnings = 3.of { MLogger.make(:severity => MLogger::WARNING) }
+      @infos = 3.of { MLogger.make(:severity => MLogger::INFO) }
+      @alls = @criticals + @errors + @warnings + @infos
+    end
+
+    it 'should get all logger if no params' do
+      MLogger.search_by_params({}).map(&:id).sort.should == @alls.map(&:id).sort
+    end
+
+    it 'should get all critical logger if params with {:severity => 0}' do
+      MLogger.search_by_params({:severity => 0}).map(&:id).sort.should == @criticals.map(&:id).sort
+    end
+  end
 end

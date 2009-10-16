@@ -24,15 +24,31 @@ describe LoggersController do
   end
 
   describe 'INDEX' do
-    before :each do
-      @loggers = 3.of { MLogger.make }
-      get :index
+    describe 'without argument' do
+      before :each do
+        @loggers = 3.of { MLogger.make }
+        get :index
+      end
+
+      it { response.should be_success }
+      it { response.should render_template('index') }
+      it 'should get all Logger information' do
+        assigns(:mloggers).group_by(&:id).should == @loggers.group_by(&:id)
+      end
     end
 
-    it { response.should be_success }
-    it { response.should render_template('index') }
-    it 'should get all Logger information' do
-      assigns(:mloggers).group_by(&:id).should == @loggers.group_by(&:id)
+    describe 'like search' do
+      before :each do
+        @criticals = 3.of { MLogger.make(:severity => MLogger::CRITICAL) }
+        @errors = 3.of { MLogger.make(:severity => MLogger::ERROR) }
+        @warnings = 3.of { MLogger.make(:severity => MLogger::WARNING) }
+        @infos = 3.of { MLogger.make(:severity => MLogger::INFO) }
+      end
+
+      it 'should limit to only critical' do
+        get :index, :severity => 0
+        assigns(:mloggers).group_by(&:id).should == @criticals.group_by(&:id)
+      end
     end
   end
 

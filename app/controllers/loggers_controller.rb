@@ -14,7 +14,7 @@ class LoggersController < ApplicationController
   end
 
   def index
-    @mloggers = MLogger.all
+    @mloggers = MLogger.search_by_params(params)
   end
 
 end

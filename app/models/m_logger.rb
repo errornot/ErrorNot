@@ -21,5 +21,13 @@ class MLogger
   
   validates_format_of :severity, :with => /^[012345]$/
 
+  def self.search_by_params(params={})
+    if params[:severity]
+      all(:conditions => {:severity => params[:severity].to_i})
+    else
+      all
+    end
+  end
+
 
 end
