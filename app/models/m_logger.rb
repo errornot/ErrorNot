@@ -22,11 +22,13 @@ class MLogger
   validates_format_of :severity, :with => /^[012345]$/
 
   def self.search_by_params(params={})
-    if params[:severity]
+    unless params.keys.empty?
       if params[:severity].is_a? Array
         all(:conditions => {:severity => {'$in' => params[:severity].map(&:to_i)}})
       else
-        all(:conditions => {:severity => params[:severity].to_i})
+        # we need define severity like a integer. Instead of no search succed
+        params[:severity] = params[:severity].to_i
+        all(:conditions => params)
       end
     else
       all

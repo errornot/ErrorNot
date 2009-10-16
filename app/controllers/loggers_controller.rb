@@ -14,7 +14,10 @@ class LoggersController < ApplicationController
   end
 
   def index
-    @mloggers = MLogger.search_by_params(params)
+    params_search = params.dup
+    params_search.delete(:action)
+    params_search.delete(:controller)
+    @mloggers = MLogger.search_by_params(params_search)
   end
 
 end

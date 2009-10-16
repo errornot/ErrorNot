@@ -50,9 +50,14 @@ describe LoggersController do
         assigns(:mloggers).group_by(&:id).should == @criticals.group_by(&:id)
       end
 
-      it 'should limit to only critical' do
+      it 'should limit to criticals and errors' do
         get :index, :severity => [0,1]
         assigns(:mloggers).map(&:id).sort.should == (@criticals + @errors).map(&:id).sort
+      end
+
+      it 'should get no result if bad argument' do
+        get :index, :error_args => 'foo'
+        assigns(:mloggers).should == []
       end
     end
   end
