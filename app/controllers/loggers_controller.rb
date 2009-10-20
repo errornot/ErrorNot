@@ -9,7 +9,7 @@ class LoggersController < ApplicationController
     if @mlogger.save
       render :status => 201, :text => 'ok'
     else
-      render :new
+      render :status => 400
     end
   end
 

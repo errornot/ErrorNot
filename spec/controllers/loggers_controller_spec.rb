@@ -16,7 +16,11 @@ describe LoggersController do
     it 'should render status 201 if log create' do
       post :create, :m_logger => MLogger.make_unsaved.attributes
       response.code.should == "201"
+    end
 
+    it 'should render status 400' do
+      post :create, :m_logger => {:severity => 'ok'}
+      response.code.should == "400"
     end
   end
 
