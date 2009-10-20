@@ -12,6 +12,12 @@ describe LoggersController do
         post :create, :m_logger => MLogger.make_unsaved.attributes
       end.should change(MLogger, :count)
     end
+
+    it 'should render status 201 if log create' do
+      post :create, :m_logger => MLogger.make_unsaved.attributes
+      response.code.should == "201"
+
+    end
   end
 
   describe 'NEW' do
