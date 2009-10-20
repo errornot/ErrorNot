@@ -9,7 +9,7 @@ class LoggersController < ApplicationController
     if @mlogger.save
       render :status => 201, :text => 'ok'
     else
-      render :status => 400
+      render :status => 400, :text => @mlogger.errors.full_messages.to_json
     end
   end
 
