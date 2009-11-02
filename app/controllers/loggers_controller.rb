@@ -7,9 +7,9 @@ class LoggersController < ApplicationController
   def create
     @mlogger = MLogger.new(params[:m_logger])
     if @mlogger.save
-      render :text => 'ok'
+      render :status => 201, :text => 'ok'
     else
-      render :new
+      render :status => 400, :text => @mlogger.errors.full_messages.to_json
     end
   end
 
