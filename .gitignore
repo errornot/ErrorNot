@@ -4,4 +4,5 @@ db/*.sqlite*
 db/schema.rb
 .*.swp
 .DS_Store
+log/*
 tmp/*
