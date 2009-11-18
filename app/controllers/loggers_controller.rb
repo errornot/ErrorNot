@@ -5,7 +5,7 @@ class LoggersController < ApplicationController
   end
 
   def create
-    @mlogger = MLogger.new(params[:m_logger])
+    @mlogger = MLogger.new(params[:m_logger].merge(:application => @api_key))
     if @mlogger.save
       render :status => 201, :text => 'ok'
     else

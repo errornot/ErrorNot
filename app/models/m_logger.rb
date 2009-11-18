@@ -18,7 +18,7 @@ class MLogger
   validates_presence_of :composant
   validates_presence_of :message
   validates_presence_of :severity
-  
+
   validates_format_of :severity, :with => /^[012345]$/
 
   def self.search_by_params(params={})

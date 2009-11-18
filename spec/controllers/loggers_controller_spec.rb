@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe LoggersController do
+  before do
+    request.env['HTTP_AUTHORIZATION'] = 'Basic ' + Base64::encode64("rspec:rspec")
+  end
 
   it "should use LoggersController" do
     controller.should be_an_instance_of(LoggersController)
@@ -11,6 +14,14 @@ describe LoggersController do
       lambda do
         post :create, :m_logger => MLogger.make_unsaved.attributes
       end.should change(MLogger, :count)
+      MLogger.last(:order => 'created_at').application.should == 'rspec'
+    end
+
+    it 'should create a MLogger with severity like string' do
+      lambda do
+        post :create, :m_logger => MLogger.make_unsaved.attributes.merge(:severity => "1")
+      end.should change(MLogger, :count)
+      MLogger.last(:order => 'created_at').application.should == 'rspec'
     end
 
     it 'should render status 201 if log create' do
@@ -19,23 +30,34 @@ describe LoggersController do
     end
 
     it 'should render status 400' do
-      post :create, :m_logger => {:severity => 'ok'}
+      post :create, {:m_logger => {:severity => 'ok'}}
       response.code.should == "400"
     end
 
     it 'should render status 400 and render error in text' do
-      post :create, :m_logger => MLogger.make_unsaved.attributes.merge(:severity => 'ok')
+      post :create, {:m_logger => MLogger.make_unsaved.attributes.merge(:severity => 'ok')}
       response.code.should == "400"
       response.body.should == "[\"Severity can't be empty\",\"Severity is invalid\"]"
     end
   end
 
   describe 'NEW' do
-    before :each do
-      get :new
+    describe 'with valid authentication' do
+      before :each do
+        get :new
+      end
+
+      it { response.should be_success }
     end
 
-    it { response.should be_success }
+    describe 'with unvalid authentication' do
+      before :each do
+        request.env['HTTP_AUTHORIZATION'] = 'Basic ' + Base64::encode64("rspec:badrspec")
+        get :new
+      end
+
+      it { response.code.should == "401" }
+    end
 
   end
 
