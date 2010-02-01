@@ -3,7 +3,7 @@ class ErrorsController < ApplicationController
   before_filter :load_project
 
   def index
-    @errors = @project.errors
+    @errors = @project.error_reports
   end
 
   def load_project

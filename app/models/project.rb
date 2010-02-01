@@ -1,7 +1,7 @@
 class Project
   include MongoMapper::Document
 
-  key :name, String
+  key :name, String, :required => true
 
-  validates_presence_of :name
+  has_many :error_reports, :class_name => 'Error'
 end
