@@ -8,6 +8,7 @@ MLogger.blueprint do
   project { Project.make }
   message
   resolved { false }
+  raised_at { Time.now }
 end
 
 Project.blueprint do

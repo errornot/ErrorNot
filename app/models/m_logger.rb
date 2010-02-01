@@ -3,18 +3,16 @@ class MLogger
 
   key :resolved, Boolean
   key :session, Hash
-  key :raised_at, DateTime # required
+  key :raised_at, DateTime, :required => true
   key :backtrace, Hash
   key :request, Hash
   key :environment, Hash
   key :data, Hash
 
-  key :message, String
+  key :message, String, :required => true
 
-  key :project_id, ObjectId
+  key :project_id, ObjectId, :required => true
   belongs_to :project
 
-  validates_presence_of :project_id
-  validates_presence_of :message
 
 end
