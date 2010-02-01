@@ -9,13 +9,4 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
-  before_filter :check_application
-
-  def check_application
-    authenticate_or_request_with_http_basic do |user_name, password|
-      @api_key = user_name
-      user_name == password
-    end
-  end
-
 end
