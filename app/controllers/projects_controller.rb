@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   def index
-    @project = Project.all
+    @projects = Project.all
   end
 
   def new
@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(params[:project])
     if @project.save
       flash[:notice] = 'Your project is create'
-      redirect_to(projects_url)
+      redirect_to(project_errors_url(@project))
     else
       render :new
     end

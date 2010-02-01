@@ -1,0 +1,12 @@
+%h1 All messages reports on project #{@project.name}
+
+%table
+  %thead
+    %tr
+      %th Message
+      %th Raised
+  %tbody
+    - @errors.each do |error|
+      %tr
+        %td= error.message
+        %td= error.raised_at

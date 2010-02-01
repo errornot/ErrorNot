@@ -1,7 +1,7 @@
 - unless @projects.empty?
   %ul
     -@projects.each do |project|
-      %li= project.name
+      %li=link_to project.name, project_errors_path(project)
 - else
   %p
     You have no project created. Create your

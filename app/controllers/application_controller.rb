@@ -9,4 +9,13 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
+  rescue_from Mongo::InvalidObjectID do
+    render_404
+  end
+
+  def render_404
+    render :status => 404, :file => Rails.root.join('public/404.html')
+  end
+
+
 end
