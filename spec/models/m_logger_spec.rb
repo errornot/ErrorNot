@@ -15,6 +15,10 @@ describe MLogger do
       MLogger.make_unsaved(:message => '').should_not be_valid
     end
 
+    it 'should not valid if no raised_at' do
+      MLogger.make_unsaved(:raised_at => nil).should_not be_valid
+    end
+
   end
 
   describe 'default value' do
