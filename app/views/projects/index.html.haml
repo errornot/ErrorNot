@@ -2,6 +2,8 @@
   %ul
     -@projects.each do |project|
       %li=link_to project.name, project_errors_path(project)
+  %p
+    =link_to 'Add a new project', new_project_path
 - else
   %p
     You have no project created. Create your
