@@ -51,6 +51,7 @@ Spec::Runner.configure do |config|
 
   config.before(:each) do
     MLogger.collection.remove
+    Project.collection.remove
   end
 end
 

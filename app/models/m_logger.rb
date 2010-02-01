@@ -1,11 +1,13 @@
 class MLogger
   include MongoMapper::Document
 
-  key :application, String
   key :composant, String
   key :message, String
   key :information, Hash
   key :severity, Integer
+
+  key :project_id, ObjectId
+  belongs_to :project
 
   CRITICAL = 0
   ERROR = 1
@@ -14,8 +16,8 @@ class MLogger
   INFO = 4
   DEBUG = 5
 
-  validates_presence_of :application
   validates_presence_of :composant
+  validates_presence_of :project_id
   validates_presence_of :message
   validates_presence_of :severity
 

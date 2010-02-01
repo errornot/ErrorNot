@@ -7,8 +7,8 @@ describe MLogger do
       MLogger.make_unsaved.should be_valid
     end
 
-    it 'should not valid if no application name' do
-      MLogger.make_unsaved(:application => '').should_not be_valid
+    it 'should not valid if no project associated' do
+      MLogger.make_unsaved(:project => nil).should_not be_valid
     end
 
     it 'should not valid if no composant' do
