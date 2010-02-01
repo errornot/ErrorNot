@@ -42,15 +42,15 @@ describe MLogger do
     end
 
     it 'should get all logger if no params' do
-      MLogger.search_by_params({}).map(&:id).sort.should == @alls.map(&:id).sort
+      MLogger.search_by_params({}).map(&:id).map(&:to_s).sort.should == @alls.map(&:id).map(&:to_s).sort
     end
 
     it 'should get all critical logger if params with {:severity => 0}' do
-      MLogger.search_by_params({:severity => 0}).map(&:id).sort.should == @criticals.map(&:id).sort
+      MLogger.search_by_params({:severity => 0}).map(&:id).map(&:to_s).sort.should == @criticals.map(&:id).map(&:to_s).sort
     end
 
     it 'should get all critical and errors logger if params with {:severity => [0,1]}' do
-      MLogger.search_by_params({:severity => [0,1]}).map(&:id).sort.should == (@criticals + @errors).map(&:id).sort
+      MLogger.search_by_params({:severity => [0,1]}).map(&:id).map(&:to_s).sort.should == (@criticals + @errors).map(&:id).map(&:to_s).sort
     end
   end
 end

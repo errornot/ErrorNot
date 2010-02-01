@@ -90,7 +90,7 @@ describe LoggersController do
 
       it 'should limit to criticals and errors' do
         get :index, :severity => [0,1]
-        assigns(:mloggers).map(&:id).sort.should == (@criticals + @errors).map(&:id).sort
+        assigns(:mloggers).map(&:id).map(&:to_s).sort.should == (@criticals + @errors).map(&:id).map(&:to_s).sort
       end
 
       it 'should get no result if bad argument' do

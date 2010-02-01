@@ -27,7 +27,7 @@ Rails::Initializer.run do |config|
   # Skip frameworks you're not going to use. To use Rails without a database,
   # you must remove the Active Record framework.
   config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
-  config.gem "mongo_mapper", :version => "0.5.4"
+  config.gem "mongo_mapper", :version => '0.6.10'
   config.gem "haml"
 
   # Activate observers that should always be running
