@@ -50,7 +50,7 @@ Spec::Runner.configure do |config|
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 
   config.before(:each) do
-    MLogger.collection.remove
+    Error.collection.remove
     Project.collection.remove
   end
 end

@@ -1,4 +1,4 @@
-class MLogger
+class Error
   include MongoMapper::Document
 
   key :resolved, Boolean
