@@ -6,9 +6,8 @@ Sham.message { /[:paragraph:]/.gen }
 
 MLogger.blueprint do
   project { Project.make }
-  composant
   message
-  severity { rand(5) }
+  resolved { false }
 end
 
 Project.blueprint do
