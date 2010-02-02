@@ -3,7 +3,11 @@ class ErrorsController < ApplicationController
   before_filter :load_project, :only => [:index]
 
   def index
-    @errors = @project.error_reports
+    error_search = {}
+    if params.key?(:resolved) && params[:resolved]
+      error_search[:resolved] = (params[:resolved] == 'y')
+    end
+    @errors = @project.error_reports.all(error_search)
   end
 
   def create

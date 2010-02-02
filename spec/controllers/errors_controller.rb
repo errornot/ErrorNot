@@ -32,6 +32,11 @@ describe ErrorsController do
   end
 
   describe 'GET #index' do
+    before :each do
+      @resolveds = 2.of { Error.make(:project => @project, :resolved => true) }
+      @un_resolveds = 2.of { Error.make(:project => @project, :resolved => false) }
+    end
+
     it 'should render 404 if bad project_id' do
       get :index, :project_id => '123'
       response.code.should == "404"
@@ -40,6 +45,7 @@ describe ErrorsController do
     it 'should works if no errors on this project' do
       get :index, :project_id => @project.id
       response.should be_success
+      assert_equal @project.error_reports, assigns[:errors]
     end
 
     it 'should works if several errors on this project' do
@@ -47,6 +53,22 @@ describe ErrorsController do
       get :index, :project_id => @project.id
       response.should be_success
     end
+
+    it 'should limit to resolved errors if resolved=y params send' do
+      get :index, :project_id => @project.id, :resolved => 'y'
+      assert_equal @resolveds.map(&:id), assigns[:errors].map(&:id)
+    end
+
+    it 'should limit to un_resolved errors if resolved=n params send' do
+      get :index, :project_id => @project.id, :resolved => 'n'
+      assert_equal @un_resolveds.map(&:id), assigns[:errors].map(&:id)
+    end
+
+    it 'should not limit to resolved errors if resolved= with empty value params send' do
+      get :index, :project_id => @project.id, :resolved => nil
+      assert_equal @project.error_reports.map(&:id), assigns[:errors].map(&:id)
+    end
+
   end
 
   describe 'POST #create' do

@@ -14,5 +14,7 @@ class Error
   key :project_id, ObjectId, :required => true
   belongs_to :project
 
+  timestamps!
+
 
 end

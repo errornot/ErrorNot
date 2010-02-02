@@ -1,12 +1,21 @@
 %h1 All messages reports on project #{@project.name}
 
+- form_tag project_errors_url(@project.id), :method => :get do
+  %p
+    Limit to :
+    = select_tag 'resolved', options_for_select({:resolved => 'y', :un_resolved => 'n', :all => nil}, params[:resolved])
+    = submit_tag 'Filter'
+
+
 %table
   %thead
     %tr
       %th Message
       %th Raised
+      %th Resolved?
   %tbody
     - @errors.each do |error|
       %tr
         %td= error.message
         %td= error.raised_at
+        %td= check_box_tag 'resolved', 1, error.resolved
