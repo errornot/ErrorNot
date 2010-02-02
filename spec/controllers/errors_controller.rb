@@ -95,4 +95,20 @@ describe ErrorsController do
     end
   end
 
+  describe 'PUT update' do
+    it 'should mark resolved an error' do
+      error = @un_resolveds.first
+      put :update, :id => error.id, :error => {:resolved => true}
+      response.should redirect_to(project_error_path(@project, error))
+      assert error.reload.resolved
+    end
+
+    it 'should mark un_resolved an error' do
+      error = @resolveds.first
+      put :update, :id => error.id, :error => {:resolved => false}
+      response.should redirect_to(project_error_path(@project, error))
+      assert !error.reload.resolved
+    end
+  end
+
 end

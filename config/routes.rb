@@ -2,10 +2,10 @@ ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
 
   map.resources :projects do |project|
-    project.resources :errors, :except => [:new, :create]
+    project.resources :errors, :except => [:new, :create, :update]
   end
 
-  map.resources :errors, :only => [:create]
+  map.resources :errors, :only => [:create, :update]
   map.root :controller => :projects, :action => :index
 
   # Sample of regular route:

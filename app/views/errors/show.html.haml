@@ -1,5 +1,9 @@
 %h1 Summary
 
+%p
+  resolved ?
+  = @error.resolved
+
 %dl
   %dt Error
   %dd= @error.message
@@ -8,3 +12,7 @@
   %dt Parameters
   %dd
     %pre= @error.params.inspect
+
+- form_for @error do |f|
+  = hidden_field_tag 'error[resolved]', !@error.resolved
+  = f.submit

@@ -24,6 +24,13 @@ class ErrorsController < ApplicationController
     @error = @project.error_reports.find(params[:id])
   end
 
+  def update
+    @error = Error.find(params[:id])
+    @error.resolved = params[:error][:resolved]
+    @error.save
+    redirect_to(project_error_path(@error.project, @error))
+  end
+
   private
 
   def load_project
