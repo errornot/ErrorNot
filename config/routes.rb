@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :errors, :only => [:create]
+  map.root :controller => :projects, :action => :index
 
   # Sample of regular route:
   #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
