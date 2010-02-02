@@ -29,14 +29,11 @@ describe ErrorsController do
 
   before do
     @project = Project.make
+    @resolveds = 2.of { Error.make(:project => @project, :resolved => true) }
+    @un_resolveds = 2.of { Error.make(:project => @project, :resolved => false) }
   end
 
   describe 'GET #index' do
-    before :each do
-      @resolveds = 2.of { Error.make(:project => @project, :resolved => true) }
-      @un_resolveds = 2.of { Error.make(:project => @project, :resolved => false) }
-    end
-
     it 'should render 404 if bad project_id' do
       get :index, :project_id => '123'
       response.code.should == "404"
@@ -88,6 +85,13 @@ describe ErrorsController do
       post :create, error_request(@project.id.to_s, :raised_at => nil)
       response.code.should == "422"
       response.body.should == "Raised at can't be empty"
+    end
+  end
+
+  describe 'GET show' do
+    it 'should see an error' do
+      get :show, :project_id => @project.id, :id => @project.error_reports.first.id
+      response.should be_success
     end
   end
 

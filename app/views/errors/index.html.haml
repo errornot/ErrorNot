@@ -16,6 +16,6 @@
   %tbody
     - @errors.each do |error|
       %tr
-        %td= error.message
+        %td=link_to error.message, project_error_path(@project, error)
         %td= error.raised_at
         %td= check_box_tag 'resolved', 1, error.resolved

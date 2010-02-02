@@ -1,6 +1,6 @@
 class ErrorsController < ApplicationController
 
-  before_filter :load_project, :only => [:index]
+  before_filter :load_project, :only => [:show,:index]
 
   def index
     error_search = {}
@@ -19,6 +19,12 @@ class ErrorsController < ApplicationController
       render :status => 422, :text => @error.errors.full_messages
     end
   end
+
+  def show
+    @error = @project.error_reports.find(params[:id])
+  end
+
+  private
 
   def load_project
     @project = Project.find(params[:project_id])

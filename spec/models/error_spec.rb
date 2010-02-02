@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Error do
 
-  describe "Valication" do
+  describe "Validation" do
     it 'should have valid factory' do
       Error.make_unsaved.should be_valid
     end
@@ -26,10 +26,30 @@ describe Error do
       Error.new.resolved.should == false
     end
 
-    [:session, :backtrace, :request, :environment, :data].each do |hash|
+    [:session, :request, :environment, :data].each do |hash|
       it "should have empty hash in #{hash} by default" do
         Error.new.send(hash).should == {}
       end
+    end
+
+    [:backtrace].each do |array|
+      it "should have empty array in #{array} by default" do
+        Error.new.send(array).should == []
+      end
+    end
+  end
+
+  describe '#url' do
+    it 'should render url in request' do
+      er = Error.new
+      assert_equal er.request['url'], er.url
+    end
+  end
+
+  describe '#params' do
+    it 'should render params in request' do
+      er = Error.new
+      assert_equal er.request['params'], er.params
     end
   end
 

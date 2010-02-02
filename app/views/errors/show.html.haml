@@ -1,0 +1,10 @@
+%h1 Summary
+
+%dl
+  %dt Error
+  %dd= @error.message
+  %dt URL
+  %dd= @error.url
+  %dt Parameters
+  %dd
+    %pre= @error.params.inspect

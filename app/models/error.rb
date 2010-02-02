@@ -4,7 +4,7 @@ class Error
   key :resolved, Boolean
   key :session, Hash
   key :raised_at, DateTime, :required => true
-  key :backtrace, Hash
+  key :backtrace, Array
   key :request, Hash
   key :environment, Hash
   key :data, Hash
@@ -15,6 +15,14 @@ class Error
   belongs_to :project
 
   timestamps!
+
+  def url
+    request['url']
+  end
+
+  def params
+    request['params']
+  end
 
 
 end
