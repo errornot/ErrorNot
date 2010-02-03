@@ -6,6 +6,9 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :errors, :only => [:create, :update]
+
+  map.devise_for :users
+  map.resource :user
   map.root :controller => :projects, :action => :index
 
   # Sample of regular route:

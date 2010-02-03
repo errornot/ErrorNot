@@ -1,0 +1,28 @@
+fr:
+  devise:
+    sessions:
+      link: 'Se connection'
+      signed_in: 'Connection réussi.'
+      signed_out: 'Déconnection réussi.'
+      unauthenticated: 'Vous avez besoin de vous connecter ou déconnecter pour continuer.'
+      unconfirmed: 'Vous devez confirmer votre compte avant de continuer.'
+      locked: 'Votre compte est clos.'
+      invalid: 'Email ou mot de passe invalide.'
+      timeout: 'Votre session a expiré, connectez vous pour continuer.'
+      inactive: "Votre compte n'a pas été encore activé."
+    passwords:
+      link: 'Mot de passe perdu ?'
+      send_instructions: "Vous allez recevoir dans quelque minute un email avec les instructions au sujet de votre réinitisalition de mot de passe."
+      updated: 'Votre mot de passe a été changé avec succès. Vous pouvez vous connecter.'
+    confirmations:
+      link: "Vous n'avez pas reçu les instructions de confirmation ?"
+      send_instructions: "Vous allez recevoir un email avec les instructions pour confirmer votre compte d'ici quelque minutes."
+      confirmed: 'Votre compte a été confirmé avec succès. Vous pouvez vous connecter.'
+    unlocks:
+      link: "Vous n'avez pas reçu les instructions pour débloquer votre compte ?"
+      send_instructions: "Vous allez recevoir par email d'ici quelque minutes un email d'instruction pour débloquer votre compte."
+      unlocked: 'Votre compte a été débloqué avec succès. Vous pouvez vous connecter.'
+    mailer:
+      confirmation_instructions: 'Instruction de confirmation'
+      reset_password_instructions: 'Instruction de réinitialisation de mot de passe'
+      unlock_instructions: 'Instruction de déblocage de votre compte.'

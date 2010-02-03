@@ -26,9 +26,11 @@ Rails::Initializer.run do |config|
 
   # Skip frameworks you're not going to use. To use Rails without a database,
   # you must remove the Active Record framework.
-  config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
+  config.frameworks -= [ :active_record, :active_resource]
   config.gem "mongo_mapper", :version => '0.6.10'
   config.gem "haml"
+  config.gem "warden", :version => '0.9.0'
+  config.gem "devise", :version => '0.9.1'
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
@@ -39,8 +41,5 @@ Rails::Initializer.run do |config|
 
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
-  # config.i18n.default_locale = :de
+  config.i18n.default_locale = :fr
 end
-
-# We need some HTML 5 result
-Haml::Template.options[:format] = :html5
