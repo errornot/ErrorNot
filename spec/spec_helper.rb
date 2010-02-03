@@ -65,3 +65,9 @@ require "devise/test_helpers"
 class ActionController::TestCase
   include Devise::TestHelpers
 end
+
+class Mongo::ObjectID
+  def <=>(object)
+    self.to_s <=> object.to_s
+  end
+end

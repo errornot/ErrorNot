@@ -2,6 +2,8 @@ class ErrorsController < ApplicationController
 
   before_filter :load_project, :only => [:show,:index]
 
+  before_filter :authenticate_user!, :except => [:create]
+
   def index
     error_search = {}
     if params.key?(:resolved) && params[:resolved]
