@@ -58,20 +58,17 @@ describe ErrorsController do
     it_should_behave_like 'POST #create'
 
     it 'should not access to see an error' do
-      project = Project.make
-      error = Error.make(:project => project)
-      get :show, :project_id => project.id, :id => error.id
+      get :show, :project_id => @project.id, :id => @resolveds.first.id
       response.should redirect_to(new_user_session_path('unauthenticated' => true))
     end
 
     it 'should not access to see all errors' do
-      get :index, :project_id => Project.make.id
+      get :index, :project_id => @project.id
       response.should redirect_to(new_user_session_path('unauthenticated' => true))
     end
 
     it 'should not update an error' do
-      error = @un_resolveds.first
-      put :update, :id => error.id, :error => {:resolved => true}
+      put :update, :id => @un_resolveds.first.id, :error => {:resolved => true}
       response.should redirect_to(new_user_session_path('unauthenticated' => true))
     end
   end
