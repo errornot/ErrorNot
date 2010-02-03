@@ -31,3 +31,5 @@ config.gem "rspec", :lib => false, :version => ">= 1.2.0"
 config.gem "rspec-rails", :lib => false, :version => ">= 1.2.0"
 config.gem "machinist_mongomapper", :lib => 'machinist/mongomapper', :version => "~>0.9.6", :source => 'http://gemcutter.org/'
 config.gem "randexp"
+
+config.action_mailer.default_url_options = { :host => 'localhost:3000' }

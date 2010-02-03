@@ -12,6 +12,8 @@ require 'spec/rails'
 # in ./support/ and its subdirectories.
 Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
+
+
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
   # lines, delete config/database.yml and disable :active_record
@@ -52,7 +54,14 @@ Spec::Runner.configure do |config|
   config.before(:each) do
     Error.collection.remove
     Project.collection.remove
+    User.collection.remove
   end
+
 end
 
 require 'blueprints'
+
+require "devise/test_helpers"
+class ActionController::TestCase
+  include Devise::TestHelpers
+end

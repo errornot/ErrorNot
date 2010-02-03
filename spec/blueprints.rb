@@ -4,6 +4,20 @@ Sham.composant { /\w+/.gen }
 Sham.name { /\w+/.gen }
 Sham.message { /[:paragraph:]/.gen }
 
+User.blueprint do
+  email { /\w+@\w+.com/.gen }
+  password {  'tintinpouet' }
+  password_confirmation { 'tintinpouet' }
+end
+
+def make_user
+  user = User.make
+  user.confirmation_sent_at = Time.now
+  user.confirmed_at = Time.now
+  user.save!
+  user
+end
+
 Error.blueprint do
   project { Project.make }
   message
@@ -15,4 +29,5 @@ end
 
 Project.blueprint do
   name
+  members { [Member.new(:user => make_user, :admin => true)] }
 end
