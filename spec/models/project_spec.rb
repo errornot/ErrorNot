@@ -32,4 +32,13 @@ describe Project do
       @project.members.detect{|m| m.user_id == @user.id }.should be_admin
     end
   end
+
+  describe 'self#access_by' do
+    it 'should see limit only to project with user is member' do
+      user = User.make
+      project = make_project_with_admin(user)
+      Project.make
+      assert_equal [project], Project.access_by(user)
+    end
+  end
 end

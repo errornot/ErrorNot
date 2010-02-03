@@ -31,3 +31,8 @@ Project.blueprint do
   name
   members { [Member.new(:user => make_user, :admin => true)] }
 end
+
+def make_project_with_admin(user)
+  Project.make(:members => [Member.new(:user => user, :admin => true)])
+end
+

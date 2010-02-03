@@ -36,6 +36,13 @@ describe ProjectsController do
         get :index
         response.should be_success
       end
+
+      it 'should see his project only' do
+        user_project = make_project_with_admin(@user)
+        non_user_project = Project.make
+        get :index
+        assert_equal [user_project], assigns[:projects]
+      end
     end
 
     describe 'GET #new' do

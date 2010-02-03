@@ -14,6 +14,12 @@ class Project
     members.build(:user => user, :admin => true)
   end
 
+  class << self
+    def access_by(user)
+      Project.all('members.user_id' => user.id)
+    end
+  end
+
   private
 
   def need_members
