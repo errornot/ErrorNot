@@ -17,5 +17,9 @@ class ApplicationController < ActionController::Base
     render :status => 404, :file => Rails.root.join('public/404.html')
   end
 
+  def render_401
+    render :status => 401, :file => Rails.root.join('public/404.html')
+  end
+
 
 end

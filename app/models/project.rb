@@ -14,6 +14,10 @@ class Project
     members.build(:user => user, :admin => true)
   end
 
+  def include_member?(user)
+    members.any?{|member| member.user_id == user.id}
+  end
+
   class << self
     def access_by(user)
       Project.all('members.user_id' => user.id)

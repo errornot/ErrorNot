@@ -1,8 +1,8 @@
 class ErrorsController < ApplicationController
 
-  before_filter :load_project, :only => [:show,:index]
-
   before_filter :authenticate_user!, :except => [:create]
+  before_filter :load_project, :only => [:show,:index]
+  before_filter :load_error, :only => [:update]
 
   def index
     error_search = {}
@@ -27,7 +27,6 @@ class ErrorsController < ApplicationController
   end
 
   def update
-    @error = Error.find(params[:id])
     @error.resolved = params[:error][:resolved]
     @error.save
     redirect_to(project_error_path(@error.project, @error))
@@ -37,6 +36,12 @@ class ErrorsController < ApplicationController
 
   def load_project
     @project = Project.find(params[:project_id])
+    render_401 unless @project.include_member?(current_user)
+  end
+
+  def load_error
+    @error = Error.find(params[:id])
+    render_401 unless @error.project.include_member?(current_user)
   end
 
 end

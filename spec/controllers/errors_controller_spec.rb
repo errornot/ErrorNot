@@ -28,7 +28,8 @@ describe ErrorsController do
   end
 
   before do
-    @project = Project.make
+    @user = make_user
+    @project = make_project_with_admin(@user)
     @resolveds = 2.of { Error.make(:project => @project, :resolved => true) }
     @un_resolveds = 2.of { Error.make(:project => @project, :resolved => false) }
   end
@@ -75,7 +76,6 @@ describe ErrorsController do
 
   describe 'with a user logged' do
     before :each do
-      @user = make_user
       sign_in @user
     end
     it_should_behave_like 'POST #create'
@@ -85,6 +85,14 @@ describe ErrorsController do
         get :show, :project_id => @project.id, :id => @project.error_reports.first.id
         response.should be_success
       end
+
+      it 'should not see an error in a project where user is not member' do
+        project = Project.make
+        error = Error.make(:project => project)
+        get :show, :project_id => project.id, :id => error.id
+        response.status.should == "401 Unauthorized"
+      end
+
     end
 
     describe 'GET #index' do
@@ -135,6 +143,13 @@ describe ErrorsController do
         put :update, :id => error.id, :error => {:resolved => false}
         response.should redirect_to(project_error_path(@project, error))
         assert !error.reload.resolved
+      end
+
+      it 'should not update an error in project where user is not member' do
+        project = Project.make
+        error = Error.make(:project => project)
+        put :update, :id => error.id, :error => {:resolved => true}
+        response.status.should == '401 Unauthorized'
       end
     end
 

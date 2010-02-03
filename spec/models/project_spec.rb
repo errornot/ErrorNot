@@ -33,6 +33,16 @@ describe Project do
     end
   end
 
+  describe '#include_member?(user)' do
+    it 'should be true is user is member of project' do
+      assert !Project.make.include_member?(User.make)
+    end
+    it 'should not be truc is user is not member of project' do
+      user = User.make
+      assert make_project_with_admin(user).include_member?(user)
+    end
+  end
+
   describe 'self#access_by' do
     it 'should see limit only to project with user is member' do
       user = User.make
