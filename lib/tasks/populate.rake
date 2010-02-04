@@ -1,5 +1,12 @@
 namespace :db do
 
+  desc "drop the database"
+  task :drop => [:environment] do
+    MongoMapper.database.collections.each do |coll|
+      coll.remove
+    end
+  end
+
   namespace :populate do
 
     def require_factories
