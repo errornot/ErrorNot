@@ -28,7 +28,7 @@ class ProjectsController < ApplicationController
   def update
     if @project.update_attributes(params[:project])
       flash[:notice] = t('flash.projects.update.success')
-      redirect_to(project_url(@project))
+      redirect_to(project_errors_url(@project))
     else
       render :edit
     end

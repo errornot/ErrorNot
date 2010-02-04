@@ -1,5 +1,8 @@
 %h1 All messages reports on project #{@project.name}
 
+- if @project.admin_member?(current_user)
+  %p=link_to 'Edit this project', edit_project_url(@project)
+
 - form_tag project_errors_url(@project.id), :method => :get do
   %p
     Limit to :

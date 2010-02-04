@@ -93,7 +93,7 @@ describe ProjectsController do
       it 'should update project name if user is admin on this project' do
         project = make_project_with_admin(@user)
         put :update, :project => {:name => 'foo'}, :id => project.id
-        response.should redirect_to(project_url(project))
+        response.should redirect_to(project_errors_url(project))
         project.reload.name.should == 'foo'
       end
 
