@@ -1,7 +1,20 @@
+%h1 All projects you can see
+
 - unless @projects.empty?
-  %ul
-    -@projects.each do |project|
-      %li=link_to project.name, project_errors_path(project)
+  %table
+    %thead
+      %tr
+        %th Project name
+        %th Errors reported
+        %th Errors resolved
+        %th Errors unresolved
+    %tbody
+      -@projects.each do |project|
+        %tr
+          %td= link_to project.name, project_errors_path(project)
+          %td= link_to project.nb_errors_reported, project_errors_path(project)
+          %td= link_to project.nb_errors_resolved, project_errors_path(project, :resolved => 'y')
+          %td= link_to project.nb_errors_unresolved, project_errors_path(project, :resolved => 'n')
   %p
     =link_to 'Add a new project', new_project_path
 - else

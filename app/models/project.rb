@@ -3,6 +3,10 @@ class Project
 
   key :name, String, :required => true
 
+  key :nb_errors_reported, Integer, :default => 0
+  key :nb_errors_resolved, Integer, :default => 0
+  key :nb_errors_unresolved, Integer, :default => 0
+
   has_many :error_reports, :class_name => 'Error'
 
   has_many :members
@@ -18,6 +22,13 @@ class Project
 
   def include_member?(user)
     members.any?{|member| member.user_id == user.id}
+  end
+
+  def update_nb_errors
+    self.nb_errors_reported = error_reports.count
+    self.nb_errors_unresolved = error_reports.count(:resolved => false)
+    self.nb_errors_resolved = error_reports.count(:resolved => true)
+    self.save!
   end
 
   class << self

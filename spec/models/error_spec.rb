@@ -53,4 +53,18 @@ describe Error do
     end
   end
 
+
+  describe '#resolved!' do
+    it 'should save and mark error like resolved if unresolved' do
+      error = Factory(:error, :resolved => false)
+      error.resolved!
+      assert Error.find(error.id).resolved
+    end
+    it 'should made nothing if error already resolved' do
+      error = Factory(:error, :resolved => true)
+      error.resolved!
+      assert Error.find(error.id).resolved
+    end
+  end
+
 end

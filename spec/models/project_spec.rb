@@ -1,6 +1,14 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Project do
+  describe 'Field' do
+    ['nb_errors_reported', 'nb_errors_resolved', 'nb_errors_unresolved'].each do |field|
+      it "should have field #{field}" do
+        assert Project.keys.keys.include?(field)
+      end
+    end
+  end
+
   describe 'Validation' do
     it 'should have valid factory' do
       Factory.build(:project).should be_valid
@@ -49,6 +57,49 @@ describe Project do
       project = make_project_with_admin(user)
       Factory(:project)
       assert_equal [project], Project.access_by(user)
+    end
+  end
+
+  describe '#nb_errors_reported' do
+    it 'should save nb of all errors save in this project' do
+      project = Factory(:project)
+      assert_equal 0, project.nb_errors_reported
+      3.times { |nb|
+        Factory(:error, :project => project)
+        assert_equal (nb + 1), project.reload.nb_errors_reported
+      }
+    end
+  end
+
+  describe '#nb_errors_resolved' do
+    it 'should save nb of all errors resolved save in this project' do
+      project = Factory(:project)
+      assert_equal 0, project.nb_errors_resolved
+      errors = []
+      3.times { |nb|
+        errors << Factory(:error, :project => project)
+        assert_equal 0, project.reload.nb_errors_resolved
+      }
+      errors.each_with_index do |error, index|
+        error.resolved!
+        assert_equal (index + 1), project.reload.nb_errors_resolved
+      end
+    end
+  end
+
+  describe '#nb_errors_unresolved' do
+    it 'should save nb of all errors resolved save in this project' do
+      project = Factory(:project)
+      assert_equal 0, project.reload.nb_errors_unresolved
+      errors = []
+      3.times { |nb|
+        errors << Factory(:error, :project => project)
+        assert_equal (nb + 1), project.reload.nb_errors_unresolved
+      }
+      errors.each_with_index do |error, index|
+        error.resolved!
+        assert_equal (3 - (index + 1)) , project.reload.nb_errors_unresolved
+      end
     end
   end
 end
