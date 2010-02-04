@@ -31,6 +31,10 @@ class Project
     self.save!
   end
 
+  def member(user)
+    members.detect{|member| member.user_id == user.id }
+  end
+
   class << self
     def access_by(user)
       Project.all('members.user_id' => user.id)

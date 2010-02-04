@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :errors, :only => [:create, :update]
 
   map.devise_for :users
-  map.resource :user
+  map.resource :user, :collection => {:update_notify => :put}
   map.root :controller => :projects, :action => :index
 
   # Sample of regular route:

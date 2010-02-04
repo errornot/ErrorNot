@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Project do
+
   describe 'Field' do
     ['nb_errors_reported', 'nb_errors_resolved', 'nb_errors_unresolved'].each do |field|
       it "should have field #{field}" do
@@ -102,4 +103,48 @@ describe Project do
       end
     end
   end
+
+  describe '#member(user)' do
+    it 'return nil if user is not member of this project' do
+      user = Factory(:user)
+      Factory(:project).member(user).should == nil
+    end
+    it 'return the member object where user is in this project' do
+      user = Factory(:user)
+      project = make_project_with_admin(user)
+      member = project.members.first
+      project.members.build(:user => Factory(:user))
+      project.save!
+      project.reload.member(user).should == member
+    end
+  end
+
+  describe '#notify_by_email_on_project(project_ids)' do
+    before do
+      @user = make_user
+      @project = make_project_with_admin(@user)
+      @project_2 = make_project_with_admin(@user)
+      member = @project_2.member(@user)
+      member.notify_by_email = false
+      member.save
+    end
+    it 'should puts member of this user in all project with id notify by email' do
+      @user.notify_by_email_on_project([@project.id, @project_2.id].map(&:to_s))
+      @project.reload.member(@user).notify_by_email.should be_true
+      @project_2.reload.member(@user).notify_by_email.should be_true
+    end
+
+    it 'should define member of all project with user but not in params with not a notify_b y_email' do
+      @user.notify_by_email_on_project([@project_2.id.to_s])
+      @project.reload.member(@user).notify_by_email.should be_false
+      @project_2.reload.member(@user).notify_by_email.should be_true
+    end
+
+    it 'should made all project with no notify if args is an empty array' do
+      @user.notify_by_email_on_project([])
+      @project.reload.member(@user).notify_by_email.should be_false
+      @project_2.reload.member(@user).notify_by_email.should be_false
+    end
+  end
+
 end
