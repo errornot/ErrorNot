@@ -5,11 +5,10 @@ namespace :db do
     def require_factories
       begin
         require "randexp"
-        require "machinist"
-        require 'machinist/mongomapper'
+        require 'factory_girl'
         require File.join(Rails.root, '/spec/blueprints.rb')
       rescue LoadError => e
-        puts 'You need gem randexp, machinist and machinist_mongomapper'
+        puts 'You need gem randexp and factory_girl'
         raise e
       end
     end
@@ -41,15 +40,15 @@ namespace :db do
     task :projects => :environment do
       require_factories
       generate(10) do
-        Project.make
+        make_project_with_admin(User.all.rand)
       end
     end
 
     desc "add some errors on all project. By default add 1000 errors. You can define number with NB"
     task :errors => :environment do
       require_factories
-      generate(100) do
-        Error.make(:project => Project.all.rand)
+      generate(1000) do
+        Factory(:error, :project => Project.all.rand)
       end
     end
   end
