@@ -10,6 +10,8 @@ class Project
   validate :need_members
   validate :need_admin_members
 
+  include_errors_from :members
+
   def add_admin_member(user)
     members.build(:user => user, :admin => true)
   end
