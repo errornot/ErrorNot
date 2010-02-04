@@ -3,27 +3,27 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe Project do
   describe 'Validation' do
     it 'should have valid factory' do
-      Project.make_unsaved.should be_valid
+      Factory.build(:project).should be_valid
     end
     it 'should not valid if no name' do
-      Project.make_unsaved(:name => '').should_not be_valid
+      Factory.build(:project, :name => '').should_not be_valid
     end
 
     it 'should not valid if no member associate' do
-      Project.make_unsaved(:members => []).should_not be_valid
+      Factory.build(:project, :members => []).should_not be_valid
     end
 
     it 'should not valid if no admin member associate' do
-      project = Project.make_unsaved(:members => [])
-      project.members << Member.new( :user => User.make, :admin => false )
+      project = Factory.build(:project, :members => [])
+      project.members << Member.new( :user => Factory(:user), :admin => false )
       project.should_not be_valid
     end
   end
 
   describe '#add_admin_member(user)' do
     before do
-      @project = Project.make
-      @user = User.make
+      @project = Factory(:project)
+      @user = Factory(:user)
     end
     it 'should add a member define like admin' do
       lambda do
@@ -35,19 +35,19 @@ describe Project do
 
   describe '#include_member?(user)' do
     it 'should be true is user is member of project' do
-      assert !Project.make.include_member?(User.make)
+      assert !Factory(:project).include_member?(Factory(:user))
     end
     it 'should not be truc is user is not member of project' do
-      user = User.make
+      user = Factory(:user)
       assert make_project_with_admin(user).include_member?(user)
     end
   end
 
   describe 'self#access_by' do
     it 'should see limit only to project with user is member' do
-      user = User.make
+      user = Factory(:user)
       project = make_project_with_admin(user)
-      Project.make
+      Factory(:project)
       assert_equal [project], Project.access_by(user)
     end
   end

@@ -30,8 +30,8 @@ describe ErrorsController do
   before do
     @user = make_user
     @project = make_project_with_admin(@user)
-    @resolveds = 2.of { Error.make(:project => @project, :resolved => true) }
-    @un_resolveds = 2.of { Error.make(:project => @project, :resolved => false) }
+    @resolveds = 2.of { Factory(:error, :project => @project, :resolved => true) }
+    @un_resolveds = 2.of { Factory(:error, :project => @project, :resolved => false) }
   end
 
   describe 'POST #create', :shared => true do
@@ -87,8 +87,8 @@ describe ErrorsController do
       end
 
       it 'should not see an error in a project where user is not member' do
-        project = Project.make
-        error = Error.make(:project => project)
+        project = Factory(:project)
+        error = Factory(:error, :project => project)
         get :show, :project_id => project.id, :id => error.id
         response.status.should == "401 Unauthorized"
       end
@@ -108,7 +108,7 @@ describe ErrorsController do
       end
 
       it 'should works if several errors on this project' do
-        2.times { Error.make(:project => @project) }
+        2.times { Factory(:error, :project => @project) }
         get :index, :project_id => @project.id
         response.should be_success
       end
@@ -146,8 +146,8 @@ describe ErrorsController do
       end
 
       it 'should not update an error in project where user is not member' do
-        project = Project.make
-        error = Error.make(:project => project)
+        project = Factory(:project)
+        error = Factory(:error, :project => project)
         put :update, :id => error.id, :error => {:resolved => true}
         response.status.should == '401 Unauthorized'
       end

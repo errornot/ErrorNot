@@ -4,19 +4,19 @@ describe Error do
 
   describe "Validation" do
     it 'should have valid factory' do
-      Error.make_unsaved.should be_valid
+      Factory.build(:error).should be_valid
     end
 
     it 'should not valid if no project associated' do
-      Error.make_unsaved(:project => nil).should_not be_valid
+      Factory.build(:error, :project => nil).should_not be_valid
     end
 
     it 'should not valid if no message' do
-      Error.make_unsaved(:message => '').should_not be_valid
+      Factory.build(:error, :message => '').should_not be_valid
     end
 
     it 'should not valid if no raised_at' do
-      Error.make_unsaved(:raised_at => nil).should_not be_valid
+      Factory.build(:error, :raised_at => nil).should_not be_valid
     end
 
   end

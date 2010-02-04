@@ -10,7 +10,7 @@ describe ProjectsController do
       response.should redirect_to(new_user_session_path('unauthenticated' => true))
     end
     it 'should not see show' do
-      get :show, :id => Project.make.id
+      get :show, :id => Factory(:project).id
       response.should redirect_to(new_user_session_path('unauthenticated' => true))
     end
     it 'should not can create project' do
@@ -32,14 +32,14 @@ describe ProjectsController do
       end
 
       it 'should success with a lot of project' do
-        2.times { Project.make }
+        2.times { Factory(:project) }
         get :index
         response.should be_success
       end
 
       it 'should see his project only' do
         user_project = make_project_with_admin(@user)
-        non_user_project = Project.make
+        non_user_project = Factory(:project)
         get :index
         assert_equal [user_project], assigns[:projects]
       end
