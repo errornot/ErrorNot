@@ -17,6 +17,10 @@ describe ProjectsController do
       post :create, :project => { :name => 'My big project' }
       response.should redirect_to(new_user_session_path('unauthenticated' => true))
     end
+    it 'should not can edit a project' do
+      get :edit, :id => Factory(:project).id.to_s
+      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+    end
   end
 
   describe 'with a user logged' do
@@ -66,6 +70,38 @@ describe ProjectsController do
           post :create, :project => { :name => '' }
         end.should_not change(Project, :count)
         response.should be_success
+      end
+    end
+
+    describe 'GET #edit' do
+
+      it 'should edit a project where user is admin' do
+        project = make_project_with_admin(@user)
+        get :edit, :id => project.id.to_s
+        response.should be_success
+      end
+
+      it 'should not edit a project where user is not admin' do
+        project = make_project_with_admin(Factory(:user))
+        get :edit, :id => project.id.to_s
+        response.status.should == "401 Unauthorized"
+      end
+
+    end
+
+    describe 'PUT #update' do
+      it 'should update project name if user is admin on this project' do
+        project = make_project_with_admin(@user)
+        put :update, :project => {:name => 'foo'}, :id => project.id
+        response.should redirect_to(project_url(project))
+        project.reload.name.should == 'foo'
+      end
+
+      it 'should not update project name if user is not admin on this project' do
+        project = make_project_with_admin(Factory(:user))
+        put :update, :project => {:name => 'foo'}, :id => project.id
+        response.status.should == "401 Unauthorized"
+        project.reload.name.should_not == 'foo'
       end
     end
   end

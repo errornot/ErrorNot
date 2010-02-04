@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
+  before_filter :load_project, :only => [:edit, :update]
 
   def index
     @projects = Project.access_by(current_user)
@@ -19,5 +20,24 @@ class ProjectsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
+  end
+
+  def update
+    if @project.update_attributes(params[:project])
+      flash[:notice] = t('flash.projects.update.success')
+      redirect_to(project_url(@project))
+    else
+      render :edit
+    end
+  end
+
+  private
+
+  def load_project
+    @project = Project.find(params[:id])
+    render_401 unless @project.admin_member?(current_user)
   end
 end

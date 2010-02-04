@@ -119,6 +119,26 @@ describe Project do
     end
   end
 
+  describe '#admin_member?(user)' do
+    before do
+      @user = Factory(:user)
+    end
+
+    it 'return true if user is member and admin of this project' do
+      project = make_project_with_admin(@user)
+      project.admin_member?(@user).should be_true
+    end
+
+    it 'return the member object where user is in this project' do
+      user = Factory(:user)
+      project = make_project_with_admin(user)
+      member = project.members.first
+      project.members.build(:user => Factory(:user))
+      project.save!
+      project.reload.member(user).should == member
+    end
+  end
+
   describe '#notify_by_email_on_project(project_ids)' do
     before do
       @user = make_user

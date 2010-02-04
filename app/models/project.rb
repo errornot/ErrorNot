@@ -24,6 +24,10 @@ class Project
     members.any?{|member| member.user_id == user.id}
   end
 
+  def admin_member?(user)
+    members.any?{|member| member.user_id == user.id && member.admin? }
+  end
+
   def update_nb_errors
     self.nb_errors_reported = error_reports.count
     self.nb_errors_unresolved = error_reports.count(:resolved => false)
