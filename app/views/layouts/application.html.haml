@@ -2,5 +2,13 @@
   %head
     %title AF83 Error
   %body
+    - if user_signed_in?
+      #menu
+        %ul
+          %li= link_to t('layout.menu.projects'), projects_url
+      #user_nav
+        %ul
+          %li= link_to t('layout.user_nav.profile'), edit_user_url
+          %li= link_to t('layout.user_nav.logout'), destroy_user_session_url
     #main
       = yield

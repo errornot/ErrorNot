@@ -6,3 +6,9 @@ fr:
     users:
       update:
        success_update_notify: 'Vous avez changé avec succès vos notifications'
+  layout:
+    menu:
+      project: Projets
+    user_nav:
+      profile: Profile
+      logout: Logout

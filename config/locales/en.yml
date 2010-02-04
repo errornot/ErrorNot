@@ -6,4 +6,9 @@ en:
   flash:
     users:
       update:
-       success_update_notify: 'You have change with succes your notify configuration'
+        success_update_notify: 'You have change with succes your notify configuration'
+  layout:
+    menu:
+      project: Projects
+    user_nav:
+      profile: Profil
