@@ -35,6 +35,17 @@ class Project
     self.save!
   end
 
+  ##
+  # Add member to this project by emails.
+  #
+  # If user already exist with this email. Add it.
+  # instead send an email to create his account
+  #
+  # @params[String] list of emails separate by comma
+  # @return true if works
+  def add_member_by_email(emails)
+  end
+
   def member(user)
     members.detect{|member| member.user_id == user.id }
   end

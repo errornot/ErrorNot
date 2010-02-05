@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
-  before_filter :load_project, :only => [:edit, :update]
+  before_filter :load_project, :only => [:edit, :update, :add_member]
 
   def index
     @projects = Project.access_by(current_user)
@@ -32,6 +32,10 @@ class ProjectsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def add_member
+    @project.add_member_by_email(params[:email])
   end
 
   private

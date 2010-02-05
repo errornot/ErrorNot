@@ -129,13 +129,15 @@ describe Project do
       project.admin_member?(@user).should be_true
     end
 
-    it 'return the member object where user is in this project' do
-      user = Factory(:user)
-      project = make_project_with_admin(user)
-      member = project.members.first
-      project.members.build(:user => Factory(:user))
+    it 'return false if user is member but not admin of this project' do
+      project = Factory(:project)
+      project.members.build(:user => @user, :admin => false)
       project.save!
-      project.reload.member(user).should == member
+      project.admin_member?(@user).should be_false
+    end
+
+    it 'should return false if user is not member of this project' do
+      Factory(:project).admin_member?(@user).should be_false
     end
   end
 
