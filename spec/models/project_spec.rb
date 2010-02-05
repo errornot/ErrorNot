@@ -42,13 +42,13 @@ describe Project do
     end
   end
 
-  describe '#include_member?(user)' do
+  describe '#member_include?(user)' do
     it 'should be true is user is member of project' do
-      assert !Factory(:project).include_member?(Factory(:user))
+      assert !Factory(:project).member_include?(Factory(:user))
     end
     it 'should not be truc is user is not member of project' do
       user = Factory(:user)
-      assert make_project_with_admin(user).include_member?(user)
+      assert make_project_with_admin(user).member_include?(user)
     end
   end
 

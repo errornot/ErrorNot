@@ -36,12 +36,12 @@ class ErrorsController < ApplicationController
 
   def load_project
     @project = Project.find(params[:project_id])
-    render_401 unless @project.include_member?(current_user)
+    render_401 unless @project.member_include?(current_user)
   end
 
   def load_error
     @error = Error.find(params[:id])
-    render_401 unless @error.project.include_member?(current_user)
+    render_401 unless @error.project.member_include?(current_user)
   end
 
 end

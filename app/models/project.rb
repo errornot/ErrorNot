@@ -20,7 +20,7 @@ class Project
     members.build(:user => user, :admin => true)
   end
 
-  def include_member?(user)
+  def member_include?(user)
     members.any?{|member| member.user_id == user.id}
   end
 
