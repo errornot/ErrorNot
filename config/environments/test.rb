@@ -31,5 +31,6 @@ config.gem "rspec", :lib => false, :version => ">= 1.2.0"
 config.gem "rspec-rails", :lib => false, :version => ">= 1.2.0"
 config.gem "randexp"
 config.gem "factory_girl"
+config.gem 'email_spec', :lib => 'email_spec', :version => '0.4.0'
 
 config.action_mailer.default_url_options = { :host => 'localhost:3000' }

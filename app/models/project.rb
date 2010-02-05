@@ -49,6 +49,8 @@ class Project
       if user
         members.build(:user => user,
                       :admin => false)
+      else
+        UserMailer.deliver_project_invitation(email.strip, self)
       end
     end
     save!
