@@ -44,6 +44,14 @@ class Project
   # @params[String] list of emails separate by comma
   # @return true if works
   def add_member_by_email(emails)
+    emails.split(',').each do |email|
+      user = User.first(:email => email.strip)
+      if user
+        members.build(:user => user,
+                      :admin => false)
+      end
+    end
+    save!
   end
 
   def member(user)
