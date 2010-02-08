@@ -32,6 +32,10 @@ describe UsersController do
       end
     end
 
+    describe 'POST #create' do
+      it 'should redirect_to list of your project'
+    end
+
     describe 'PUT #update_notify' do
       describe 'update notify' do
 

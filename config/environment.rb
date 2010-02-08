@@ -48,5 +48,5 @@ Rails::Initializer.run do |config|
 
 end
 
-## CHANGE it and made it in configatron please :'(
+## TODO: CHANGE it and made it in configatron please :'(
 APP_NAME = 'af_error'

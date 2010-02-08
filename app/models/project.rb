@@ -16,6 +16,9 @@ class Project
 
   include_errors_from :members
 
+  ## CALLBACK
+  before_save :update_members_data
+
   def add_admin_member(user)
     members.build(:user => user, :admin => true)
   end
@@ -76,5 +79,11 @@ class Project
 
   def need_admin_members
     errors.add(:members, 'need_admin_member') unless members.any?{ |m| m.admin }
+  end
+
+  def update_members_data
+    members.each do |member|
+      member.update_data
+    end
   end
 end

@@ -19,3 +19,17 @@
     %p{:class => 'submit'}
       = submit_tag 'Add email'
 
+%h2 List of members
+
+%table
+  %thead
+    %tr
+      %th Email
+      %th Status
+      %th Admin
+  %tbody
+    - @project.members.each do |member|
+      %tr
+        %td= member.email
+        %td= member.status
+        %td= member.admin?

@@ -17,3 +17,8 @@ fr:
     user_nav:
       profile: Profile
       logout: Logout
+  member:
+    status:
+      awaiting: 'en attente'
+      unvalidate: 'non validé'
+      validate: 'validé'

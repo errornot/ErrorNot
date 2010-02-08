@@ -12,3 +12,9 @@ en:
       project: Projects
     user_nav:
       profile: Profil
+  member:
+    status:
+      awaiting: 'awaiting'
+      unvalidate: 'un validate'
+      validate: 'validate'
+

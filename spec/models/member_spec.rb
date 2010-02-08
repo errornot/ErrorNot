@@ -42,4 +42,25 @@ describe Member do
       project.reload.member(user).notify_by_email.should be_true
     end
   end
+
+  describe '#status' do
+    it 'should be validates if member has user_id validate' do
+      user = make_user
+      member = Member.new(:user => user, :admin => true)
+      project = Factory(:project, :members => [member])
+      project.reload.member(user).status.should == I18n.t('member.status.validate')
+    end
+    it 'should be incomming if member has user_id unvalidate' do
+      user = Factory(:user)
+      member = Member.new(:user => user, :admin => true)
+      project = Factory(:project, :members => [member])
+      project.reload.member(user).status.should == I18n.t('member.status.unvalidate')
+    end
+    it 'should be awaiting if member has no user_id created' do
+      Member.new(:email => 'yahoo@example.com').status.should == I18n.t('member.status.awaiting')
+      member = Member.new(:email => 'yahoo@example.com', :admin => true)
+      project = Factory(:project, :members => [member])
+      project.reload.members.first.status.should == I18n.t('member.status.awaiting')
+    end
+  end
 end
