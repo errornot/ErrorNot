@@ -5,6 +5,19 @@ describe UsersController do
 
   integrate_views
 
+  describe 'with anonymous user' do
+    describe 'GET #new' do
+      it 'should success' do
+        get :new
+        response.should be_success
+      end
+      it 'should fill email if email send by argument' do
+        get :new, :email => 'foo@example.com'
+        response.body.should have_tag('input[type=?][value=?]', 'text', 'foo@example.com')
+      end
+    end
+  end
+
   describe 'with user logged' do
     before do
       @user = make_user
