@@ -6,6 +6,11 @@ fr:
     users:
       update:
        success_update_notify: 'Vous avez changé avec succès vos notifications'
+    projects:
+      update:
+        success: 'Vous avez mis à jour votre application avec succès'
+      add_member:
+        success: "You venez d'ajouter des utilisateurs à votre projet."
   layout:
     menu:
       project: Projets

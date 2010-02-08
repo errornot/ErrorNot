@@ -20,4 +20,5 @@ describe User do
       assert_equal [project, project_2], user.reload.member_projects
     end
   end
+
 end

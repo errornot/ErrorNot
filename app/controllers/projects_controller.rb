@@ -36,6 +36,8 @@ class ProjectsController < ApplicationController
 
   def add_member
     @project.add_member_by_email(params[:email])
+    flash[:notice] = t('flash.projects.add_member.success')
+    redirect_to edit_project_url(@project)
   end
 
   private

@@ -71,3 +71,7 @@ class Mongo::ObjectID
     self.to_s <=> object.to_s
   end
 end
+
+def response_is_401
+  response.status.should == "401 Unauthorized"
+end

@@ -84,7 +84,7 @@ describe ProjectsController do
       it 'should not edit a project where user is not admin' do
         project = make_project_with_admin(Factory(:user))
         get :edit, :id => project.id.to_s
-        response.status.should == "401 Unauthorized"
+        response_is_401
       end
 
     end
@@ -100,8 +100,23 @@ describe ProjectsController do
       it 'should not update project name if user is not admin on this project' do
         project = make_project_with_admin(Factory(:user))
         put :update, :project => {:name => 'foo'}, :id => project.id
-        response.status.should == "401 Unauthorized"
+        response_is_401
         project.reload.name.should_not == 'foo'
+      end
+    end
+
+    describe 'PUT #add_member' do
+      it 'should redirect_to edit with flash[:notice] if user is admin of project' do
+        project = make_project_with_admin(@user)
+        put :add_member, :email => 'foo@bar.com', :id => project.id.to_s
+        response.should redirect_to(edit_project_url(project))
+        flash[:notice].should == I18n.t('flash.projects.add_member.success')
+      end
+
+      it 'should not add member in project because user is not admin on this project' do
+        project = make_project_with_admin(Factory(:user))
+        put :add_member, :email => 'foo@bar.com', :id => project.id.to_s
+        response_is_401
       end
     end
   end
