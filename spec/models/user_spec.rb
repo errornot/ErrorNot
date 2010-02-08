@@ -21,4 +21,8 @@ describe User do
     end
   end
 
+  describe '#update' do
+    it 'should validate email by send confirmation by email after each change of email'
+  end
+
 end
