@@ -17,7 +17,7 @@ describe User do
       project = make_project_with_admin(user)
       assert_equal [project], user.reload.member_projects
       project_2 = make_project_with_admin(user)
-      assert_equal [project, project_2], user.reload.member_projects
+      assert_equal [project, project_2].sort_by(&:id), user.reload.member_projects.sort_by(&:id)
     end
   end
 

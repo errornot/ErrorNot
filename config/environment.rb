@@ -27,6 +27,8 @@ Rails::Initializer.run do |config|
   # Skip frameworks you're not going to use. To use Rails without a database,
   # you must remove the Active Record framework.
   config.frameworks -= [ :active_record, :active_resource]
+  config.gem "mongo", :lib => 'mongo', :version => '0.18.2'
+  config.gem "mongo_ext", :lib => 'mongo', :version => '0.18.2'
   config.gem "mongo_mapper", :version => '0.6.10'
   config.gem "haml"
   config.gem "warden", :version => '0.9.0'

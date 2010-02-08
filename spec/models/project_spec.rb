@@ -203,6 +203,16 @@ describe Project do
       @project.member_include?(@user_2).should be_false
       @project.member_include?(@user_3).should be_false
     end
+
+    it "should create member object with only email data in member's project" do
+      UserMailer.should_receive(:deliver_project_invitation).with('yahoo@yahoo.org', @project)
+      lambda do
+        @project.add_member_by_email('yahoo@yahoo.org')
+      end.should change(@project.members, :size)
+      @project.reload.members.last.admin.should == false
+      @project.reload.members.last.email.should == 'yahoo@yahoo.org'
+      @project.reload.members.last.user_id.should == nil
+    end
   end
 
 end

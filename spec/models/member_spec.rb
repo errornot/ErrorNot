@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Member do
 
-  ['notify_by_email'].each do |field|
+  ['notify_by_email', 'email'].each do |field|
     it "should have field #{field}" do
       assert Member.keys.keys.include?(field)
     end
@@ -10,10 +10,16 @@ describe Member do
 
 
   describe 'validation' do
-    it 'should not valid if no user_id' do
+    it 'should not valid if no user_id and no email' do
       member = Member.new(:admin => true)
       project = Factory.build(:project, :members => [member])
       project.should_not be_valid
+    end
+
+    it 'should valid if member has email and not user_id' do
+      member = Member.new(:email => 'foo@example.com', :admin => true)
+      project = Factory.build(:project, :members => [member])
+      project.should be_valid
     end
   end
 

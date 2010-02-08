@@ -50,6 +50,8 @@ class Project
         members.build(:user => user,
                       :admin => false)
       else
+        members.build(:email => email.strip,
+                      :admin => false)
         UserMailer.deliver_project_invitation(email.strip, self)
       end
     end
