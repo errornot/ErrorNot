@@ -1,7 +1,7 @@
 class ErrorsController < ApplicationController
 
   before_filter :authenticate_user!, :except => [:create]
-  before_filter :load_project, :only => [:show,:index]
+  before_filter :load_project, :only => [:show, :index, :comment]
   before_filter :load_error, :only => [:update]
 
   def index
@@ -30,6 +30,18 @@ class ErrorsController < ApplicationController
     @error.resolved = params[:error][:resolved]
     @error.save
     redirect_to(project_error_path(@error.project, @error))
+  end
+
+  def comment
+    @error = @project.error_reports.find(params[:id])
+    @error.comments.build(:text => params[:text],
+                          :user => current_user)
+    if @error.save
+      flash[:notice] = t('controller.errors.comments.flash.success')
+    else
+      flash[:notice] = t('controller.errors.comments.flash.failed')
+    end
+    redirect_to project_error_url(@project, @error)
   end
 
   private

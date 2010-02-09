@@ -15,4 +15,26 @@
 
 - form_for @error do |f|
   = hidden_field_tag 'error[resolved]', !@error.resolved
-  = f.submit
+  = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
+
+%h2 Comments
+
+- if @error.comments.size < 1
+  %p There are no comments on this error
+- else
+  %ul
+    - @error.comments.each do |comment|
+      %li
+        %h4
+          By
+          = comment.user_email
+          in
+          = l(comment.created_at)
+        %div
+          = simple_format(comment.text)
+
+- form_tag comment_project_error_url(@project, @error) do
+  %p
+    = text_area_tag :text
+  %p
+    = submit_tag 'Add comment'

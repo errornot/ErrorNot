@@ -29,3 +29,8 @@ fr:
     validation:
       email:
         no_change: 'ne peux être changé'
+  controllers:
+    errors:
+      comments:
+        flash:
+          success: 'Votre commentaire a été ajouté a cette erreur.'

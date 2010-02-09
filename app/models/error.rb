@@ -14,8 +14,12 @@ class Error
   key :project_id, ObjectId, :required => true
   belongs_to :project
 
+  has_many :comments
+  include_errors_from :comments
+
   ## Callback
   after_save :update_nb_errors_in_project
+  before_save :update_comments
 
   timestamps!
 
@@ -40,6 +44,12 @@ class Error
   #
   def update_nb_errors_in_project
     project.update_nb_errors
+  end
+
+  def update_comments
+    comments.each do |comment|
+      comment.update_informations
+    end
   end
 
 

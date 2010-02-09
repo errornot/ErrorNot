@@ -153,6 +153,32 @@ describe ErrorsController do
       end
     end
 
+    describe 'POST #comment' do
+      it 'should create a comment on error' do
+        @error = @project.error_reports.first
+        lambda do
+          post :comment,
+            :project_id => @project.id,
+            :id => @error.id,
+            :text => 'foo'
+          @error.reload
+        end.should change(@error.reload.comments, :size)
+        response.should redirect_to(project_error_url(@project, @error))
+        flash[:notice].should == I18n.t('controller.errors.comments.flash.success')
+      end
+
+      it 'should not create empty create on error' do
+        @error = @project.error_reports.first
+        lambda do
+          post :comment,
+            :project_id => @project.id,
+            :id => @error.id,
+            :text => ''
+        end.should_not change(@error.comments, :size)
+        response.should redirect_to(project_error_url(@project, @error))
+        flash[:notice].should == I18n.t('controller.errors.comments.flash.failed')
+      end
+    end
 
   end
 

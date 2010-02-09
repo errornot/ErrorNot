@@ -26,3 +26,8 @@ en:
     validation:
       email:
         no_change: "can't be changed"
+  controllers:
+    errors:
+      comments:
+        flash:
+          success: 'You comment is add to this error'
