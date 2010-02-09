@@ -7,6 +7,11 @@ en:
     users:
       update:
         success_update_notify: 'You have change with succes your notify configuration'
+    projects:
+      add_member:
+        success: 'You have add a member to your project'
+      leave:
+        refused: "You can't leave a project because you are an admin on this project"
   layout:
     menu:
       project: Projects

@@ -215,4 +215,28 @@ describe Project do
     end
   end
 
+  describe '#remove_member!' do
+    it 'should delete member if not admin' do
+      project = Factory(:project)
+      user = make_user
+      project.members.build(:user => user, :admin => false)
+      project.save!
+      lambda do
+        project.remove_member!(user)
+        project.member(user).should be_nil
+      end.should change(project.reload.members, :size).by(-1)
+    end
+
+    it 'should not delete member id admin' do
+      project = Factory(:project)
+      user = make_user
+      project.members.build(:user => user, :admin => true)
+      project.save!
+      lambda do
+        project.remove_member!(user)
+        project.member(user).should_not be_nil
+      end.should_not change(project.reload.members, :size).by(-1)
+    end
+  end
+
 end

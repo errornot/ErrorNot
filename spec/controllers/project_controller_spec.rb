@@ -119,6 +119,49 @@ describe ProjectsController do
         response_is_401
       end
     end
+
+    describe 'GET #leave' do
+      describe 'user admin on this project' do
+        it 'should not see a form because admin' do
+          project = make_project_with_admin(@user)
+          get :leave, :id => project.id.to_s
+          response.should be_success
+          response.should_not have_tag('form')
+        end
+      end
+      describe 'user not admin on this project' do
+        it 'should see a form' do
+          project = make_project_with_admin(make_user)
+          get :leave, :id => project.id.to_s
+          response.should be_success
+          response.should have_tag('form')
+        end
+      end
+    end
+
+    describe 'PUT #leave' do
+      describe 'user admin on this project' do
+        it 'should not leave this project' do
+          project = make_project_with_admin(@user)
+          lambda do
+            delete :leave, :id => project.id.to_s
+          end.should_not change(project.members, :count).by(-1)
+          response.should redirect_to(projects_url)
+        end
+      end
+      describe 'user not admin on this project' do
+        it 'should leave this project' do
+          project = make_project_with_admin(make_user)
+          project.members.build(:user => @user, :admin => false)
+          project.save!
+          lambda do
+            delete :leave, :id => project.id.to_s
+            project.reload
+          end.should change(project.reload.members, :size).by(-1)
+          response.should redirect_to(projects_url)
+        end
+      end
+    end
   end
 
 end

@@ -1,7 +1,8 @@
 class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
-  before_filter :load_project, :only => [:edit, :update, :add_member]
+  before_filter :load_project, :only => [:edit, :update, :add_member, :leave]
+  before_filter :project_admin, :only => [:edit, :update, :add_member]
 
   def index
     @projects = Project.access_by(current_user)
@@ -40,10 +41,28 @@ class ProjectsController < ApplicationController
     redirect_to edit_project_url(@project)
   end
 
+  def leave
+    if request.delete?
+      # delete member of this project
+      if !@project.admin_member?(current_user) &&
+        @project.remove_member!(current_user)
+        flash[:notice] = t('flash.projects.leave.success',
+                           :project_name => @project.name)
+      else
+        flash[:notice] = t('flash.projects.leave.refused')
+      end
+      redirect_to projects_url
+      return
+    end
+  end
+
   private
 
   def load_project
     @project = Project.find(params[:id])
+  end
+
+  def project_admin
     render_401 unless @project.admin_member?(current_user)
   end
 end

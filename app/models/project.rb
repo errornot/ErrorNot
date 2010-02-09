@@ -31,6 +31,11 @@ class Project
     members.any?{|member| member.user_id == user.id && member.admin? }
   end
 
+  def remove_member!(user)
+    members.delete_if{|member| member.user_id.to_s == user.id.to_s && !member.admin? }
+    save!
+  end
+
   def update_nb_errors
     self.nb_errors_reported = error_reports.count
     self.nb_errors_unresolved = error_reports.count(:resolved => false)

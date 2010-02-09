@@ -1,0 +1,11 @@
+%h1 Leave project #{@project.name}
+
+- if @project.admin_member?(current_user)
+  %p You can't leave project because you are admin on it
+- else
+  %p
+    you want really leave this project ?
+
+  - form_tag leave_project_url(@project), :method => :delete do
+    = submit_tag 'Leave'
+

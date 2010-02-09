@@ -10,7 +10,10 @@ fr:
       update:
         success: 'Vous avez mis à jour votre application avec succès'
       add_member:
-        success: "You venez d'ajouter des utilisateurs à votre projet."
+        success: "Vous venez d'ajouter des utilisateurs à votre projet."
+      leave:
+        refused: "Vous ne pouvez pas quitter ce project car vous êtes un des administration de ce projet."
+        success: "Vous avez quitter le projet {{project_name}}"
   layout:
     menu:
       project: Projets
