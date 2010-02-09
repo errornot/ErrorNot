@@ -29,23 +29,26 @@ namespace :db do
         print '.'
         STDOUT.flush
       }
+      print "\n"
+      STDOUT.flush
     end
 
     desc "default"
-    task :default => [:users, :projects, :errors]
+    task :default => [:users, :projects, :errors, :comments]
 
     desc "add some user activated"
     task :users => :environment do
       require_factories
+      puts 'create some users'
       generate(10) do
         make_user
       end
-
     end
 
     desc "add some project by default 10 projects"
     task :projects => :environment do
       require_factories
+      puts 'create some projects'
       generate(10) do
         make_project_with_admin(User.all.rand)
       end
@@ -54,8 +57,23 @@ namespace :db do
     desc "add some errors on all project. By default add 1000 errors. You can define number with NB"
     task :errors => :environment do
       require_factories
+      puts 'create some errors'
       generate(1000) do
         Factory(:error, :project => Project.all.rand)
+      end
+    end
+
+    desc "Add some comment on all errors by default add 10000 comments. You can define number with NB"
+    task :comments => :environment do
+      require 'randexp'
+      puts 'create some comments'
+      error_ids = Error.all.map(&:id)
+      generate(10_000) do
+        error = Error.find(error_ids.rand)
+        user = error.project.members.rand.user
+        error.comments.build(:user => user,
+                             :text => /[:paragraph:]/.gen)
+        error.save!
       end
     end
   end
