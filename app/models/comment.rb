@@ -20,7 +20,9 @@ class Comment
   private
 
   def user_is_member_of_project
-    errors.add(:user, 'cant_access') unless self._root_document.project.member_include?(user)
+    unless self.created_at
+      errors.add(:user, 'cant_access') unless self._root_document.project.member_include?(user)
+    end
   end
 
 

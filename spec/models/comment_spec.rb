@@ -45,5 +45,16 @@ describe Comment do
       @error.save!
       @error.comments.first.created_at.should == create
     end
+
+    it 'should allways valid if comment author is not member of project' do
+      make_comment_with_text('foo')
+      user = make_user
+      @project.members.build(:user => user, :admin => false)
+      @project.save!
+      @error.reload.comments.build(:user => user, :text => 'bar')
+      @error.save!
+      @project.remove_member!(user)
+      @error.reload.should be_valid
+    end
   end
 end
