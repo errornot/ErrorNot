@@ -47,7 +47,7 @@ class ErrorsController < ApplicationController
   private
 
   def load_project
-    @project = Project.find(params[:project_id])
+    @project = Project.find!(params[:project_id])
     render_401 unless @project.member_include?(current_user)
   end
 
