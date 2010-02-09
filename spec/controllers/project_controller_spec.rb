@@ -74,7 +74,6 @@ describe ProjectsController do
     end
 
     describe 'GET #edit' do
-
       it 'should edit a project where user is admin' do
         project = make_project_with_admin(@user)
         get :edit, :id => project.id.to_s
@@ -86,7 +85,6 @@ describe ProjectsController do
         get :edit, :id => project.id.to_s
         response_is_401
       end
-
     end
 
     describe 'PUT #update' do

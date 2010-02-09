@@ -16,7 +16,10 @@
           %td= link_to project.nb_errors_reported, project_errors_path(project)
           %td= link_to project.nb_errors_resolved, project_errors_path(project, :resolved => 'y')
           %td= link_to project.nb_errors_unresolved, project_errors_path(project, :resolved => 'n')
-          %td= link_to 'leave it',leave_project_url(project)
+          - if project.admin_member?(current_user)
+            %td
+          - else
+            %td= link_to 'leave it',leave_project_url(project)
   %p
     =link_to 'Add a new project', new_project_path
 - else
