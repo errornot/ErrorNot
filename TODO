@@ -1,0 +1,2 @@
+* User can change if user is or not admin on project where he is admin
+* Can delete a user from project where we are admin ( and send email to user about this information )
