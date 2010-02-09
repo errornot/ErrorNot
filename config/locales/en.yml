@@ -17,4 +17,7 @@ en:
       awaiting: 'awaiting'
       unvalidate: 'un validate'
       validate: 'validate'
-
+      user:
+    validation:
+      email:
+        no_change: "can't be changed"

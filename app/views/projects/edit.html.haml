@@ -31,5 +31,5 @@
     - @project.members.each do |member|
       %tr
         %td= member.email
-        %td= member.status
+        %td= member_status(member.status)
         %td= member.admin?

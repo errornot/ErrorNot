@@ -22,3 +22,7 @@ fr:
       awaiting: 'en attente'
       unvalidate: 'non validé'
       validate: 'validé'
+  user:
+    validation:
+      email:
+        no_change: 'ne peux être changé'

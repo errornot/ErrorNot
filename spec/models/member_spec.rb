@@ -48,19 +48,22 @@ describe Member do
       user = make_user
       member = Member.new(:user => user, :admin => true)
       project = Factory(:project, :members => [member])
-      project.reload.member(user).status.should == I18n.t('member.status.validate')
+      project.reload.member(user).status.should == Member::VALIDATE
     end
     it 'should be incomming if member has user_id unvalidate' do
       user = Factory(:user)
       member = Member.new(:user => user, :admin => true)
       project = Factory(:project, :members => [member])
-      project.reload.member(user).status.should == I18n.t('member.status.unvalidate')
+      project.reload.member(user).status.should == Member::UNVALIDATE
     end
     it 'should be awaiting if member has no user_id created' do
-      Member.new(:email => 'yahoo@example.com').status.should == I18n.t('member.status.awaiting')
+      Member.new(:email => 'yahoo@example.com').status.should == Member::AWAITING
       member = Member.new(:email => 'yahoo@example.com', :admin => true)
       project = Factory(:project, :members => [member])
-      project.reload.members.first.status.should == I18n.t('member.status.awaiting')
+      project.reload.members.first.status.should == Member::AWAITING
     end
+    it 'should be deleted if member has delete his alias'
+    it 'should be unvalidate if an user add this email in alias but not validate it'
+    it 'should be validate if an user add this email in alias and validate it'
   end
 end

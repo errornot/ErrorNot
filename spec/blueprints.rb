@@ -1,5 +1,5 @@
 def make_user(user_hash={})
-  user = Factory(:user)
+  user = Factory.build(:user)
   user.update_attributes(user_hash)
   user.confirmation_sent_at = Time.now
   user.confirmed_at = Time.now

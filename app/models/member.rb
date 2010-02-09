@@ -20,17 +20,6 @@ class Member
     self.save
   end
 
-  def status
-    case read_attribute(:status)
-    when AWAITING
-      I18n.t('member.status.awaiting')
-    when UNVALIDATE
-      I18n.t('member.status.unvalidate')
-    when VALIDATE
-      I18n.t('member.status.validate')
-    end
-  end
-
   def update_data
     unless user_id
       self.status = AWAITING

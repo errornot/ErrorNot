@@ -6,6 +6,9 @@ class User
   ## Others available are :lockable, :timeoutable and :activatable.
   devise :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
 
+  after_save :check_member_project
+  validate :not_change_email
+
 
   def member_projects
     Project.all('members.user_id' => self.id)
@@ -25,6 +28,30 @@ class User
         member.notify_by_email = false
         member.save
       end
+    end
+  end
+
+  ##
+  # Search all project where user is member by his email.
+  #
+  # In each project, update user_id if member is not validate
+  # or has no user_id
+  #
+  def check_member_project
+    Project.all('members.email' => self.email).each do |project|
+      member = project.members.detect{ |member| member.email == self.email }
+      if member.user_id.blank? || member.status != Member::VALIDATE
+        # We need save member if member not validate
+        # it's member who check if user is or not validate
+        member.user_id = self.id
+        member.save
+      end
+    end
+  end
+
+  def not_change_email
+    if email_changed? && !email_was.blank?
+      errors.add(:email, 'user.validation.email.not_change')
     end
   end
 

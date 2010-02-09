@@ -22,7 +22,29 @@ describe User do
   end
 
   describe '#update' do
-    it 'should validate email by send confirmation by email after each change of email'
+    it 'should not update his email' do
+      user = make_user
+      user.email = 'change@example.com'
+      user.should_not be_valid
+    end
+    it 'should add some alias email un validate in first'
+    it 'should send an email with token to all email add to be alias'
+    it 'should validate his email by token send to this email'
+    it 'should not update an email alias'
+    it 'should delete an email alias'
+    it 'should after deleting an email alias mark all member like DELETED'
+  end
+
+  describe '#save' do
+    it 'should check if his email need to be associated to other project' do
+      project = make_project_with_admin(make_user)
+      project.add_member_by_email('foo@example.com')
+      user = Factory(:user, :email => 'foo@example.com')
+      project.reload.member(user).status.should == Member::UNVALIDATE
+      user.confirmed_at = Time.now
+      user.save!
+      project.reload.member(user).status.should == Member::VALIDATE
+    end
   end
 
 end

@@ -1,9 +1,7 @@
-- form_for @user, :url => user_url do |f|
-  - field_set_tag 'Update my email' do
-    %p
-      = f.text_field :email
-    %p{:class => 'submit'}
-      = f.submit 'Update email'
+%h2 Your information
+%dl
+  %dt Email:
+  %dd= current_user.email
 
 - form_for @user, :url => user_url do |f|
   - field_set_tag 'Update my password' do
