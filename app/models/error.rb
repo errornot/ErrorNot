@@ -21,6 +21,8 @@ class Error
   after_save :update_nb_errors_in_project
   before_save :update_comments
 
+  after_create :send_notify
+
   timestamps!
 
   def url
@@ -49,6 +51,14 @@ class Error
   def update_comments
     comments.each do |comment|
       comment.update_informations
+    end
+  end
+
+  def send_notify
+    project.members.each do |member|
+      if member.notify_by_email?
+        UserMailer.deliver_error_notify(member.email, self)
+      end
     end
   end
 

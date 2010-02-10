@@ -6,5 +6,11 @@ class UserMailer < ActionMailer::Base
     body :email => email, :project => project
   end
 
+  def error_notify(email, error)
+    recipients email
+    subject "[#{error.project.name}] #{error.message}"
+    body :error => error
+  end
+
 
 end

@@ -1,0 +1,21 @@
+<%= project_error_url(@error.project, @error) %>
+
+Error Message:
+--------------
+<%= @error.message %>
+
+Request:
+--------
+<%= @error.request.inspect %>
+
+Session:
+--------
+<%= @error.session.inspect %>
+
+Environment:
+------------
+<%= @error.environment.inspect %>
+
+Backtrace:
+----------
+<%= @error.backtrace.inspect %>
