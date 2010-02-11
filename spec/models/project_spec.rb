@@ -239,4 +239,27 @@ describe Project do
     end
   end
 
+  describe '#error_with_message_and_backtrace' do
+    it 'should render new error if no error with same message and backtrace' do
+      error = Factory.build(:error)
+      project = make_project_with_admin(make_user)
+      new_error = project.error_with_message_and_backtrace(error.message,
+                                                            error.backtrace)
+      new_error.should be_kind_of(Error)
+      new_error.project_id.should == project.id
+    end
+
+    it 'should render new embedded error on same error if error who want create has same message and backtrace' do
+      project = make_project_with_admin(make_user)
+      error = Factory(:error, :project => project)
+      error_2 = Factory.build(:error, :message => error.message,
+                              :backtrace => error.backtrace,
+                              :project => project)
+      new_error = project.error_with_message_and_backtrace(error_2.message,
+                                                            error_2.backtrace)
+      new_error.should be_kind_of(ErrorEmbedded)
+      new_error._root_document.should == error
+    end
+  end
+
 end

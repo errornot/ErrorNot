@@ -65,6 +65,18 @@ describe Error do
       error.resolved!
       assert Error.find(error.id).resolved
     end
+
+    it 'should not send email if mark like resolved!' do
+      user = make_user
+      project = make_project_with_admin(user)
+      error = Factory(:error, :resolved => true,
+                     :project => project)
+      UserMailer.expects(:deliver_error_notify).with{ |email, error|
+        email == user.email && error.kind_of?(Error)
+      }.never
+      error.resolved!
+      assert Error.find(error.id).resolved
+    end
   end
 
   describe '#create' do

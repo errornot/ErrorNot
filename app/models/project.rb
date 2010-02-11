@@ -70,6 +70,28 @@ class Project
     members.detect{|member| member.user_id == user.id }
   end
 
+  ##
+  # Check if an error with same message
+  # and backtrace are already in this project. If there are
+  # already an error with same data, create an ErrorEmbedded in
+  # this error
+  #
+  # @params[String] the message
+  # @params[Array] the backtrace
+  # @return[Object] an Error or ErrorEmbedded
+  #
+  def error_with_message_and_backtrace(message, backtrace)
+    error = error_reports.first(:message => message,
+                        :backtrace => backtrace,
+                        :project_id => self.id)
+    unless error
+      error_reports.build(:message => message,
+                          :backtrace => backtrace)
+    else
+      error.same_errors.build
+    end
+  end
+
   class << self
     def access_by(user)
       Project.all('members.user_id' => user.id)

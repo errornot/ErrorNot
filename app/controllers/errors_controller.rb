@@ -14,8 +14,9 @@ class ErrorsController < ApplicationController
 
   def create
     @project = Project.find(params[:api_key])
-    @error = @project.error_reports.build(params[:error])
-    if @error.save
+    @error = @project.error_with_message_and_backtrace(params[:error][:message],
+                                                       params[:error][:backtrace])
+    if @error.update_attributes(params[:error])
       render :status => 200, :text => 'error create'
     else
       render :status => 422, :text => @error.errors.full_messages

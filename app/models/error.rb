@@ -17,11 +17,16 @@ class Error
   has_many :comments
   include_errors_from :comments
 
+  has_many :same_errors, :class_name => 'ErrorEmbedded'
+  include_errors_from :same_errors
+
   ## Callback
   after_save :update_nb_errors_in_project
   before_save :update_comments
+  before_save :reactive_if_new_error
 
   after_create :send_notify
+  after_update :resend_notify
 
   timestamps!
 
@@ -62,5 +67,22 @@ class Error
     end
   end
 
+  def resend_notify
+    if !resolved? && new_same_error?
+      send_notify
+    end
+  end
 
+  ##
+  # Mark error like un_resolved if a new error is add
+  # An new error is arrived if embedded has no id ( little hack )
+  #
+  def reactive_if_new_error
+    self.resolved = false if new_same_error?
+  end
+
+  # Check if new error embedded
+  def new_same_error?
+    same_errors.any?{|error| error.id.nil? }
+  end
 end

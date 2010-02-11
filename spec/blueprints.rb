@@ -27,7 +27,7 @@ Factory.define(:project) do |pr|
   pr.members { [Member.new(:user => make_user, :admin => true)] }
 end
 
-def make_project_with_admin(user)
+def make_project_with_admin(user=make_user)
   Factory(:project, :members => [Member.new(:user => user, :admin => true)])
 end
 
