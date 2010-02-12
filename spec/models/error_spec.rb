@@ -77,6 +77,20 @@ describe Error do
       error.resolved!
       assert Error.find(error.id).resolved
     end
+
+    it 'should not send email if error mark like unresolved' do
+      user = make_user
+      project = make_project_with_admin(user)
+      error = Factory(:error, :resolved => true,
+                     :project => project)
+      error.resolved!
+      UserMailer.expects(:deliver_error_notify).with{ |email, error|
+        email == user.email && error.kind_of?(Error)
+      }.never
+      error.resolved = false
+      error.save!
+      assert !Error.find(error.id).resolved
+    end
   end
 
   describe '#create' do
@@ -98,6 +112,19 @@ describe Error do
         email == user.email && error.kind_of?(Error)
       }
       Factory(:error, :project => project)
+    end
+  end
+
+  describe '#last_raised_at' do
+    it 'should return raised_at of error if no error_embedded' do
+      error = Factory(:error)
+      error.last_raised_at.should == error.raised_at
+    end
+    it 'should return last raised_at of error_embedded if error has error_embedded' do
+      error = Factory(:error, :raised_at => 3.days.ago)
+      error.same_errors.build(:raised_at => 2.days.ago)
+      last_raised = error.same_errors.build(:raised_at => 1.day.ago).raised_at
+      error.last_raised_at.should == last_raised
     end
   end
 

@@ -14,13 +14,13 @@
   %thead
     %tr
       %th Message
-      %th Raised
+      %th Last raised
       %th number of comments
       %th Resolved?
   %tbody
     - @errors.each do |error|
       %tr
         %td=link_to error.message, project_error_path(@project, error)
-        %td= error.raised_at
+        %td= error.last_raised_at
         %td= error.comments.size
         %td= check_box_tag 'resolved', 1, error.resolved

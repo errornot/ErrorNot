@@ -43,6 +43,14 @@ class Error
     save!
   end
 
+  def last_raised_at
+    if same_errors.empty?
+      self.raised_at
+    else
+      same_errors.sort_by(&:raised_at).last.raised_at
+    end
+  end
+
   private
 
   ##
@@ -68,9 +76,7 @@ class Error
   end
 
   def resend_notify
-    if !resolved? && new_same_error?
-      send_notify
-    end
+    send_notify if !resolved? && new_same_error?
   end
 
   ##
