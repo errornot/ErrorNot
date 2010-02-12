@@ -17,7 +17,7 @@ Factory.define(:error) do |e|
   e.project { Factory(:project) }
   e.message { /[:paragraph:]/.gen }
   e.resolved false
-  e.raised_at { Time.now }
+  e.raised_at { (1..500).to_a.rand.day.ago }
   e.backtrace ['[PROJECT_ROOT]/vendor/gems/mongo-0.18/lib/../lib/mongo/types/objectid.rb:73:in `from_string',
   '[PROJECT_ROOT]/vendor/gems/mongo_mapper-0.6.4/lib/mongo_mapper/finder_options.rb:64:in `to_mongo_criteria']
 end

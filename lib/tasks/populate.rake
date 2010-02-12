@@ -34,7 +34,7 @@ namespace :db do
     end
 
     desc "default"
-    task :default => [:users, :projects, :errors, :comments]
+    task :default => [:users, :projects, :errors, :comments, :same_errors]
 
     desc "add some user activated"
     task :users => :environment do
@@ -68,11 +68,27 @@ namespace :db do
       require 'randexp'
       puts 'create some comments'
       error_ids = Error.all.map(&:id)
-      generate(10_000) do
+      generate(2_000) do
         error = Error.find(error_ids.rand)
         user = error.project.members.rand.user
         error.comments.build(:user => user,
                              :text => /[:paragraph:]/.gen)
+        error.save!
+      end
+    end
+
+    desc "add some same errors on all project. By default add 3000 errors. You can define number with NB"
+    task :same_errors => :environment do
+      require_factories
+      puts 'create some same errors'
+      errors_ids = Error.all.map(&:id)
+      generate(3000) do
+        error = Error.find(errors_ids.rand)
+        error_attribute = Factory.build(:error, :project => error.project,
+               :message => error.message,
+               :backtrace => error.backtrace,
+               :raised_at => error.last_raised_at + 1.minute).attributes
+        error.same_errors.build.update_attributes(error_attribute)
         error.save!
       end
     end
