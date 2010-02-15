@@ -30,6 +30,9 @@ Currently you need all of those things to get Oupsnow to run:
  - configure you database
    - copy config/database.yml.sample to config/database.yml
    - update config/database.yml with your database connection and the table name
+ - configure your email settings
+   - copy config/email.yaml.sample to config/email.yml
+   - update it with email configuration (sendmail or smtp information)
  - Start the server in production mode : ruby script/server -e production
  - You can now register your self /user/new
  - Have fun
