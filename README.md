@@ -37,6 +37,31 @@ Currently you need all of those things to get Oupsnow to run:
  - You can now register your self /user/new
  - Have fun
 
+
+## Development
+
+If you want hack ErrorNot, you need launch all Test. This test made with rspec.
+
+You can install all gems needed with commant :
+
+ - RAILS_ENV=test rake gems:install
+
+Now you can launch spec :
+
+ - rake spec
+
+If you want fill your Database with a lot of fake data, you can launch task
+
+ - rake db:populate:default
+
+This task depend of :
+
+ - rake db:populate:users
+ - rake db:populate:projects
+ - rake db:populate:errors
+ - rake db:populate:comments
+ - rake db:populate:same_errors
+
 ## License
 
 This program is free software: you can redistribute it and/or modify
