@@ -149,9 +149,7 @@ describe ProjectsController do
       end
       describe 'user not admin on this project' do
         it 'should leave this project' do
-          project = make_project_with_admin(make_user)
-          project.members.build(:user => @user, :admin => false)
-          project.save!
+          project = saved_project_with_admins_and_users([make_user], [@user])
           lambda do
             delete :leave, :id => project.id.to_s
             project.reload
@@ -163,23 +161,9 @@ describe ProjectsController do
 
     describe 'DELETE #destroy' do
       
-      describe 'user admin on this project' do
-        it 'only one admin' do
-          project = make_project_with_admin(make_user)
-          project.members.build(:user => @user, :admin => true)
-          project.save!
-          lambda do
-            delete :destroy, :id => project.id
-          end.should change(Project, :count).by(-1)
-          Project.find(project.id).should be_nil
-          response.should redirect_to(projects_url)
-        end
-        it 'another admin on the project' do
-          # Let say we can delete a project, even if they are other admins
-          project = make_project_with_admin(make_user)
-          project.members.build(:user => @user, :admin => true)
-          project.members.build(:user => make_user, :admin => false)
-          project.save!
+      describe 'with the logged-in user admin on the project' do
+        it 'should delete the project' do
+          project = saved_project_with_admins_and_users([@user], [make_user])
           lambda do
             delete :destroy, :id => project.id
           end.should change(Project, :count).by(-1)
@@ -187,15 +171,25 @@ describe ProjectsController do
           response.should redirect_to(projects_url)
         end
       end
-      it 'user not admin' do
-        project = make_project_with_admin(make_user)
-        project.members.build(:user => @user, :admin => false)
-        project.save!
-        lambda do
-          delete :destroy, :id => project.id
-        end.should change(Project, :count).by(0)
-        Project.find(project.id).should be
-        response.code.should eql '401'
+      describe 'with another user admin on the project' do
+        it 'should delete the project anyway' do
+          project = saved_project_with_admins_and_users([@user, make_user], [make_user])
+          lambda do
+            delete :destroy, :id => project.id
+          end.should change(Project, :count).by(-1)
+          Project.find(project.id).should be_nil
+          response.should redirect_to(projects_url)
+        end
+      end
+      describe 'with the logged-in user not admin on the project' do
+        it 'should not destroy the project' do
+          project = saved_project_with_admins_and_users([make_user], [@user])
+          lambda do
+            delete :destroy, :id => project.id
+          end.should change(Project, :count).by(0)
+          Project.find(project.id).should be
+          response.code.should eql '401'
+        end
       end
     end
 

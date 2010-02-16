@@ -31,3 +31,11 @@ def make_project_with_admin(user=make_user)
   Factory(:project, :members => [Member.new(:user => user, :admin => true)])
 end
 
+def saved_project_with_admins_and_users(admins, simple_users=[])
+  project = Factory(:project, 
+                    :members => admins.map{|u|Member.new(:user => u, :admin => true)} + \
+                                simple_users.map{|u|Member.new(:user => u, :admin => false)})
+  project.save!
+  project
+end
+
