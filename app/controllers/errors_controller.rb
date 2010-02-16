@@ -9,7 +9,10 @@ class ErrorsController < ApplicationController
     if params.key?(:resolved) && params[:resolved]
       error_search[:resolved] = (params[:resolved] == 'y')
     end
-    @errors = @project.error_reports.all(error_search)
+    @errors = @project.error_reports.paginate({:conditions => error_search,
+                                               :page => params[:page],
+                                               :per_page => params[:per_page] || 10,
+                                               })
   end
 
   def create

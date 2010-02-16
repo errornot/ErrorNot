@@ -34,6 +34,8 @@ Rails::Initializer.run do |config|
   config.gem "haml"
   config.gem "warden", :version => '0.9.0'
   config.gem "devise", :version => '0.9.1'
+  config.gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', 
+             :source => 'http://gems.github.com'
 
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer

@@ -24,3 +24,6 @@
         %td= error.last_raised_at
         %td= error.comments.size
         %td= check_box_tag 'resolved', 1, error.resolved
+
+= will_paginate @errors
+
