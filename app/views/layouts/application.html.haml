@@ -2,6 +2,7 @@
   %head
     %title AF83 Error
   %body
+    = flash_to_html(flash)
     - if user_signed_in?
       #menu
         %ul

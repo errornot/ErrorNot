@@ -1,8 +1,8 @@
 class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
-  before_filter :load_project, :only => [:edit, :update, :add_member, :leave]
-  before_filter :project_admin, :only => [:edit, :update, :add_member]
+  before_filter :load_project, :only => [:edit, :update, :add_member, :leave, :destroy]
+  before_filter :project_admin, :only => [:edit, :update, :add_member, :destroy]
 
   def index
     @projects = Project.access_by(current_user)
@@ -54,6 +54,12 @@ class ProjectsController < ApplicationController
       redirect_to projects_url
       return
     end
+  end
+
+  def destroy
+    @project.destroy
+    flash[:notice] = t('flash.projects.destroy.notice', :default => 'Project was successfully destroyed.')
+    redirect_to projects_url
   end
 
   private

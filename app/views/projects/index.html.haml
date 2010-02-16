@@ -17,7 +17,7 @@
           %td= link_to project.nb_errors_resolved, project_errors_path(project, :resolved => 'y')
           %td= link_to project.nb_errors_unresolved, project_errors_path(project, :resolved => 'n')
           - if project.admin_member?(current_user)
-            %td
+            %td= link_to 'delete', project_url(project), :method => :delete, :confirm => 'Are you sure?'
           - else
             %td= link_to 'leave it',leave_project_url(project)
   %p
