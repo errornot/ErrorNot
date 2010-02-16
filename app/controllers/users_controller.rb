@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     if @user.save
       flash[:notice] = t('devise.confirmations.send_instructions')
-      sign_in_and_redirect @user if @user.class.confirm_within > 0
+      redirect_to(new_user_session_url)
     else
       render :new
     end

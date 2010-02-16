@@ -33,7 +33,12 @@ describe UsersController do
     end
 
     describe 'POST #create' do
-      it 'should redirect_to list of your project'
+      it 'should redirect_to sign_in because user not verify' do
+        post :create, :user => {:email => 'errornot@example.com',
+          :password => 'tintinpouet',
+          :password_confirmation => 'tintinpouet'}
+        response.should redirect_to(new_user_session_url)
+      end
     end
 
     describe 'PUT #update_notify' do
