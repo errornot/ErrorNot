@@ -43,7 +43,7 @@ describe ErrorsController do
     end
 
     it 'should render 404 if bad API_KEY' do
-      post :create, error_request("123")
+      post :create, error_request("4b72f1b3ac2a926c98000002")
       response.code.should == "404"
     end
 

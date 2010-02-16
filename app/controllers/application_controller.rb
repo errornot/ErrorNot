@@ -13,6 +13,10 @@ class ApplicationController < ActionController::Base
     render_404
   end
 
+  rescue_from  MongoMapper::DocumentNotFound do
+    render_404
+  end
+
   def render_404
     render :status => 404, :file => Rails.root.join('public/404.html')
   end
