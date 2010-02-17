@@ -3,7 +3,7 @@
 
 %h1 Summary
 
-%p
+%p#resolved
   resolved ?
   = @error.resolved
 
@@ -15,6 +15,15 @@
   %dt Parameters
   %dd
     %pre= @error.params.inspect
+
+- unless @error.same_errors.empty?
+  %h2
+    Similar Errors
+    ( #{@error.same_errors.count} )
+
+  %ul
+    - @error.same_errors.each do |same_error|
+      %li= l same_error.raised_at, :format => :long_ordinal
 
 - form_for @error do |f|
   = hidden_field_tag 'error[resolved]', !@error.resolved

@@ -55,6 +55,7 @@ class Error
     end
   end
 
+
   private
 
   ##
