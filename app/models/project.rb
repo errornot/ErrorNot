@@ -92,6 +92,23 @@ class Project
     end
   end
 
+  ##
+  # Search in _keyworks and if resolved or not
+  #
+  # @params[Array] the conditions with key :resolved, :search, :page, :per_page
+  # @return[Array] the result paginate
+  #
+  def paginate_errors_with_search(params)
+    error_search = {}
+    if params.key?(:resolved) && params[:resolved]
+      error_search[:resolved] = (params[:resolved] == 'y')
+    end
+    error_search[:_keywords] = {'$in' => params[:search].split(' ').map(&:strip)} unless params[:search].blank?
+    error_reports.paginate(:conditions => error_search,
+             :page => params[:page] || 1,
+             :per_page => params[:per_page] || 10)
+  end
+
   class << self
     def access_by(user)
       Project.all('members.user_id' => user.id)

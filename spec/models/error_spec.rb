@@ -130,17 +130,15 @@ describe Error do
 
   describe 'keywords generation' do
     it 'should fill in the keywords correctly' do
-      error = Factory(:error)
-      user = error.project.members.first.user
-      error.message = "one, two: three (four, five) - six"
-      error.comments.build(:user => user, :text => "seven, height, one: two three")
-      error.comments.build(:user => user, :text => "five; nine")
-      error.save!
-      error._keywords.length.should == 9
-      ['one', 'two', 'three', 'four',
-       'five', 'six', 'seven', 'height', 'nine'].each { |w|
-        assert error._keywords.include?(w)
-      }
+      project = Factory(:project)
+      user = project.members.first.user
+      error = Factory(:error,
+                      :project => project,
+                      :message => "one, two: three (four, five) - six",
+                      :comments => [ Comment.new(:user => user, :text => "seven, height, one: two three"),
+                        Comment.new(:user => user, :text => "five; nine")])
+
+      error._keywords.sort.should ==  ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'height', 'nine'].sort
     end
   end
 

@@ -132,13 +132,15 @@ describe ErrorsController do
         word = 'someVeryUniqueWord'
         message = "toto #{word} titi"
         error = Factory(:error, :project => @project, :message => message)
-        error.save!
-        get :index, :project_id => @project.id, :resolved => nil, :search => {:words => word}
+        error.reload
+        get :index, :project_id => @project.id, :resolved => nil, :search => word
         response.should be_success
-        assert_equal assigns[:errors].map(&:id).length, 1
-        assert assigns[:errors].map(&:id).include?(error.id)
-        
-        get :index, :project_id => @project.id, :resolved => nil, :search => {:words => "Nonexistent666666"}
+        assigns[:errors].should == [error]
+      end
+
+      it "should return no errors if words doesn't exist" do
+        Factory(:error, :project => @project)
+        get :index, :project_id => @project.id, :resolved => nil, :search => "Nonexistent666666"
         response.should be_success
         assert_equal assigns[:errors].map(&:id).length, 0
       end

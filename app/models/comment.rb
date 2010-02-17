@@ -17,6 +17,10 @@ class Comment
     self.created_at ||= Time.now
   end
 
+  def extract_words
+    text.split(/[^\w]|[_]/)
+  end
+
   private
 
   def user_is_member_of_project

@@ -262,4 +262,39 @@ describe Project do
     end
   end
 
+  describe "#paginate_errors_with_search" do
+    before do
+      @project = make_project_with_admin
+    end
+    it 'should extract all search params' do
+      @project.error_reports.expects(:paginate).with(:conditions => {:_keywords => {'$in' => ['xx', 'yy']}},
+                                                    :page => 1,
+                                                    :per_page => 10)
+      @project.paginate_errors_with_search(:search => 'xx yy')
+    end
+
+    it "should change :resolved = 'y' by :resolved => true" do
+      @project.error_reports.expects(:paginate).with(:conditions => {:resolved => true},
+                                                    :page => 1,
+                                                    :per_page => 10)
+      @project.paginate_errors_with_search(:resolved => 'y')
+    end
+
+    it "should change :resolved = 'y' by :resolved => true and extract search params" do
+      @project.error_reports.expects(:paginate).with(:conditions => {:resolved => true, :_keywords => { '$in' => ['xx', 'yy']}},
+                                                    :page => 1,
+                                                    :per_page => 10)
+      @project.paginate_errors_with_search(:resolved => 'y', :search => 'xx yy')
+    end
+
+    it 'should push page and per_page with search and resolved params' do
+      @project.error_reports.expects(:paginate).with(:conditions => {:resolved => true, :_keywords => { '$in' => ['xx', 'yy']}},
+                                                    :page => 3,
+                                                    :per_page => 20)
+      @project.paginate_errors_with_search(:resolved => 'y', :search => 'xx yy', :page => 3, :per_page => 20)
+    end
+
+
+  end
+
 end

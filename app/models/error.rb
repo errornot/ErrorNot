@@ -22,13 +22,15 @@ class Error
   include_errors_from :same_errors
 
   ## Callback
-  after_save :update_nb_errors_in_project
   before_save :update_comments
   before_save :reactive_if_new_error
-  before_save :extract_words_from_comments_and_msg
+
+  after_save :update_nb_errors_in_project
+  after_save :update_keywords
 
   after_create :send_notify
   after_update :resend_notify
+
 
   timestamps!
 
@@ -97,11 +99,11 @@ class Error
   # Extract a list of keywords for msg + comments.text of
   # the error
   # Put it in error._keywords
-  def extract_words_from_comments_and_msg
-    spliter = Regexp.new('[^\w]|[_]')
-    words = self.message.split(spliter)
-    self.comments.each{|comment| words += comment.text.split(spliter)}
-    words = words.find_all{|word| word.length > 0}
-    self._keywords = words.uniq
+  def update_keywords
+    words = (message.split(/[^\w]|[_]/) | comments.map(&:extract_words)).flatten
+    self._keywords = words.delete_if(&:empty?).uniq
+    # We made update direct to avoid some all callback recall
+    collection.update({:_id => self._id}, {'$set' => {:_keywords => self._keywords}})
   end
+
 end
