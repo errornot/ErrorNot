@@ -128,6 +128,21 @@ describe ErrorsController do
         assert_equal @project.error_reports.map(&:id), assigns[:errors].map(&:id)
       end
 
+      it 'should limit to errors having one of the given search word in their keywords' do
+        word = 'someVeryUniqueWord'
+        message = "toto #{word} titi"
+        error = Factory(:error, :project => @project, :message => message)
+        error.save!
+        get :index, :project_id => @project.id, :resolved => nil, :search => {:words => word}
+        response.should be_success
+        assert_equal assigns[:errors].map(&:id).length, 1
+        assert assigns[:errors].map(&:id).include?(error.id)
+        
+        get :index, :project_id => @project.id, :resolved => nil, :search => {:words => "Nonexistent666666"}
+        response.should be_success
+        assert_equal assigns[:errors].map(&:id).length, 0
+      end
+
     end
 
     describe 'PUT update' do

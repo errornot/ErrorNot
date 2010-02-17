@@ -10,6 +10,7 @@ class Error
   key :data, Hash
 
   key :message, String, :required => true
+  key :_keywords, Array
 
   key :project_id, ObjectId, :required => true
   belongs_to :project
@@ -24,6 +25,7 @@ class Error
   after_save :update_nb_errors_in_project
   before_save :update_comments
   before_save :reactive_if_new_error
+  before_save :extract_words_from_comments_and_msg
 
   after_create :send_notify
   after_update :resend_notify
@@ -90,5 +92,16 @@ class Error
   # Check if new error embedded
   def new_same_error?
     same_errors.any?{|error| error.id.nil? }
+  end
+
+  # Extract a list of keywords for msg + comments.text of
+  # the error
+  # Put it in error._keywords
+  def extract_words_from_comments_and_msg
+    spliter = Regexp.new('[^\w]|[_]')
+    words = self.message.split(spliter)
+    self.comments.each{|comment| words += comment.text.split(spliter)}
+    words = words.find_all{|word| word.length > 0}
+    self._keywords = words.uniq
   end
 end
