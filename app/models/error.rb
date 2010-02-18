@@ -3,7 +3,7 @@ class Error
 
   key :resolved, Boolean
   key :session, Hash
-  key :raised_at, DateTime, :required => true
+  key :raised_at, Time, :required => true
   key :backtrace, Array
   key :request, Hash
   key :environment, Hash
@@ -54,6 +54,7 @@ class Error
       same_errors.sort_by(&:raised_at).last.raised_at
     end
   end
+
 
   private
 
