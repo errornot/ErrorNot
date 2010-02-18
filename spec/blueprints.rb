@@ -47,3 +47,15 @@ def saved_project_with_admins_and_users(admins, simple_users=[])
   project
 end
 
+def add_embedded_error(error)
+  error_2 = Factory.build(:error, :project => error.project,
+                          :message => error.message,
+                          :backtrace => error.backtrace)
+  error_embedded = error.project.error_with_message_and_backtrace(error_2.message,
+                                                                  error_2.backtrace)
+  error_embedded.update_attributes(error_2.attributes)
+  #require 'ruby-debug'
+  #debugger
+  error.reload
+end
+

@@ -25,5 +25,4 @@ class ApplicationController < ActionController::Base
     render :status => 401, :file => Rails.root.join('public/404.html')
   end
 
-
 end

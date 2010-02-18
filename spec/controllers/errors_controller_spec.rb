@@ -104,7 +104,7 @@ describe ErrorsController do
       it 'should works if no errors on this project' do
         get :index, :project_id => @project.id
         response.should be_success
-        assert_equal @project.error_reports, assigns[:errors]
+        assert_equal @project.error_reports.all(:order => 'last_raised_at DESC'), assigns[:errors]
       end
 
       it 'should works if several errors on this project' do
