@@ -27,6 +27,13 @@ describe Project do
       project.members << Member.new( :user => Factory(:user), :admin => false )
       project.should_not be_valid
     end
+
+    it 'should have a api_key in creation' do
+      project = Factory.build(:project)
+      project.api_key.should be_blank
+      project.save
+      project.api_key.should_not be_blank
+    end
   end
 
   describe '#add_admin_member(user)' do

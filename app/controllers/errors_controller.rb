@@ -3,6 +3,7 @@ class ErrorsController < ApplicationController
   before_filter :authenticate_user!, :except => [:create]
   before_filter :load_project, :only => [:show, :index, :comment]
   before_filter :load_error, :only => [:update]
+  before_filter :check_api_key, :only => [:create]
 
   def index
     params[:per_page] ||= 10
@@ -10,11 +11,6 @@ class ErrorsController < ApplicationController
   end
 
   def create
-    @project = Project.first({:api_key => params[:api_key]})
-    if not @project
-      render :status => 404, :text => 'Bad API key'
-      return
-    end
     @error = @project.error_with_message_and_backtrace(params[:error][:message],
                                                        params[:error][:backtrace])
     if @error.update_attributes(params[:error])
@@ -56,6 +52,11 @@ class ErrorsController < ApplicationController
   def load_error
     @error = Error.find(params[:id])
     render_401 unless @error.project.member_include?(current_user)
+  end
+
+  def check_api_key
+    @project = Project.first({:api_key => params[:api_key]})
+    render(:status => 404, :text => 'Bad API key') unless @project
   end
 
 end

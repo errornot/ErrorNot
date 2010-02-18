@@ -1,6 +1,3 @@
-
-Alphabet = ("A".."Z").to_a + ("a".."z").to_a + ("0".."9").to_a
-
 class Project
   include MongoMapper::Document
 
@@ -121,14 +118,14 @@ class Project
   end
 
   def gen_api_key!
-    self.gen_api_key
-    self.save
+    gen_api_key
+    save
   end
 
   def gen_api_key
-    self.api_key = Array.new(32){Alphabet.rand}.join
+    self.api_key = SecureRandom.hex(12)
   end
-  
+
   private
 
   def need_members
