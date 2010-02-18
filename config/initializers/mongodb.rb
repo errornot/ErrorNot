@@ -6,5 +6,5 @@ if db_config[Rails.env] && db_config[Rails.env]['adapter'] == 'mongodb'
                                                  mongo['port'] || 27017,
                                                 :logger => Rails.logger)
   MongoMapper.database = mongo['database']
-  Project.ensure_index(:api_key)
+  MongoMapper.ensure_indexes!
 end

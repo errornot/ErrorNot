@@ -1,7 +1,7 @@
 class Project
   include MongoMapper::Document
 
-  key :api_key, String, :required => true
+  key :api_key, String, :required => true, :index => true
   key :name, String, :required => true
 
   key :nb_errors_reported, Integer, :default => 0

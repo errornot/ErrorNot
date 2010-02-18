@@ -1,7 +1,7 @@
 class Error
   include MongoMapper::Document
 
-  key :resolved, Boolean
+  key :resolved, Boolean, :index => true
   key :session, Hash
   key :raised_at, Time, :required => true
   key :backtrace, Array
@@ -10,9 +10,9 @@ class Error
   key :data, Hash
 
   key :message, String, :required => true
-  key :_keywords, Array
+  key :_keywords, Array, :index => true
 
-  key :project_id, ObjectId, :required => true
+  key :project_id, ObjectId, :required => true, :index => true
   belongs_to :project
 
   has_many :comments
