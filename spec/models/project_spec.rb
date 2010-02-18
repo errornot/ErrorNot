@@ -302,28 +302,32 @@ describe Project do
     it 'should extract all search params' do
       @project.error_reports.expects(:paginate).with(:conditions => {:_keywords => {'$in' => ['xx', 'yy']}},
                                                     :page => 1,
-                                                    :per_page => 10)
+                                                    :per_page => 10,
+                                                    :order => 'last_raised_at DESC')
       @project.paginate_errors_with_search(:search => 'xx yy')
     end
 
     it "should change :resolved = 'y' by :resolved => true" do
       @project.error_reports.expects(:paginate).with(:conditions => {:resolved => true},
                                                     :page => 1,
-                                                    :per_page => 10)
+                                                    :per_page => 10,
+                                                    :order => 'last_raised_at DESC')
       @project.paginate_errors_with_search(:resolved => 'y')
     end
 
     it "should change :resolved = 'y' by :resolved => true and extract search params" do
       @project.error_reports.expects(:paginate).with(:conditions => {:resolved => true, :_keywords => { '$in' => ['xx', 'yy']}},
                                                     :page => 1,
-                                                    :per_page => 10)
+                                                    :per_page => 10,
+                                                    :order => 'last_raised_at DESC')
       @project.paginate_errors_with_search(:resolved => 'y', :search => 'xx yy')
     end
 
     it 'should push page and per_page with search and resolved params' do
       @project.error_reports.expects(:paginate).with(:conditions => {:resolved => true, :_keywords => { '$in' => ['xx', 'yy']}},
                                                     :page => 3,
-                                                    :per_page => 20)
+                                                    :per_page => 20,
+                                                    :order => 'last_raised_at DESC')
       @project.paginate_errors_with_search(:resolved => 'y', :search => 'xx yy', :page => 3, :per_page => 20)
     end
 

@@ -108,7 +108,9 @@ class Project
     error_search[:_keywords] = {'$in' => params[:search].split(' ').map(&:strip)} unless params[:search].blank?
     error_reports.paginate(:conditions => error_search,
              :page => params[:page] || 1,
-             :per_page => params[:per_page] || 10)
+             :per_page => params[:per_page] || 10,
+             :order => 'last_raised_at DESC')
+
   end
 
   class << self
