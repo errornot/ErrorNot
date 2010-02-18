@@ -37,7 +37,7 @@ describe ErrorsController do
   describe 'POST #create', :shared => true do
     it 'should success with a good request' do
       lambda do
-        post :create, error_request(@project.id.to_s)
+        post :create, error_request(@project.api_key)
       end.should change(Error, :count)
       response.should be_success
     end
@@ -48,7 +48,7 @@ describe ErrorsController do
     end
 
     it 'should render 422 if avoid raised_at' do
-      post :create, error_request(@project.id.to_s, :raised_at => nil)
+      post :create, error_request(@project.api_key, :raised_at => nil)
       response.code.should == "422"
       response.body.should == "Raised at can't be empty"
     end
@@ -120,12 +120,12 @@ describe ErrorsController do
 
       it 'should limit to un_resolved errors if resolved=n params send' do
         get :index, :project_id => @project.id, :resolved => 'n'
-        assert_equal @un_resolveds.map(&:id), assigns[:errors].map(&:id)
+        assert_equal @un_resolveds.map(&:id).sort, assigns[:errors].map(&:id).sort
       end
 
       it 'should not limit to resolved errors if resolved= with empty value params send' do
         get :index, :project_id => @project.id, :resolved => nil
-        assert_equal @project.error_reports.map(&:id), assigns[:errors].map(&:id)
+        assert_equal @project.error_reports.map(&:id).sort, assigns[:errors].map(&:id).sort
       end
 
       it 'should limit to errors having one of the given search word in their keywords' do

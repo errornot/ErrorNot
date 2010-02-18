@@ -1,6 +1,10 @@
+
+Alphabet = ("A".."Z").to_a + ("a".."z").to_a + ("0".."9").to_a
+
 class Project
   include MongoMapper::Document
 
+  key :api_key, String, :required => true
   key :name, String, :required => true
 
   key :nb_errors_reported, Integer, :default => 0
@@ -17,6 +21,7 @@ class Project
   include_errors_from :members
 
   ## CALLBACK
+  before_validation_on_create :gen_api_key
   before_save :update_members_data
 
   def add_admin_member(user)
@@ -115,6 +120,15 @@ class Project
     end
   end
 
+  def gen_api_key!
+    self.gen_api_key
+    self.save
+  end
+
+  def gen_api_key
+    self.api_key = Array.new(32){Alphabet.rand}.join
+  end
+  
   private
 
   def need_members

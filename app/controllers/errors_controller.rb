@@ -10,7 +10,11 @@ class ErrorsController < ApplicationController
   end
 
   def create
-    @project = Project.find!(params[:api_key])
+    @project = Project.first({:api_key => params[:api_key]})
+    if not @project
+      render :status => 404, :text => 'Bad API key'
+      return
+    end
     @error = @project.error_with_message_and_backtrace(params[:error][:message],
                                                        params[:error][:backtrace])
     if @error.update_attributes(params[:error])

@@ -1,8 +1,8 @@
 class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
-  before_filter :load_project, :only => [:edit, :update, :add_member, :leave, :destroy]
-  before_filter :project_admin, :only => [:edit, :update, :add_member, :destroy]
+  before_filter :load_project, :only => [:edit, :update, :add_member, :leave, :destroy, :reset_apikey]
+  before_filter :project_admin, :only => [:edit, :update, :add_member, :destroy, :reset_apikey]
 
   def index
     @projects = Project.access_by(current_user)
@@ -53,6 +53,13 @@ class ProjectsController < ApplicationController
       end
       redirect_to projects_url
       return
+    end
+  end
+
+  def reset_apikey
+    if request.put?
+      @project.gen_api_key!
+      redirect_to edit_project_url(@project)
     end
   end
 

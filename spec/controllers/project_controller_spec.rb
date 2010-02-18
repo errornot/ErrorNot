@@ -21,6 +21,10 @@ describe ProjectsController do
       get :edit, :id => Factory(:project).id.to_s
       response.should redirect_to(new_user_session_path('unauthenticated' => true))
     end
+    it 'should not be able to reset the key api of a project' do
+      put :reset_apikey, :id => Factory(:project).id
+      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+    end
   end
 
   describe 'with a user logged' do
@@ -155,6 +159,27 @@ describe ProjectsController do
             project.reload
           end.should change(project.reload.members, :size).by(-1)
           response.should redirect_to(projects_url)
+        end
+      end
+    end
+
+    describe 'PUT #reset_apikey' do
+      describe 'user admin on this project' do
+        it 'should reset the key api' do
+          project = make_project_with_admin(@user)
+          lambda do
+            put :reset_apikey, :id => project.id.to_s
+            project.reload
+          end.should change(project, :api_key)
+        end
+      end
+      describe 'user not admin on this project' do
+        it 'should not reset the key api' do
+          project = make_project_with_admin(make_user)
+          lambda do
+            put :reset_apikey, :id => project.id.to_s
+            project.reload
+          end.should_not change(project, :api_key)
         end
       end
     end

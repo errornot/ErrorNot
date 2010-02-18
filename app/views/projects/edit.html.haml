@@ -1,5 +1,9 @@
 %h1 Update your project
 
+%p 
+  = "API key: #{@project.api_key}"
+  = link_to 'Reset', reset_apikey_project_url(@project), :method => :put
+
 - field_set_tag 'Project' do
   = error_messages_for :project
 

@@ -262,6 +262,32 @@ describe Project do
     end
   end
 
+  describe '#gen_api_key' do
+    project = make_project_with_admin(make_user)
+    it 'should set/change the api key' do
+      lambda do
+        project.gen_api_key
+      end.should change(project, :api_key)
+    end
+    it 'should not save the object' do
+      lambda do
+        project.save
+        project.gen_api_key
+        project.reload
+      end.should_not change(project, :api_key)
+    end
+  end
+
+  describe '#gen_api_key!' do
+    it 'should change the api key and save the project' do
+      project = make_project_with_admin(make_user)
+      lambda do
+        project.gen_api_key!
+        project.reload
+      end.should change(project, :api_key)
+    end
+  end
+
   describe "#paginate_errors_with_search" do
     before do
       @project = make_project_with_admin
