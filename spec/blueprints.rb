@@ -51,7 +51,7 @@ end
 def make_error_with_data(count, nb_comments, *error_data)
   error = Factory(:error, *error_data)
   (1..count).each {
-    error.same_errors.build(:raised_at => (0..50).to_a.rand.day.ago)
+    error.same_errors.build(:raised_at => error.raised_at)
   }
   (1..nb_comments).each { 
     error.comments.build(:user => error.project.members.rand.user,
@@ -59,5 +59,17 @@ def make_error_with_data(count, nb_comments, *error_data)
   }
   error.save!
   error
+end
+
+def add_embedded_error(error)
+  error_2 = Factory.build(:error, :project => error.project,
+                          :message => error.message,
+                          :backtrace => error.backtrace)
+  error_embedded = error.project.error_with_message_and_backtrace(error_2.message,
+                                                                  error_2.backtrace)
+  error_embedded.update_attributes(error_2.attributes)
+  #require 'ruby-debug'
+  #debugger
+  error.reload
 end
 

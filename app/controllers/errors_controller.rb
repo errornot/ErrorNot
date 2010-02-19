@@ -21,7 +21,7 @@ class ErrorsController < ApplicationController
   end
 
   def show
-    @error = @project.error_reports.find(params[:id])
+    @root_error = @error = @project.error_reports.find(params[:id])
   end
 
   def update

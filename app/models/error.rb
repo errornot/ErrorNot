@@ -10,7 +10,10 @@ class Error
   key :data, Hash
 
   key :message, String, :required => true
+
+  # Denormalisation
   key :_keywords, Array, :index => true
+  key :last_raised_at, Time
 
   key :project_id, ObjectId, :required => true, :index => true
   belongs_to :project
@@ -32,6 +35,7 @@ class Error
 
   after_save :update_nb_errors_in_project
   after_save :update_keywords
+  after_save :update_last_raised_at
 
   after_create :send_notify
   after_update :resend_notify
@@ -52,13 +56,6 @@ class Error
     save!
   end
 
-  def last_raised_at
-    if same_errors.empty?
-      self.raised_at
-    else
-      same_errors.sort_by(&:raised_at).last.raised_at
-    end
-  end
 
 
   private
@@ -107,14 +104,28 @@ class Error
     same_errors.any?{|error| error.id.nil? }
   end
 
+  ##
   # Extract a list of keywords for msg + comments.text of
   # the error
   # Put it in error._keywords
+  # We call mongo-ruby-driver directly to avoid callback
+  #
   def update_keywords
     words = (message.split(/[^\w]|[_]/) | comments.map(&:extract_words)).flatten
     self._keywords = words.delete_if(&:empty?).uniq
     # We made update direct to avoid some all callback recall
     collection.update({:_id => self._id}, {'$set' => {:_keywords => self._keywords}})
+  end
+
+  ##
+  # Check the youngest Time when a Error is raised and update data
+  # last_raised_at in object.
+  #
+  # We call mongo-ruby-driver directly to avoid callback
+  #
+  def update_last_raised_at
+    last_raised_at = same_errors.empty? ? raised_at : same_errors.sort_by(&:raised_at).last.raised_at
+    collection.update({:_id => self._id}, {'$set' => {:last_raised_at => last_raised_at.utc}})
   end
 
 end

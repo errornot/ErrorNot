@@ -126,12 +126,15 @@ describe Error do
   describe '#last_raised_at' do
     it 'should return raised_at of error if no error_embedded' do
       error = Factory(:error)
+      error.reload
       error.last_raised_at.should == error.raised_at
     end
     it 'should return last raised_at of error_embedded if error has error_embedded' do
       error = Factory(:error, :raised_at => 3.days.ago)
       error.same_errors.build(:raised_at => 2.days.ago)
       last_raised = error.same_errors.build(:raised_at => 1.day.ago).raised_at
+      error.save
+      error.reload
       error.last_raised_at.should == last_raised
     end
   end

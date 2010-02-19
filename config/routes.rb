@@ -1,10 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
 
-  map.resources :projects, :member => {:add_member => :put, 
+  map.resources :projects, :member => {:add_member => :put,
                                        :leave => [:delete, :get],
                                        :reset_apikey => [:put]} do |project|
-    project.resources :errors, :except => [:new, :create, :update], :member => {:comment => :post}
+    project.resources :errors, :except => [:new, :create, :update], :member => {:comment => :post} do |error|
+      error.resources :same_errors, :only => [:show]
+    end
   end
 
   map.resources :errors, :only => [:create, :update]

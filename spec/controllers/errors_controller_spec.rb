@@ -106,7 +106,6 @@ describe ErrorsController do
         get :index, :project_id => @project.id
         response.should be_success
         assert_equal @project.error_reports.all(:sort => [[:raised_at, -1]]).map(&:id), assigns[:errors].map(&:id)
-
       end
 
       it 'should works if several errors on this project' do

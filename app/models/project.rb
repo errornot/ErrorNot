@@ -112,7 +112,7 @@ class Project
       sorting << [params[:sort_by], desc]
       desc = -1 # the order by raised_at will then by descending
     end
-    sorting << ['raised_at', desc]
+    sorting << ['last_raised_at', desc]
     error_reports.paginate(:conditions => error_search,
              :page => params[:page] || 1,
              :per_page => params[:per_page] || 10,

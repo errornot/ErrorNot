@@ -62,6 +62,15 @@ This task depend of :
  - rake db:populate:comments
  - rake db:populate:same_errors
 
+When you have generated some data, you can fetch a user account by console and use the
+default password 'tintinpouet'
+
+$ script/console
+> Project.first.members.first.email
+=> "pinguidity@yachtdom.com"
+
+You have one email of user with almost one project. You can use this email to logged with.
+
 ## License
 
 This program is free software: you can redistribute it and/or modify
