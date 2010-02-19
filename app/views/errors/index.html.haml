@@ -5,9 +5,18 @@
 
 - form_tag project_errors_url(@project.id), :method => :get do
   %p
-    Limit to :
-    = select_tag 'resolved', options_for_select({:resolved => 'y', :un_resolved => 'n', :all => nil}, params[:resolved])
-    = text_field_tag 'search', params[:search]
+    %label 
+      Limit to:
+      = select_tag 'resolved', options_for_select({:resolved => 'y', :un_resolved => 'n', :all => nil}, params[:resolved] || nil)
+    %label 
+      Order by:
+      = select_tag 'sort_by', options_for_select({:raised_at => 'raised_at', :nb_comments => 'nb_comments', :nb_errors => 'count'}, params[:sort_by] || 'raised_at')
+    %label 
+      Ascending order
+      = check_box_tag 'asc_order', 1, params[:asc_order]
+    %label
+      Search:
+      = text_field_tag 'search', params[:search]
     = submit_tag 'Filter'
 
 

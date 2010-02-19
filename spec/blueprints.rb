@@ -47,3 +47,17 @@ def saved_project_with_admins_and_users(admins, simple_users=[])
   project
 end
 
+
+def make_error_with_data(count, nb_comments, *error_data)
+  error = Factory(:error, *error_data)
+  (1..count).each {
+    error.same_errors.build(:raised_at => (0..50).to_a.rand.day.ago)
+  }
+  (1..nb_comments).each { 
+    error.comments.build(:user => error.project.members.rand.user,
+                         :text => /[:paragraph:]/.gen) 
+  }
+  error.save!
+  error
+end
+

@@ -102,9 +102,11 @@ describe ErrorsController do
       end
 
       it 'should works if no errors on this project' do
+        @project.error_reports = []
         get :index, :project_id => @project.id
         response.should be_success
-        assert_equal @project.error_reports, assigns[:errors]
+        assert_equal @project.error_reports.all(:sort => [[:raised_at, -1]]).map(&:id), assigns[:errors].map(&:id)
+
       end
 
       it 'should works if several errors on this project' do
@@ -143,6 +145,31 @@ describe ErrorsController do
         get :index, :project_id => @project.id, :resolved => nil, :search => "Nonexistent666666"
         response.should be_success
         assert_equal assigns[:errors].map(&:id).length, 0
+      end
+
+      describe "Sorted" do
+        before do
+          @project.error_reports = []
+          make_error_with_data(9, 5, :project => @project, :resolved => true, :raised_at => 2.days.ago)
+          make_error_with_data(3, 7, :project => @project, :resolved => false, :raised_at => 4.days.ago)
+          make_error_with_data(5, 2, :project => @project, :resolved => false, :raised_at => 1.days.ago)
+          @project.save
+          @errors_ids = @project.error_reports.map(&:id)
+        end
+        [['nb_comments', [1, 0, 2]],
+         ['count', [0, 2, 1]],
+         ['raised_at', [2, 0, 1]],
+        ].each { |sorted_by, expected_order|
+          it "should return errors sorted  by #{sorted_by}" do
+            get :index, :project_id => @project.id, :sort_by => sorted_by
+            assert_equal expected_order, assigns[:errors].map{|e|@errors_ids.index(e.id)}
+          end
+          r_expected_order = expected_order.reverse
+          it "should return errors sorted  by #{sorted_by} ascending order" do
+            get :index, :project_id => @project.id, :sort_by => sorted_by, :asc_order => 1
+            assert_equal r_expected_order, assigns[:errors].map{|e|@errors_ids.index(e.id)}
+          end
+        }
       end
 
     end
@@ -194,6 +221,17 @@ describe ErrorsController do
         end.should_not change(@error.comments, :size)
         response.should redirect_to(project_error_url(@project, @error))
         flash[:notice].should == I18n.t('controller.errors.comments.flash.failed')
+      end
+
+      it 'should increment nb_comments' do
+        @error = @project.error_reports.first
+        lambda do
+          post :comment,
+            :project_id => @project.id,
+            :id => @error.id,
+            :text => 'foo'
+          @error.reload
+        end.should change(@error, :nb_comments).by(1)
       end
     end
 

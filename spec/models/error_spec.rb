@@ -37,6 +37,14 @@ describe Error do
         Error.new.send(array).should == []
       end
     end
+
+    it 'should have count to 0' do
+      Error.new.count.should == 1
+    end
+
+    it 'should have nb_comments to 0' do
+      Error.new.nb_comments == 0
+    end
   end
 
   describe '#url' do

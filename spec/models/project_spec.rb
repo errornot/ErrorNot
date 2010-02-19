@@ -302,31 +302,57 @@ describe Project do
     it 'should extract all search params' do
       @project.error_reports.expects(:paginate).with(:conditions => {:_keywords => {'$in' => ['xx', 'yy']}},
                                                     :page => 1,
-                                                    :per_page => 10)
+                                                    :per_page => 10,
+                                                    :sort => [['raised_at', -1]])
       @project.paginate_errors_with_search(:search => 'xx yy')
     end
 
     it "should change :resolved = 'y' by :resolved => true" do
       @project.error_reports.expects(:paginate).with(:conditions => {:resolved => true},
                                                     :page => 1,
-                                                    :per_page => 10)
+                                                    :per_page => 10,
+                                                    :sort => [['raised_at', -1]])
       @project.paginate_errors_with_search(:resolved => 'y')
     end
 
     it "should change :resolved = 'y' by :resolved => true and extract search params" do
       @project.error_reports.expects(:paginate).with(:conditions => {:resolved => true, :_keywords => { '$in' => ['xx', 'yy']}},
                                                     :page => 1,
-                                                    :per_page => 10)
+                                                    :per_page => 10,
+                                                    :sort => [['raised_at', -1]])
       @project.paginate_errors_with_search(:resolved => 'y', :search => 'xx yy')
     end
 
     it 'should push page and per_page with search and resolved params' do
       @project.error_reports.expects(:paginate).with(:conditions => {:resolved => true, :_keywords => { '$in' => ['xx', 'yy']}},
                                                     :page => 3,
-                                                    :per_page => 20)
+                                                    :per_page => 20,
+                                                    :sort => [['raised_at', -1]])
       @project.paginate_errors_with_search(:resolved => 'y', :search => 'xx yy', :page => 3, :per_page => 20)
     end
 
+    it "should extract all sorting params" do
+      @project.error_reports.expects(:paginate).with(:conditions => {},
+                                                     :page => 1,
+                                                     :per_page => 10,
+                                                     :sort => [['count', 1], ['raised_at', -1]])
+      @project.paginate_errors_with_search(:sort_by => 'count', :asc_order => 1)
+    end
+
+    ['raised_at', 'nb_comments', 'count'].each{ |sorting_by|
+      it "should accept #{sorting_by} as sorting parameter" do
+        @project.error_reports.expects(:paginate)
+        @project.paginate_errors_with_search(:sort_by => sorting_by)
+      end
+    }
+
+    it 'should ignore bad sorting parameters' do
+      @project.error_reports.expects(:paginate).with(:conditions => {},
+                                                     :page => 1,
+                                                     :per_page => 10,
+                                                     :sort => [['raised_at', -1]])
+      @project.paginate_errors_with_search(:sort_by => :other_param)
+    end
 
   end
 

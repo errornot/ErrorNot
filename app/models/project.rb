@@ -106,9 +106,17 @@ class Project
       error_search[:resolved] = (params[:resolved] == 'y')
     end
     error_search[:_keywords] = {'$in' => params[:search].split(' ').map(&:strip)} unless params[:search].blank?
+    desc = params[:asc_order] || -1
+    sorting = []
+    if params.key?(:sort_by) && ['nb_comments', 'count'].include?(params[:sort_by])
+      sorting << [params[:sort_by], desc]
+      desc = -1 # the order by raised_at will then by descending
+    end
+    sorting << ['raised_at', desc]
     error_reports.paginate(:conditions => error_search,
              :page => params[:page] || 1,
-             :per_page => params[:per_page] || 10)
+             :per_page => params[:per_page] || 10,
+             :sort => sorting)
   end
 
   class << self

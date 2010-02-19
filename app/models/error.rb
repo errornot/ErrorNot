@@ -21,8 +21,13 @@ class Error
   has_many :same_errors, :class_name => 'ErrorEmbedded'
   include_errors_from :same_errors
 
+  # To keep track of some metrics:
+  key :nb_comments, Integer, :required => true, :default => 0
+  key :count, Integer, :required => true, :default => 1 # nb of same errors
+
   ## Callback
   before_save :update_comments
+  before_save :update_count
   before_save :reactive_if_new_error
 
   after_save :update_nb_errors_in_project
@@ -67,9 +72,14 @@ class Error
   end
 
   def update_comments
+    self.nb_comments = comments.length
     comments.each do |comment|
       comment.update_informations
     end
+  end
+
+  def update_count
+    self.count = 1 + same_errors.length
   end
 
   def send_notify
