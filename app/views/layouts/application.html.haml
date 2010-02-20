@@ -1,15 +1,32 @@
-%html
+!!!
+%html{ :lang => "en" }
   %head
+    %meta{ :content => "text/html; charset=utf-8", "http-equiv" => "Content-Type" }
+    %link{ :href => "/stylesheets/base.css", :title => "Base CSS", :rel => "stylesheet", :type => "text/css", :media => "screen" }
     %title AF83 Error
   %body
-    = flash_to_html(flash)
-    - if user_signed_in?
-      #menu
-        %ul
-          %li= link_to t('layout.menu.projects'), projects_url
-      #user_nav
+    %header
+      %p
+        %a{ :href => "/" }
+          %span.hide
+            ErrorNot
+      - if user_signed_in?
         %ul
           %li= link_to t('layout.user_nav.profile'), edit_user_url
           %li= link_to t('layout.user_nav.logout'), destroy_user_session_url
-    #main
+
+    %nav
+      - if user_signed_in?
+        %ul
+          %li= link_to t('layout.menu.projects'), projects_url
+    
+    #content
+      = flash_to_html(flash)
       = yield
+
+    %footer
+      %p
+        Populsed by
+        %a{ :href => "", :target => "_blank" }
+          %span
+            Nodzle

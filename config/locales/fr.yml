@@ -17,6 +17,7 @@ fr:
   layout:
     menu:
       project: Projets
+      projects: Projets
     user_nav:
       profile: Profile
       logout: Logout

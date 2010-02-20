@@ -21,6 +21,7 @@
   %dd= @error.last_raised_at
 
 - unless @error.same_errors.empty?
+  %hr
   %h2
     Similar Errors
     ( #{@error.same_errors.count} )
@@ -34,6 +35,7 @@
   = hidden_field_tag 'error[resolved]', !@error.resolved
   = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
 
+%hr
 %h2 Comments
 
 - if @error.comments.size < 1

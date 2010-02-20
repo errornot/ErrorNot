@@ -1,4 +1,4 @@
-%h2 Your information
+%h1 Your information
 %dl
   %dt Email:
   %dd= current_user.email
@@ -7,25 +7,24 @@
   - field_set_tag 'Update my password' do
     %p
       = f.label :old_password, 'Your actual password, please'
-      %br/
       = f.password_field :old_password
-    = error_message_on @user, :old_password
+    %p.error
+      = error_message_on @user, :old_password
     %p
       = f.label :password, 'What password do you want?'
-      %br/
       = f.password_field :password
-    = error_message_on @user, :password
+    %p.error
+      = error_message_on @user, :password
     %p
       = f.label :password_confirmation, 'Confirm the new password'
-      %br/
       = f.password_field :password_confirmation
-      %p{:class => 'submit'}
-        = f.submit 'Update password'
+    %p{:class => 'submit'}
+      = f.submit 'Update password'
 
 - form_for @user, :url => update_notify_user_url do |f|
   %p{:class => 'notice'}= flash[:notify_me]
   - field_set_tag 'Notify me' do
-    %table
+    %table.small
       %thead
         %tr
           %th Project
