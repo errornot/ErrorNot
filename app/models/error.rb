@@ -98,12 +98,6 @@ class Error
 
   private
 
-  def update_comments
-    comments.each do |comment|
-      comment.update_informations
-    end
-  end
-
   def resend_notify
     send_notify if !resolved? && new_same_error?
   end
