@@ -1,8 +1,8 @@
 class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
-  before_filter :load_project, :only => [:edit, :update, :add_member, :leave, :destroy, :reset_apikey]
-  before_filter :project_admin, :only => [:edit, :update, :add_member, :destroy, :reset_apikey]
+  before_filter :load_project, :only => [:edit, :update, :add_member, :leave, :destroy, :reset_apikey, :admins]
+  before_filter :project_admin, :only => [:edit, :update, :add_member, :destroy, :reset_apikey, :admins]
 
   def index
     @projects = Project.access_by(current_user)
@@ -54,6 +54,22 @@ class ProjectsController < ApplicationController
       redirect_to projects_url
       return
     end
+  end
+
+  def admins
+    user = User.find(params[:user_id])
+    if user.blank?
+      flash[:notice] = t('flash.projects.admin.failure')
+    elsif request.put? && @project.make_user_admin(user)
+      flash[:notice] = t('flash.projects.admin.add.success')
+    elsif request.delete? && @project.unmake_user_admin(user)
+      'delete success'
+      flash[:notice] = t('flash.projects.admin.delete.success')
+    else
+      flash[:notice] = t('flash.projects.admin.failure')
+    end
+    redirect_to edit_project_url(@project)
+    return
   end
 
   def reset_apikey

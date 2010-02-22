@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :projects, :member => {:add_member => :put,
                                        :leave => [:delete, :get],
+                                       :admins => [:put, :delete],
                                        :reset_apikey => [:put]} do |project|
     project.resources :errors, :except => [:new, :create, :update], :member => {:comment => :post} do |error|
       error.resources :same_errors, :only => [:show]

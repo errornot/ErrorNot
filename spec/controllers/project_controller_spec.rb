@@ -163,6 +163,59 @@ describe ProjectsController do
       end
     end
 
+    describe 'PUT #admins' do
+      before do
+        @user= make_user
+        sign_in @user
+      end
+      describe 'user admin on this project' do
+        it 'should be able add admin rights to another user' do
+          user = make_user
+          project = saved_project_with_admins_and_users([@user], [user])
+          project.member(user).admin?.should == false
+          put :admins, :id => project.id.to_s, :user_id => user.id
+          project.reload
+          project.member(user).admin?.should == true 
+          response.should redirect_to(edit_project_url project )
+        end
+      end
+      describe 'user not admin on this project' do
+        it 'should not add admin rights' do
+          project = saved_project_with_admins_and_users([make_user], [@user])
+          project.member(@user).admin?.should == false
+          put :admins, :id => project.id.to_s, :user_id => @user.id
+          project.reload
+          project.member(@user).admin?.should == false
+          response.code.should eql '401' 
+        end
+      end
+    end
+    
+    describe 'DELETE #admins' do
+      describe 'user admin on this project' do
+        it 'should be able to remove admin rights of another admin' do
+          user = make_user
+          project = saved_project_with_admins_and_users([@user, user])
+          project.member(user).admin?.should == true
+          delete :admins, :id => project.id.to_s, :user_id => user.id
+          project.reload
+          project.member(user).admin?.should == false 
+          response.should redirect_to(edit_project_url project)
+        end
+      end
+      describe 'user not admin on this project' do
+        it 'should not remove admin rights' do
+          admin = make_user
+          project = saved_project_with_admins_and_users([admin], [@user])
+          project.member(admin).admin?.should == true
+          put :admins, :id => project.id.to_s, :user_id => admin.id
+          project.reload
+          project.member(admin).admin?.should == true
+          response.code.should eql '401'
+        end
+      end
+    end
+
     describe 'PUT #reset_apikey' do
       describe 'user admin on this project' do
         it 'should reset the key api' do

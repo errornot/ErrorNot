@@ -49,6 +49,55 @@ describe Project do
     end
   end
 
+  describe '#make_user_admin(user)' do
+     before do
+      @users = [make_user, make_user, Factory(:user)] # two validated users, one not validated
+      @project = saved_project_with_admins_and_users([@users[0]], [@users[1], @users[2]])
+      @members = @users.map{|u| @project.member u}
+    end
+    it 'should make a validated non admin member as admin' do
+      lambda do
+        assert_equal @project.make_user_admin(@users[1]), true
+      end.should change(@members[1], :admin)
+    end
+    it 'should not make a non validated member as admin' do
+      lambda do
+        assert_equal @project.make_user_admin(@users[2]), false
+      end.should_not change(@members[2], :admin?)
+    end
+    it 'should not change an already admin user' do
+      lambda do
+        assert_equal @project.make_user_admin(@users[0]), true
+      end.should_not change(@members[0], :admin?)
+    end
+  end
+
+  describe '#unmake_user_admin(user)' do
+   before do
+      @user = make_user
+      @project = saved_project_with_admins_and_users([@user])
+      @member = @project.member @user
+    end
+    describe 'with only one user as admin' do
+      it 'should not remove admin rights of the only admin' do
+        lambda do
+          assert_equal @project.unmake_user_admin(@user), false
+        end.should_not change(@member, :admin?)
+      end
+    end
+    describe 'with two users as admin' do 
+      before do
+        @project = saved_project_with_admins_and_users([@user, make_user])
+        @member = @project.member @user
+      end
+      it 'should success if more than one admin in the project' do
+        lambda do
+          assert_equal @project.unmake_user_admin(@user), true
+        end.should change(@member, :admin?)
+      end
+    end
+  end
+
   describe '#member_include?(user)' do
     it 'should be true is user is member of project' do
       assert !Factory(:project).member_include?(Factory(:user))
