@@ -1,5 +1,6 @@
 class Error
   include MongoMapper::Document
+  include Callbacks::ErrorCallback
 
   key :resolved, Boolean, :index => true
   key :session, Hash
@@ -57,15 +58,14 @@ class Error
   end
 
 
-
-  private
-
   ##
-  # Call the method in project to update
-  # number of errors define into it
-  #
-  def update_nb_errors_in_project
-    project.update_nb_errors
+  # code to update keywords
+  # Not call in direct
+  def update_keywords_task
+    words = (self.message.split(/[^\w]|[_]/) | self.comments.map(&:extract_words)).flatten
+    self._keywords = words.delete_if(&:empty?).uniq
+    # We made update direct to avoid some all callback recall
+    Error.collection.update({:_id => self.id}, {'$set' => {:_keywords => self._keywords}})
   end
 
   def update_comments
@@ -81,9 +81,29 @@ class Error
 
   def send_notify
     project.members.each do |member|
+
+  ##
+  # Call by update_last_raised_at
+  def update_last_raised_at_task
+    last_raised_at = same_errors.empty? ? raised_at : same_errors.sort_by(&:raised_at).last.raised_at
+    Error.collection.update({:_id => _id}, {'$set' => {:last_raised_at => last_raised_at.utc}})
+  end
+
+  ##
+  # Call by send_notify
+  def send_notify_task
+    Project.find(project_id).members.each do |member|
       if member.notify_by_email?
         UserMailer.deliver_error_notify(member.email, self)
       end
+    end
+  end
+
+  private
+
+  def update_comments
+    comments.each do |comment|
+      comment.update_informations
     end
   end
 
@@ -104,28 +124,6 @@ class Error
     same_errors.any?{|error| error.id.nil? }
   end
 
-  ##
-  # Extract a list of keywords for msg + comments.text of
-  # the error
-  # Put it in error._keywords
-  # We call mongo-ruby-driver directly to avoid callback
-  #
-  def update_keywords
-    words = (message.split(/[^\w]|[_]/) | comments.map(&:extract_words)).flatten
-    self._keywords = words.delete_if(&:empty?).uniq
-    # We made update direct to avoid some all callback recall
-    collection.update({:_id => self._id}, {'$set' => {:_keywords => self._keywords}})
-  end
 
-  ##
-  # Check the youngest Time when a Error is raised and update data
-  # last_raised_at in object.
-  #
-  # We call mongo-ruby-driver directly to avoid callback
-  #
-  def update_last_raised_at
-    last_raised_at = same_errors.empty? ? raised_at : same_errors.sort_by(&:raised_at).last.raised_at
-    collection.update({:_id => self._id}, {'$set' => {:last_raised_at => last_raised_at.utc}})
-  end
 
 end
