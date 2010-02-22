@@ -144,7 +144,7 @@ class Project
   end
 
   def gen_api_key
-    self.api_key = SecureRandom.hex(12)
+    self.api_key = ActiveSupport::SecureRandom.hex(12)
   end
 
   private
