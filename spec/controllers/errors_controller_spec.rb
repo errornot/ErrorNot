@@ -149,26 +149,28 @@ describe ErrorsController do
       describe "Sorted" do
         before do
           @project.error_reports = []
-          make_error_with_data(9, 5, :project => @project, :resolved => true, :raised_at => 2.days.ago)
-          make_error_with_data(3, 7, :project => @project, :resolved => false, :raised_at => 4.days.ago)
-          make_error_with_data(5, 2, :project => @project, :resolved => false, :raised_at => 1.days.ago)
-          @project.save
-          @errors_ids = @project.error_reports.map(&:id)
+          make_error_with_data(:count => 9,
+                               :nb_comments => 5,
+                               :project => @project,
+                               :resolved => true,
+                               :raised_at => 2.days.ago)
+          make_error_with_data(:count => 3,
+                               :nb_comments => 7, :project => @project, :resolved => false, :raised_at => 4.days.ago)
+          make_error_with_data(:count => 5,
+                               :nb_comments => 2, :project => @project, :resolved => false, :raised_at => 1.days.ago)
         end
-        [['nb_comments', [1, 0, 2]],
-         ['count', [0, 2, 1]],
-         ['raised_at', [2, 0, 1]],
-        ].each { |sorted_by, expected_order|
+
+        [:nb_comments, :count, :last_raised_at].each do |sorted_by|
           it "should return errors sorted  by #{sorted_by}" do
-            get :index, :project_id => @project.id, :sort_by => sorted_by
-            assert_equal expected_order, assigns[:errors].map{|e|@errors_ids.index(e.id)}
+            get :index, :project_id => @project.id.to_s, :sort_by => sorted_by.to_s # by default asc_order -1
+            assert_equal @project.error_reports.sort_by(&sorted_by).reverse.map(&:id), assigns[:errors].map(&:id)
           end
-          r_expected_order = expected_order.reverse
+
           it "should return errors sorted  by #{sorted_by} ascending order" do
-            get :index, :project_id => @project.id, :sort_by => sorted_by, :asc_order => 1
-            assert_equal r_expected_order, assigns[:errors].map{|e|@errors_ids.index(e.id)}
+            get :index, :project_id => @project.id.to_s, :sort_by => sorted_by.to_s, :asc_order => 1
+            assert_equal @project.error_reports.sort_by(&sorted_by).map(&:id), assigns[:errors].map(&:id)
           end
-        }
+        end
       end
 
     end
