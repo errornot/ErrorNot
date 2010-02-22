@@ -9,8 +9,6 @@ module Callbacks::ErrorCallback
     update_keywords_task
   end
 
-
-
   ##
   # Check the youngest Time when a Error is raised and update data
   # last_raised_at in object.
@@ -20,6 +18,9 @@ module Callbacks::ErrorCallback
   def update_last_raised_at
     update_last_raised_at_task
   end
+
+  ##
+  # Send notify by email
   def send_notify
     send_notify_task
   end

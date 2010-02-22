@@ -79,9 +79,6 @@ class Error
     self.count = 1 + same_errors.length
   end
 
-  def send_notify
-    project.members.each do |member|
-
   ##
   # Call by update_last_raised_at
   def update_last_raised_at_task
@@ -123,7 +120,5 @@ class Error
   def new_same_error?
     same_errors.any?{|error| error.id.nil? }
   end
-
-
 
 end
