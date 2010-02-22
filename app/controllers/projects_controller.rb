@@ -60,16 +60,14 @@ class ProjectsController < ApplicationController
     user = User.find(params[:user_id])
     if user.blank?
       flash[:notice] = t('flash.projects.admin.failure')
-    elsif request.put? && @project.make_user_admin(user)
+    elsif request.put? && @project.make_user_admin!(user)
       flash[:notice] = t('flash.projects.admin.add.success')
-    elsif request.delete? && @project.unmake_user_admin(user)
-      'delete success'
+    elsif request.delete? && @project.unmake_user_admin!(user)
       flash[:notice] = t('flash.projects.admin.delete.success')
     else
       flash[:notice] = t('flash.projects.admin.failure')
     end
     redirect_to edit_project_url(@project)
-    return
   end
 
   def reset_apikey

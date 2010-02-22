@@ -49,7 +49,7 @@ describe Project do
     end
   end
 
-  describe '#make_user_admin(user)' do
+  describe '#make_user_admin!(user)' do
      before do
       @users = [make_user, make_user, Factory(:user)] # two validated users, one not validated
       @project = saved_project_with_admins_and_users([@users[0]], [@users[1], @users[2]])
@@ -57,22 +57,22 @@ describe Project do
     end
     it 'should make a validated non admin member as admin' do
       lambda do
-        assert_equal @project.make_user_admin(@users[1]), true
+        assert_equal @project.make_user_admin!(@users[1]), true
       end.should change(@members[1], :admin)
     end
     it 'should not make a non validated member as admin' do
       lambda do
-        assert_equal @project.make_user_admin(@users[2]), false
+        assert_equal @project.make_user_admin!(@users[2]), false
       end.should_not change(@members[2], :admin?)
     end
     it 'should not change an already admin user' do
       lambda do
-        assert_equal @project.make_user_admin(@users[0]), true
+        assert_equal @project.make_user_admin!(@users[0]), true
       end.should_not change(@members[0], :admin?)
     end
   end
 
-  describe '#unmake_user_admin(user)' do
+  describe '#unmake_user_admin!(user)' do
    before do
       @user = make_user
       @project = saved_project_with_admins_and_users([@user])
@@ -81,7 +81,7 @@ describe Project do
     describe 'with only one user as admin' do
       it 'should not remove admin rights of the only admin' do
         lambda do
-          assert_equal @project.unmake_user_admin(@user), false
+          assert_equal @project.unmake_user_admin!(@user), false
         end.should_not change(@member, :admin?)
       end
     end
@@ -92,7 +92,7 @@ describe Project do
       end
       it 'should success if more than one admin in the project' do
         lambda do
-          assert_equal @project.unmake_user_admin(@user), true
+          assert_equal @project.unmake_user_admin!(@user), true
         end.should change(@member, :admin?)
       end
     end

@@ -12,6 +12,12 @@ en:
         success: 'You have add a member to your project'
       leave:
         refused: "You can't leave a project because you are an admin on this project"
+      admin:
+        failure: "Impossible to modify this member's rights"
+        delete:
+          success: "Successfully remove admin rigths from user"
+        add:
+          success: "Successfully added admin rights to user"
   layout:
     menu:
       project: Projects
