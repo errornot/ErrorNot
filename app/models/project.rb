@@ -25,14 +25,14 @@ class Project
     members.build(:user => user, :admin => true)
   end
 
-  def make_user_admin(user)
+  def make_user_admin!(user)
     member_obj = member(user)
     return false unless member_obj.status == Member::VALIDATE
     member_obj.admin = true
     save
   end
 
-  def unmake_user_admin(user)
+  def unmake_user_admin!(user)
     return false unless members.map{|member| member.admin?}.length > 1
     member(user).admin = false
     save
