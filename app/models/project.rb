@@ -33,7 +33,6 @@ class Project
   end
 
   def unmake_user_admin!(user)
-    return false unless members.map{|member| member.admin?}.length > 1
     member(user).admin = false
     save
   end
