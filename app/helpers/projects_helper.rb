@@ -23,4 +23,10 @@ module ProjectsHelper
         :title => "Make admin"
     end
   end
+
+  def trash_member(member)
+    link_to 'Remove', remove_member_project_url(@project, :user_email=>member.email), :method => :delete, 
+         :confirm => "Are you sure you want to remove #{member.email || 'user'} from the project?", 
+         :title => "Remove the user from the project"
+  end
 end

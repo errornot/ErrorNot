@@ -53,7 +53,7 @@ describe Comment do
       @project.save!
       @error.reload.comments.build(:user => user, :text => 'bar')
       @error.save!
-      @project.remove_member!(user)
+      @project.remove_member!(:user => user)
       @error.reload.should be_valid
     end
   end

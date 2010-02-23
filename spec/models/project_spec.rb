@@ -272,27 +272,41 @@ describe Project do
   end
 
   describe '#remove_member!' do
-    it 'should delete member if not admin' do
-      project = Factory(:project)
-      user = make_user
-      project.members.build(:user => user, :admin => false)
-      project.save!
-      lambda do
-        project.remove_member!(user)
-        project.member(user).should be_nil
-      end.should change(project.reload.members, :size).by(-1)
-    end
+    [:user, :email].each{ |by|
+      it 'should delete member if not admin' do
+        project = Factory(:project)
+        user = make_user
+        project.members.build(:user => user, :admin => false)
+        project.save!
+        lambda do
+          project.remove_member!(:user => user).should == true if by == :user
+          project.remove_member!(:email => user.email).should == true if by == :email
+          project.member(user).should be_nil
+        end.should change(project.reload.members, :size).by(-1)
+      end
 
-    it 'should not delete member id admin' do
-      project = Factory(:project)
-      user = make_user
-      project.members.build(:user => user, :admin => true)
-      project.save!
-      lambda do
-        project.remove_member!(user)
+      it 'should delete member even if admin (and there is at least one other admin)' do
+        user = make_user
+        project = saved_project_with_admins_and_users([user, make_user])
+        lambda do
+          project.remove_member!(:user => user).should == true if by == :user
+          project.remove_member!(:email => user.email).should == true if by == :email
+          project.member(user).should be_nil
+        end.should change(project.reload.members, :size).by(-1)
+      end
+
+      it 'should not delete member if admin (and no other admin)' do
+        user = make_user
+        project = saved_project_with_admins_and_users([user], [make_user, make_user])
         project.member(user).should_not be_nil
-      end.should_not change(project.reload.members, :size).by(-1)
-    end
+        lambda do
+          project.remove_member!(:user => user).should == false if by == :user
+          project.remove_member!(:email => user.email).should == false if by == :email          
+          project.reload
+          project.member(user).should_not be_nil
+        end.should_not change(project.reload.members, :size).by(-1)
+      end
+    }
   end
 
   describe '#error_with_message_and_backtrace' do

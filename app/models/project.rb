@@ -46,9 +46,13 @@ class Project
     members.any?{|member| member.user_id == user.id && member.admin? }
   end
 
-  def remove_member!(user)
-    members.delete_if{|member| member.user_id.to_s == user.id.to_s && !member.admin? }
-    save!
+  def remove_member!(data={:user => nil, :email => nil})
+    if data.key? :email
+      members.delete_if{ |member| member.email == data[:email] }
+    elsif data.key? :user
+      members.delete_if{ |member| member.user_id.to_s == data[:user].id.to_s }
+    end
+    save
   end
 
   def update_nb_errors

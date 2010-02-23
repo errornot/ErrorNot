@@ -10,6 +10,9 @@ en:
     projects:
       add_member:
         success: 'You have add a member to your project'
+      remove_member:
+        success: "Member successfully removed from the project"
+        failure: "Could not remove the member from the project"
       leave:
         refused: "You can't leave a project because you are an admin on this project"
       admin:

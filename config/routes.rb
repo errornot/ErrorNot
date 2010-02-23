@@ -2,6 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   # The priority is based upon order of creation: first created -> highest priority.
 
   map.resources :projects, :member => {:add_member => :put,
+                                       :remove_member => :delete,
                                        :leave => [:delete, :get],
                                        :admins => [:put, :delete],
                                        :reset_apikey => [:put]} do |project|

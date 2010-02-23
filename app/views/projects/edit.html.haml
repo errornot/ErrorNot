@@ -31,9 +31,11 @@
       %th Email
       %th Status
       %th Admin
+      %th Trash
   %tbody
     - @project.members.each do |member|
       %tr
         %td= member.email
         %td= member_status(member.status)
         %td= change_power(member)
+        %td= trash_member(member)

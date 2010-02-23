@@ -1,8 +1,10 @@
 class ProjectsController < ApplicationController
 
   before_filter :authenticate_user!
-  before_filter :load_project, :only => [:edit, :update, :add_member, :leave, :destroy, :reset_apikey, :admins]
-  before_filter :project_admin, :only => [:edit, :update, :add_member, :destroy, :reset_apikey, :admins]
+  before_filter :load_project, :only => [:edit, :update, :add_member, :remove_member,
+                                         :leave, :destroy, :reset_apikey, :admins]
+  before_filter :project_admin, :only => [:edit, :update, :add_member, :remove_member,
+                                          :destroy, :reset_apikey, :admins]
 
   def index
     @projects = Project.access_by(current_user)
@@ -41,11 +43,21 @@ class ProjectsController < ApplicationController
     redirect_to edit_project_url(@project)
   end
 
+  def remove_member
+    email = params[:user_email]
+    if !email.blank? && @project.remove_member!(:email => email)
+      flash[:notice] = t('flash.projects.remove_member.success')
+    else
+      flash[:notice] = t('flash.projects.remove_member.failure')
+    end
+    redirect_to edit_project_url(@project)
+  end
+
   def leave
     if request.delete?
       # delete member of this project
       if !@project.admin_member?(current_user) &&
-        @project.remove_member!(current_user)
+        @project.remove_member!(:user => current_user)
         flash[:notice] = t('flash.projects.leave.success',
                            :project_name => @project.name)
       else
