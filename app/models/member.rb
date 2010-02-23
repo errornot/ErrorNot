@@ -3,6 +3,7 @@ class Member
 
   key :admin, Boolean
   key :notify_by_email, Boolean, :default => true
+  key :notify_removal_by_email, Boolean, :default => true
   key :email, String
   key :status, Integer, :default => 0
 

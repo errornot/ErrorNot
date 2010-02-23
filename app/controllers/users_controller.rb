@@ -34,7 +34,8 @@ class UsersController < ApplicationController
   end
 
   def update_notify
-    current_user.notify_by_email_on_project(params[:project_notify_by_email] || [])
+    current_user.notify_by_email_on_project(params[:project_notify_by_email] || [],
+                                            params[:project_notify_removal_by_email] || [])
     flash[:notify_me] = t('flash.users.update.success_update_notify')
     redirect_to(edit_user_path)
   end

@@ -197,31 +197,39 @@ describe Project do
     end
   end
 
-  describe '#notify_by_email_on_project(project_ids)' do
+  describe '#notify_by_email_on_project(project_ids, project_ids2)' do
     before do
       @user = make_user
       @project = make_project_with_admin(@user)
       @project_2 = make_project_with_admin(@user)
       member = @project_2.member(@user)
       member.notify_by_email = false
+      member.notify_removal_by_email = false
       member.save
     end
-    it 'should puts member of this user in all project with id notify by email' do
-      @user.notify_by_email_on_project([@project.id, @project_2.id].map(&:to_s))
+    it 'should set all members of the user to be notified by email on error and removal' do
+      @user.notify_by_email_on_project([@project.id, @project_2.id].map(&:to_s),
+                                       [@project.id, @project_2.id].map(&:to_s))
       @project.reload.member(@user).notify_by_email.should be_true
       @project_2.reload.member(@user).notify_by_email.should be_true
+      @project.reload.member(@user).notify_removal_by_email.should be_true
+      @project_2.reload.member(@user).notify_removal_by_email.should be_true
     end
 
-    it 'should define member of all project with user but not in params with not a notify_b y_email' do
-      @user.notify_by_email_on_project([@project_2.id.to_s])
+    it 'should set all members of the user to be notified on error (and respectively removal) on given project ids (list 1 and respectively list 2)' do
+      @user.notify_by_email_on_project([@project_2.id.to_s], [@project.id.to_s])
       @project.reload.member(@user).notify_by_email.should be_false
       @project_2.reload.member(@user).notify_by_email.should be_true
+      @project.reload.member(@user).notify_removal_by_email.should be_true
+      @project_2.reload.member(@user).notify_removal_by_email.should be_false
     end
 
     it 'should made all project with no notify if args is an empty array' do
-      @user.notify_by_email_on_project([])
+      @user.notify_by_email_on_project([], [])
       @project.reload.member(@user).notify_by_email.should be_false
       @project_2.reload.member(@user).notify_by_email.should be_false
+      @project.reload.member(@user).notify_removal_by_email.should be_false
+      @project_2.reload.member(@user).notify_removal_by_email.should be_false
     end
   end
 

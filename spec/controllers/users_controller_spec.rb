@@ -49,23 +49,32 @@ describe UsersController do
           member.notify_by_email = false
           member.save
           assert !@project.reload.member(@user).notify_by_email?
-          put :update_notify, :project_notify_by_email => [@project.id.to_s]
+          put :update_notify, 
+              :project_notify_by_email => [@project.id.to_s],
+              :project_notify_removal_by_email => [@project.id.to_s]
           response.should redirect_to(edit_user_path)
           assert @project.reload.member(@user).notify_by_email?
+          assert @project.reload.member(@user).notify_removal_by_email?
         end
 
         it 'should not change notify to project already into before' do
           assert @project.reload.member(@user).notify_by_email?
-          put :update_notify, :project_notify_by_email => [@project.id.to_s]
+          assert @project.reload.member(@user).notify_removal_by_email?
+          put :update_notify, 
+              :project_notify_by_email => [@project.id.to_s],
+              :project_notify_removal_by_email => [@project.id.to_s]
           response.should redirect_to(edit_user_path)
           assert @project.reload.member(@user).notify_by_email?
+          assert @project.reload.member(@user).notify_removal_by_email?
         end
 
         it 'should extract notify_by_email if project where user is member is not in project_notify_by_email params' do
           assert @project.reload.member(@user).notify_by_email?
+          assert @project.reload.member(@user).notify_removal_by_email?
           put :update_notify
           response.should redirect_to(edit_user_path)
           assert !@project.reload.member(@user).notify_by_email?
+          assert !@project.reload.member(@user).notify_removal_by_email?
         end
 
       end

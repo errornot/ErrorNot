@@ -15,19 +15,30 @@ class User
   end
 
   ##
-  # made all project with id send by array mark
-  # like can be notify by email.
+  # For all the user's projects:
+  #   
+  #  - if the project id is in the first given array,
+  #    then mark the member as noticeable by email on new errors;
   #
-  # @params[Array] a list of project id . All project_id need to be in String
-  def notify_by_email_on_project(project_ids=[])
+  #  - if the project id is in the second given array,
+  #    the mark the member as noticable if removed from project.
+  #
+  # @params[Array] a list of project id. All project_id need to be in String
+  # @params[Array] idem.
+  def notify_by_email_on_project(project_ids=[], project_ids2=[])
     member_projects.each do |project|
+      member = project.member(self)
       if project_ids.include?(project.id.to_s)
-        project.member(self).notify_by_email!
+        member.notify_by_email = true
       else
-        member = project.member(self)
         member.notify_by_email = false
-        member.save
       end
+      if project_ids2.include?(project.id.to_s)
+        member.notify_removal_by_email = true
+      else
+        member.notify_removal_by_email = false
+      end
+      member.save
     end
   end
 
