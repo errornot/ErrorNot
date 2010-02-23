@@ -49,8 +49,8 @@ end
 
 
 def make_error_with_data(datas)
-  count = datas.delete(:count)
-  nb_comments = datas.delete(:nb_comments)
+  count = datas.delete(:count) || 0
+  nb_comments = datas.delete(:nb_comments) || 0
   error = Factory(:error, datas)
   count.times { error.same_errors.build(:raised_at => error.raised_at) }
   nb_comments.times {
