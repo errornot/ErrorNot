@@ -7,6 +7,7 @@ class ErrorsController < ApplicationController
 
   def index
     params[:per_page] ||= 10
+    params[:resolved] = 'n' unless params.key?(:resolved)
     @errors = @project.paginate_errors_with_search(params)
   end
 

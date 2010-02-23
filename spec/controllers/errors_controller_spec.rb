@@ -162,12 +162,12 @@ describe ErrorsController do
 
         [:nb_comments, :count, :last_raised_at].each do |sorted_by|
           it "should return errors sorted  by #{sorted_by}" do
-            get :index, :project_id => @project.id.to_s, :sort_by => sorted_by.to_s # by default asc_order -1
+            get :index, :project_id => @project.id.to_s, :sort_by => sorted_by.to_s, :resolved => 'a' # by default asc_order -1
             assert_equal @project.error_reports.sort_by(&sorted_by).reverse.map(&:id), assigns[:errors].map(&:id)
           end
 
           it "should return errors sorted  by #{sorted_by} ascending order" do
-            get :index, :project_id => @project.id.to_s, :sort_by => sorted_by.to_s, :asc_order => 1
+            get :index, :project_id => @project.id.to_s, :sort_by => sorted_by.to_s, :asc_order => 1, :resolved => 'a'
             assert_equal @project.error_reports.sort_by(&sorted_by).map(&:id), assigns[:errors].map(&:id)
           end
         end

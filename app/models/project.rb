@@ -115,8 +115,9 @@ class Project
   #
   def paginate_errors_with_search(params)
     error_search = {}
-    if params.key?(:resolved) && params[:resolved]
-      error_search[:resolved] = (params[:resolved] == 'y')
+    if params.key?(:resolved)
+      error_search[:resolved] = true  if params[:resolved] == 'y'
+      error_search[:resolved] = false  if params[:resolved] == 'n'
     end
     error_search[:_keywords] = {'$in' => params[:search].split(' ').map(&:strip)} unless params[:search].blank?
     desc = params[:asc_order] || -1
