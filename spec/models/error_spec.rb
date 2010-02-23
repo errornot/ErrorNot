@@ -153,4 +153,25 @@ describe Error do
     end
   end
 
+  describe '#new_same_error?' do
+    it 'should be true if new error and other before' do
+      error = make_error_with_data(:count => 2)
+      error.same_errors.build(:raised_at => Time.now)
+      error.send(:new_same_error?).should be_true
+    end
+    it 'should be false if several error but no new' do
+      error = make_error_with_data(:count => 2)
+      error.reload
+      error.send(:new_same_error?).should be_false
+    end
+    it 'should be false if no same_errors' do
+      Factory(:error).send(:new_same_error?).should be_false
+    end
+    it 'should be true if new error add and none before' do
+      error = Factory(:error)
+      error.same_errors.build(:raised_at => Time.now)
+      error.send(:new_same_error?).should be_true
+    end
+  end
+
 end

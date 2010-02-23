@@ -41,9 +41,9 @@ describe Comment do
       @error.save!
       @error.comments.first.created_at.should_not be_nil
       create = @error.comments.first.created_at
-      @error.comments.first.created_at = Time.now
+      @error.comments.first.created_at = 2.days.ago.utc
       @error.save!
-      @error.comments.first.created_at.should == create
+      assert_equal create, @error.comments.first.created_at
     end
 
     it 'should allways valid if comment author is not member of project' do

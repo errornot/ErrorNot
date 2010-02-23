@@ -80,12 +80,12 @@ describe Project do
     end
     describe 'with only one user as admin' do
       it 'should not remove admin rights of the only admin' do
-        lambda do
-          assert_equal @project.unmake_user_admin!(@user), false
-        end.should_not change(@member, :admin?)
+        @member.should be_admin
+        assert_equal @project.unmake_user_admin!(@user), false
+        @project.reload.member(@user).should be_admin
       end
     end
-    describe 'with two users as admin' do 
+    describe 'with two users as admin' do
       before do
         @project = saved_project_with_admins_and_users([@user, make_user])
         @member = @project.member @user
