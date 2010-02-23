@@ -13,9 +13,9 @@
 
 %dl
   %dt Error
-  %dd= @error.message
+  %dd=h @error.message
   %dt URL
-  %dd= @error.url
+  %dd=link_to @error.url
   %dt Parameters
   %dd
     %pre= @error.params.inspect

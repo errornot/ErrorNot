@@ -31,7 +31,7 @@
   %tbody
     - @errors.each do |error|
       %tr
-        %td=link_to error.message, project_error_path(@project, error)
+        %td=link_to h(error.message), project_error_path(@project, error)
         %td= error.last_raised_at
         %td= error.count
         %td= error.comments.size
