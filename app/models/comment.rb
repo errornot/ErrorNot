@@ -21,6 +21,10 @@ class Comment
     text.split(/[^\w]|[_]/)
   end
 
+  def created_at=(date)
+    write_attribute(:created_at, date) unless created_at
+  end
+
   private
 
   def user_is_member_of_project

@@ -112,7 +112,7 @@ class Error
 
   # Check if new error embedded
   def new_same_error?
-    same_errors.any?{|error| error.id.nil? }
+    same_errors.any?{|error| error.new? }
   end
 
 end

@@ -6,10 +6,10 @@
 - form_for @user, :url => user_url do |f|
   - field_set_tag 'Update my password' do
     %p
-      = f.label :old_password, 'Your actual password, please'
-      = f.password_field :old_password
+      = f.label :current_password, 'Your actual password, please'
+      = f.password_field :current_password
     %p.error
-      = error_message_on @user, :old_password
+      = error_message_on @user, :current_password
     %p
       = f.label :password, 'What password do you want?'
       = f.password_field :password
