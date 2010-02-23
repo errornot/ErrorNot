@@ -48,14 +48,14 @@ def saved_project_with_admins_and_users(admins, simple_users=[])
 end
 
 
-def make_error_with_data(count, nb_comments, *error_data)
-  error = Factory(:error, *error_data)
-  (1..count).each {
-    error.same_errors.build(:raised_at => error.raised_at)
-  }
-  (1..nb_comments).each { 
+def make_error_with_data(datas)
+  count = datas.delete(:count)
+  nb_comments = datas.delete(:nb_comments)
+  error = Factory(:error, datas)
+  count.times { error.same_errors.build(:raised_at => error.raised_at) }
+  nb_comments.times {
     error.comments.build(:user => error.project.members.rand.user,
-                         :text => /[:paragraph:]/.gen) 
+                         :text => /[:paragraph:]/.gen)
   }
   error.save!
   error

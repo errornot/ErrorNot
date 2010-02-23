@@ -5,13 +5,13 @@
 
 - form_tag project_errors_url(@project.id), :method => :get do
   %p
-    %label 
+    %label
       Limit to:
-      = select_tag 'resolved', options_for_select({:resolved => 'y', :un_resolved => 'n', :all => nil}, params[:resolved] || nil)
-    %label 
+      = select_tag 'resolved', options_for_select({:resolved => 'y', :un_resolved => 'n', :all => 'a'}, params[:resolved] || nil)
+    %label
       Order by:
       = select_tag 'sort_by', options_for_select({:raised_at => 'last_raised_at', :nb_comments => 'nb_comments', :nb_errors => 'count'}, params[:sort_by] || 'last_raised_at')
-    %label 
+    %label
       Ascending order
       = check_box_tag 'asc_order', 1, params[:asc_order]
     %label
@@ -31,9 +31,9 @@
   %tbody
     - @errors.each do |error|
       %tr
-        %td=link_to error.message, project_error_path(@project, error)
+        %td=link_to h(error.message), project_error_path(@project, error)
         %td= error.last_raised_at
-        %td= error.same_errors.count
+        %td= error.count
         %td= error.comments.size
         %td= check_box_tag 'resolved', 1, error.resolved
 

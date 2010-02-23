@@ -15,7 +15,7 @@ ErrorNot is :
 
 ## Requirements
 
-Currently you need all of those things to get Oupsnow to run:
+Currently you need all of those things to get ErrorNot to run:
 
  - Ruby of 1.8.6 or greater
  - Rails 2.3.5

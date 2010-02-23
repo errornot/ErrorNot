@@ -119,8 +119,9 @@ class Project
   #
   def paginate_errors_with_search(params)
     error_search = {}
-    if params.key?(:resolved) && params[:resolved]
-      error_search[:resolved] = (params[:resolved] == 'y')
+    if params.key?(:resolved)
+      error_search[:resolved] = true  if params[:resolved] == 'y'
+      error_search[:resolved] = false  if params[:resolved] == 'n'
     end
     error_search[:_keywords] = {'$in' => params[:search].split(' ').map(&:strip)} unless params[:search].blank?
     desc = params[:asc_order] || -1
@@ -129,7 +130,7 @@ class Project
       sorting << [params[:sort_by], desc]
       desc = -1 # the order by raised_at will then by descending
     end
-    sorting << ['last_raised_at', desc]
+    sorting << ['last_raised_at', desc.to_i]
     error_reports.paginate(:conditions => error_search,
              :page => params[:page] || 1,
              :per_page => params[:per_page] || 10,
@@ -148,7 +149,7 @@ class Project
   end
 
   def gen_api_key
-    self.api_key = SecureRandom.hex(12)
+    self.api_key = ActiveSupport::SecureRandom.hex(12)
   end
 
   private

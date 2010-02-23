@@ -7,11 +7,15 @@
   resolved ?
   = @error.resolved
 
+- form_for @root_error do |f|
+  = hidden_field_tag 'error[resolved]', !@error.resolved
+  = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
+
 %dl
   %dt Error
-  %dd= @error.message
+  %dd=h @error.message
   %dt URL
-  %dd= @error.url
+  %dd=link_to @error.url
   %dt Parameters
   %dd
     %pre= @error.params.inspect
@@ -24,16 +28,13 @@
   %hr
   %h2
     Similar Errors
-    ( #{@error.same_errors.count} )
+    ( #{@error.count} )
 
   %ul
     %li= link_to l(@root_error.raised_at, :format => :long_ordinal), project_error_url(@root_error.project, @root_error)
     - @error.same_errors.each do |same_error|
       %li= link_to l(same_error.raised_at, :format => :long_ordinal), project_error_same_error_url(@root_error.project, @root_error, same_error)
 
-- form_for @root_error do |f|
-  = hidden_field_tag 'error[resolved]', !@error.resolved
-  = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
 
 %hr
 %h2 Comments
