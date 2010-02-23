@@ -7,6 +7,10 @@
   resolved ?
   = @error.resolved
 
+- form_for @root_error do |f|
+  = hidden_field_tag 'error[resolved]', !@error.resolved
+  = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
+
 %dl
   %dt Error
   %dd= @error.message
@@ -31,9 +35,6 @@
     - @error.same_errors.each do |same_error|
       %li= link_to l(same_error.raised_at, :format => :long_ordinal), project_error_same_error_url(@root_error.project, @root_error, same_error)
 
-- form_for @root_error do |f|
-  = hidden_field_tag 'error[resolved]', !@error.resolved
-  = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
 
 %hr
 %h2 Comments
