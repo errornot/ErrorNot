@@ -24,7 +24,7 @@
   %hr
   %h2
     Similar Errors
-    ( #{@error.same_errors.count} )
+    ( #{@error.count} )
 
   %ul
     %li= link_to l(@root_error.raised_at, :format => :long_ordinal), project_error_url(@root_error.project, @root_error)
