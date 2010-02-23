@@ -125,7 +125,12 @@ describe ProjectsController do
     describe 'DELETE #remove_member' do
       it 'should call project.remove_member! and redirect_to edit with flash[:notice] if user is admin on project' do
         project = make_project_with_admin(@user)
-        Project.any_instance.expects(:remove_member!).with(:email => 'foo@bar.com'){true}
+        Project.any_instance.expects(:remove_member!).with(:email => 'foo@bar.com').returns(true)
+        UserMailer.expects(:deliver_project_removal).with(:removed_email => 'foo@bar.com',
+                                                          :remover_email => @user.email,
+                                                          :project => nil){|removed, remover, project2|
+          project2.id.to_s == project.id.to_s
+        }
         put :remove_member, :user_email => 'foo@bar.com', :id => project.id.to_s
         response.should redirect_to(edit_project_url(project))
         flash[:notice].should_not be_nil

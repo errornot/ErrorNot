@@ -47,6 +47,7 @@ class ProjectsController < ApplicationController
     email = params[:user_email]
     if !email.blank? && @project.remove_member!(:email => email)
       flash[:notice] = t('flash.projects.remove_member.success')
+      UserMailer.deliver_project_removal(email, current_user.email, @project)
     else
       flash[:notice] = t('flash.projects.remove_member.failure')
     end

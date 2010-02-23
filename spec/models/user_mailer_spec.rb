@@ -24,6 +24,22 @@ describe UserMailer do
     end
   end
 
+  describe '#project_removal' do
+    before do
+      @project = Factory(:project)
+      @email = UserMailer.create_project_removal('removed@toto.com', 'remover@toto.com', @project)
+    end
+    it 'should deliver to removed guy' do
+      @email.should deliver_to('removed@toto.com')
+    end
+    it 'should have subject with project name' do
+      @email.should have_subject(/[#{@project.name}]/)
+    end
+    it 'should contain the address of the remover' do
+      @email.should have_text(/remover@toto.com/)
+    end
+  end
+
   describe '#error_notify' do
 
     before do

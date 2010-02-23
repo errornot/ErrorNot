@@ -6,6 +6,12 @@ class UserMailer < ActionMailer::Base
     body :email => email, :project => project
   end
 
+  def project_removal(removed_email, remover_email, project)
+    recipients removed_email
+    subject "[#{project.name}] Good bye"
+    body :project => project, :remover_email => remover_email
+  end
+
   def error_notify(email, error)
     recipients email
     subject "[#{error.project.name}] #{error.message}"
