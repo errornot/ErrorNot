@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Member do
 
-  ['notify_by_email', 'email'].each do |field|
+  ['digest_send_at', 'notify_by_digest', 'notify_by_email', 'email'].each do |field|
     it "should have field #{field}" do
       assert Member.keys.keys.include?(field)
     end
@@ -21,25 +21,36 @@ describe Member do
       project = Factory.build(:project, :members => [member])
       project.should be_valid
     end
+
   end
 
-  describe '#notify_by_email!' do
-    it 'should made notify_by_email at true and save it if not notify_by_email' do
-      user = make_user
-      member = Member.new(:user => user, :notify_by_email => false, :admin => true)
-      project = Factory(:project, :members => [member])
-      project.reload.member(user).notify_by_email.should be_false
-      project.member(user).notify_by_email!
-      project.reload.member(user).notify_by_email.should be_true
+  describe 'digest_send_at' do
+
+    it 'should be nil if notify_by_digest nil' do
+      make_member(:notify_by_digest => false).digest_send_at.should == nil
     end
 
-    it 'should keep notify_by_email at true if already notify_by_email' do
-      user = make_user
-      member = Member.new(:user => user, :notify_by_email => true, :admin => true)
-      project = Factory(:project, :members => [member])
-      project.reload.member(user).notify_by_email.should be_true
-      project.member(user).notify_by_email!
-      project.reload.member(user).notify_by_email.should be_true
+    it 'should be define in Time.now if notify_by_digest define' do
+      member = make_member(:notify_by_digest => false)
+      member.notify_by_digest = true
+      member.save
+      member.digest_send_at.should be_close(Time.now.utc, 1.seconds)
+    end
+
+    it 'should be nil if notify_by_define become false' do
+      member = make_member(:notify_by_digest => true)
+      member.digest_send_at.should be_close(Time.now.utc, 1.seconds)
+      member.notify_by_digest = false
+      member.save
+      member.digest_send_at.should be_nil
+    end
+
+    it 'should not change if already notify_by_digest' do
+      member = make_member(:notify_by_digest => true)
+      digest_time = member.digest_send_at
+      member.notify_by_digest = true
+      member.save
+      member.digest_send_at.should == digest_time
     end
   end
 

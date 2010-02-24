@@ -4,6 +4,8 @@ class Member
   key :admin, Boolean
   key :notify_by_email, Boolean, :default => true
   key :notify_removal_by_email, Boolean, :default => true
+  key :notify_by_digest, Boolean, :default => false
+  key :digest_send_at, Time
   key :email, String
   key :status, Integer, :default => 0
 
@@ -16,11 +18,6 @@ class Member
 
   validates_presence_of :user_id, :if => Proc.new { email.blank? }
 
-  def notify_by_email!
-    self.notify_by_email = true
-    self.save
-  end
-
   def update_data
     unless user_id
       self.status = AWAITING
@@ -32,6 +29,25 @@ class Member
       end
       self.email = user.email
     end
+  end
+
+  ##
+  # Update digest_send_at if needed
+  #
+  def notify_by_digest=(notify)
+    write_attribute(:notify_by_digest, notify)
+    self.digest_send_at = Time.now if notify && !self.digest_send_at
+    self.digest_send_at = nil unless notify
+  end
+
+  ##
+  # Send a digest about all error not already send by digest
+  # from project where this member is
+  def send_digest
+    return unless notify_by_digest
+    UserMailer.deliver_error_digest_notify(self.email,
+                                           self._root_document.error_reports.not_send_by_digest)
+    true
   end
 
 end

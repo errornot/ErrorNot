@@ -68,8 +68,19 @@ def add_embedded_error(error)
   error_embedded = error.project.error_with_message_and_backtrace(error_2.message,
                                                                   error_2.backtrace)
   error_embedded.update_attributes(error_2.attributes)
-  #require 'ruby-debug'
-  #debugger
   error.reload
 end
 
+##
+# Generate a member from user define by Factory and Project too
+#
+# Options send by args update only member model
+#
+def make_member(options)
+  user = make_user
+  member = Member.new({:user => user,
+                      :notify_by_digest => false,
+                      :admin => true}.merge(options))
+  project = Factory(:project, :members => [member])
+  member = project.members.first
+end

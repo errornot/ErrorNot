@@ -30,12 +30,14 @@
           %th Project
           %th Notify new errors by email?
           %th Notify project removal by email?
+          %th Notify project removal by digest?
       %tbody
         - @user.member_projects.each do |project|
           %tr
             %td= project.name
-            %td= check_box_tag 'project_notify_by_email[]', project.id.to_s, project.member(@user).notify_by_email
-            %td= check_box_tag 'project_notify_removal_by_email', project.id.to_s, project.member(@user).notify_removal_by_email
+            %td= check_box_tag 'notify_by_email[]', project.id.to_s, project.member(@user).notify_by_email
+            %td= check_box_tag 'notify_removal_by_email[]', project.id.to_s, project.member(@user).notify_removal_by_email
+            %td= check_box_tag 'notify_by_digest[]', project.id.to_s, project.member(@user).notify_by_digest
     %p{:class => 'submit'}
       = f.submit 'Update notifications'
 

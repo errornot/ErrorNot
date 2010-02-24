@@ -15,21 +15,23 @@ class User
   end
 
   ##
-  # For all the user's projects:
+  # Change all notification of this user to all project
+  # where he is member
   #
-  #  - if the project id is in the first given array,
-  #    then mark the member as noticeable by email on new errors;
+  # You can has notify :
+  #  - :email => one email by error
+  #  - :digest => one digest by time
+  #  - :removal => one email when he is deleted
   #
-  #  - if the project id is in the second given array,
-  #    the mark the member as noticable if removed from project.
+  # @params[Hash] key are type of nofication, and value is a Array of
+  # all project_id where notification is OK
   #
-  # @params[Array] a list of project id. All project_id need to be in String
-  # @params[Array] idem.
-  def notify_by_email_on_project(project_ids=[], project_ids2=[])
+  def update_notify(notify={})
     member_projects.each do |project|
       member = project.member(self)
-      member.notify_by_email =  project_ids.include?(project.id.to_s)
-      member.notify_removal_by_email = project_ids2.include?(project.id.to_s)
+      member.notify_by_email =  (notify[:email]||[]).include?(project.id.to_s)
+      member.notify_removal_by_email = (notify[:removal] || []).include?(project.id.to_s)
+      member.notify_by_digest = (notify[:digest] || []).include?(project.id.to_s)
       member.save
     end
   end
@@ -57,5 +59,6 @@ class User
       errors.add(:email, 'user.validation.email.not_change')
     end
   end
+
 
 end
