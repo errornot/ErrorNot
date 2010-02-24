@@ -32,8 +32,8 @@ Rails::Initializer.run do |config|
   config.gem "mongo_ext", :lib => 'mongo', :version => '0.18.3'
   config.gem "mongo_mapper", :version => '0.7.0'
   config.gem "haml", :version => '2.2.20'
-  config.gem "warden", :version => '0.9.3'
-  config.gem "devise", :version => '1.0.2'
+  config.gem "warden", :version => '0.9.4'
+  config.gem "devise", :version => '1.0.3'
 
   # change this version with Rails 3.0 :(
   config.gem 'agnostic-will_paginate', :version => '3.0.0', :lib => 'will_paginate'
