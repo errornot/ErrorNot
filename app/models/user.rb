@@ -16,7 +16,7 @@ class User
 
   ##
   # For all the user's projects:
-  #   
+  #
   #  - if the project id is in the first given array,
   #    then mark the member as noticeable by email on new errors;
   #
@@ -28,16 +28,8 @@ class User
   def notify_by_email_on_project(project_ids=[], project_ids2=[])
     member_projects.each do |project|
       member = project.member(self)
-      if project_ids.include?(project.id.to_s)
-        member.notify_by_email = true
-      else
-        member.notify_by_email = false
-      end
-      if project_ids2.include?(project.id.to_s)
-        member.notify_removal_by_email = true
-      else
-        member.notify_removal_by_email = false
-      end
+      member.notify_by_email =  project_ids.include?(project.id.to_s)
+      member.notify_removal_by_email = project_ids2.include?(project.id.to_s)
       member.save
     end
   end
