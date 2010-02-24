@@ -18,7 +18,6 @@ describe Error do
     it 'should not valid if no raised_at' do
       Factory.build(:error, :raised_at => nil).should_not be_valid
     end
-
   end
 
   describe 'default value' do
@@ -171,6 +170,55 @@ describe Error do
       error = Factory(:error)
       error.same_errors.build(:raised_at => Time.now)
       error.send(:new_same_error?).should be_true
+    end
+  end
+
+  describe '#unresolved_at' do
+    it 'should be define when create' do
+      Factory(:error, :unresolved_at => nil).unresolved_at.should be_close(Time.now, 1.second)
+    end
+
+    it 'should not change if new same error added' do
+      error = Factory(:error)
+      unresolved_at = error.unresolved_at
+      error.same_errors.build(:session => {'user_id' => 'ok'},
+                             :raised_at => Time.now)
+      error.save!
+      error.reload.unresolved_at.should == unresolved_at
+    end
+    it 'should not change if mark as resolved' do
+      error = Factory(:error)
+      unresolved_at = error.unresolved_at
+      error.resolved = true
+      error.save
+      error.reload.unresolved_at.should == unresolved_at
+    end
+    it 'should not change if add comments' do
+      error = Factory(:error)
+      unresolved_at = error.unresolved_at
+      error.comments.build(:user => error.project.members.first.user,
+                           :text => 'why not')
+      error.save!
+      error.reload.unresolved_at.should == unresolved_at
+    end
+    it 'should change if new same error added but mark as resolved before' do
+      error = Factory(:error)
+      unresolved_at = error.unresolved_at
+      error.resolved = true
+      error.save
+      error.resolved = false
+      error.save
+      error.reload.unresolved_at.should_not == unresolved_at
+    end
+
+    it 'should works with resolved = "true" by string not bool' do
+      error = Factory(:error)
+      unresolved_at = error.unresolved_at
+      error.resolved = 'true'
+      error.save
+      error.resolved = 'false'
+      error.save
+      error.reload.unresolved_at.should_not == unresolved_at
     end
   end
 

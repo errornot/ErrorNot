@@ -77,4 +77,36 @@ describe Member do
     it 'should be unvalidate if an user add this email in alias but not validate it'
     it 'should be validate if an user add this email in alias and validate it'
   end
+
+  describe '#send_digest' do
+    it 'should made nothing if notify_by_digest false' do
+      member = make_member(:notify_by_digest => false)
+      member.send_digest.should be_false
+    end
+
+    it 'should send one email to user with notify_by_digest is true' do
+      member = make_member(:notify_by_digest => true,
+                           :digest_send_at => 1.minute.ago.utc)
+      errors_not_digest_send = 2.of { Factory(:error,
+                                              :project => member._root_document).reload }
+      2.of { Factory(:error,
+                     :unresolved_at => 2.minutes.ago.utc,
+                     :project => member._root_document) }
+      UserMailer.expects(:deliver_error_digest_notify).with(member.email,
+                                                            errors_not_digest_send.sort_by(&:last_raised_at))
+      member.send_digest.should be_true
+      Project.find(member._root_document.id).member(member.user).digest_send_at.should be_close(Time.now.utc, 1.seconds)
+    end
+
+    it 'should not send email if all error already send before' do
+      member = make_member(:notify_by_digest => true,
+                           :digest_send_at => 1.minute.ago.utc)
+      2.of { Factory(:error,
+                     :unresolved_at => 2.minutes.ago.utc,
+                     :project => member._root_document) }
+      UserMailer.expects(:deliver_error_digest_notify).never
+      member.send_digest.should be_true
+      Project.find(member._root_document.id).member(member.user).digest_send_at.should be_close(Time.now.utc, 1.seconds)
+    end
+  end
 end

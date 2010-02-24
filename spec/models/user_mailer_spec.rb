@@ -41,7 +41,6 @@ describe UserMailer do
   end
 
   describe '#error_notify' do
-
     before do
       @project = make_project_with_admin(make_user)
       @error = Factory(:error, :project => @project)
@@ -57,5 +56,24 @@ describe UserMailer do
     it 'should have link to error in body' do
       @email.should have_text(/#{project_error_url(@project, @error, :host => 'localhost:3000').gsub('?', '\?')}/)
     end
+  end
+
+  describe '#error_digest_notify' do
+    before do
+      @project = make_project_with_admin(make_user)
+      @errors = 2.of{ Factory(:error, :project => @project) }
+      @email  = UserMailer.create_error_digest_notify('yahoo@yahoo.org', @errors)
+    end
+
+    it 'should deliver email send in params' do
+      @email.should deliver_to('yahoo@yahoo.org')
+    end
+    it 'should have subject with project name' do
+      @email.should have_subject(/\[DIGEST\] \[#{@project.name}\] error report/)
+    end
+    it 'should have link to error in body' do
+      @email.should have_text(/#{project_error_url(@project, @errors.first, :host => 'localhost:3000').gsub('?', '\?')}/)
+    end
+
   end
 end

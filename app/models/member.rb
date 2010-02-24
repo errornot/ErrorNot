@@ -45,8 +45,10 @@ class Member
   # from project where this member is
   def send_digest
     return unless notify_by_digest
-    UserMailer.deliver_error_digest_notify(self.email,
-                                           self._root_document.error_reports.not_send_by_digest)
+    errors = self._root_document.error_reports.not_send_by_digest_since(self.digest_send_at)
+    UserMailer.deliver_error_digest_notify(self.email, errors) unless errors.empty?
+    self.digest_send_at = Time.now.utc
+    self.save
     true
   end
 

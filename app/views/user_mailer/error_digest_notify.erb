@@ -1,0 +1,6 @@
+Number of errors raised : <%= @errors.size %>
+
+<% @errors.each do |error| %>
+=================================================
+<%= render :partial => 'error',  :locals => {:error => error}%>
+<% end %>

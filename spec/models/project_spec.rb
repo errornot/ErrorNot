@@ -274,7 +274,7 @@ describe Project do
         project.member(user).should_not be_nil
         lambda do
           project.remove_member!(:user => user).should == false if by == :user
-          project.remove_member!(:email => user.email).should == false if by == :email          
+          project.remove_member!(:email => user.email).should == false if by == :email
           project.reload
           project.member(user).should_not be_nil
         end.should_not change(project.reload.members, :size).by(-1)
@@ -389,7 +389,25 @@ describe Project do
                                                      :sort => [['last_raised_at', -1]])
       @project.paginate_errors_with_search(:sort_by => :other_param)
     end
+  end
 
+  describe '#error_reports.not_send_by_digest' do
+    it 'should limit only to error not send by digest alread' do
+      project = make_project_with_admin
+      2.of { Factory(:error, :unresolved_at => 4.minutes.ago.utc,
+                     :project => project) }
+      2.of { Factory(:error, :unresolved_at => 2.minutes.ago.utc,
+                     :resolved => true,
+                     :project => project) }
+      error_not_send = 2.of { Factory(:error, :unresolved_at => 2.minutes.ago.utc, :project => project).reload }
+      project.reload
+      project.error_reports.not_send_by_digest_since(3.minutes.ago.utc).should == error_not_send.sort_by(&:last_raised_at)
+    end
+  end
+
+  describe 'Project#with_digest_request' do
+    it 'should return nil if no member with digest request'
+    it 'should return Project with a leat one member with digest request'
   end
 
 end

@@ -18,5 +18,11 @@ class UserMailer < ActionMailer::Base
     body :error => error
   end
 
+  def error_digest_notify(email, errors)
+    recipients email
+    subject "[DIGEST] [#{errors.first.project.name}] error report #{I18n.l(Time.now)}"
+    body :errors => errors
+  end
+
 
 end

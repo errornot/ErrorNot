@@ -8,7 +8,13 @@ class Project
   key :nb_errors_resolved, Integer, :default => 0
   key :nb_errors_unresolved, Integer, :default => 0
 
-  has_many :error_reports, :class_name => 'Error'
+  many :error_reports, :class_name => 'Error' do
+    def not_send_by_digest_since(date)
+      all(:unresolved_at => {'$gt' => date.utc},
+          :resolved => false,
+          :order => 'last_raised_at')
+    end
+  end
 
   has_many :members
 
@@ -136,9 +142,14 @@ class Project
              :sort => sorting)
   end
 
+  # ClassMethod
   class << self
     def access_by(user)
       Project.all('members.user_id' => user.id)
+    end
+
+    def with_digest_request
+      Project.all('members.notify_by_digest' => true)
     end
   end
 

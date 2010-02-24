@@ -9,6 +9,7 @@ class Error
   key :request, Hash
   key :environment, Hash
   key :data, Hash
+  key :unresolved_at, Time
 
   key :message, String, :required => true
 
@@ -30,15 +31,19 @@ class Error
   key :count, Integer, :required => true, :default => 1 # nb of same errors
 
   ## Callback
+  before_create :define_unresolved_at
+
   before_save :update_comments
   before_save :update_count
   before_save :reactive_if_new_error
+
+  after_create :send_notify
 
   after_save :update_nb_errors_in_project
   after_save :update_keywords
   after_save :update_last_raised_at
 
-  after_create :send_notify
+
   after_update :resend_notify
 
 
@@ -96,6 +101,16 @@ class Error
     end
   end
 
+  def resolved=(resolution)
+    old_resolution = read_attribute(:resolved)
+    # check if string and replace it by a bool. Controller send String, not bool
+    resolution = resolution == 'true' if resolution.kind_of?(String)
+    if old_resolution && !resolution
+      self.unresolved_at = Time.now
+    end
+    write_attribute(:resolved, resolution)
+  end
+
   private
 
   def resend_notify
@@ -113,6 +128,10 @@ class Error
   # Check if new error embedded
   def new_same_error?
     same_errors.any?{|error| error.new? }
+  end
+
+  def define_unresolved_at
+    self.unresolved_at = Time.now unless self.unresolved_at
   end
 
 end
