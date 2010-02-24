@@ -12,6 +12,7 @@ ErrorNot is :
  - Allow comment all error save in ErrorNot
  - Allow add several user to see, comment and mark resolved project by project
  - Notify by email only if error is new or re-raised after mark like resolved
+ - Notify by a digest. The rythme of this digest send need to be define by cron
 
 ## Requirements
 
@@ -19,7 +20,7 @@ Currently you need all of those things to get ErrorNot to run:
 
  - Ruby of 1.8.6 or greater
  - Rails 2.3.5
- - MongoMapper 0.6.10
+ - MongoMapper 0.7.0
  - A MongoDB 1.0.1 or greater
 
 ## Installing
@@ -34,6 +35,8 @@ Currently you need all of those things to get ErrorNot to run:
    - copy config/email.yaml.sample to config/email.yml
    - update it with email configuration (sendmail or smtp information)
  - Start the server in production mode : ruby script/server -e production
+ - If you want that your user can be received their notification by digest, you need
+   add the rake task `RAILS_ENV=production rake notify:digest` in your crontab
  - You can now register your self /user/new
  - Have fun
 
