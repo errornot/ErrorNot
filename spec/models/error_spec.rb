@@ -148,6 +148,7 @@ describe Error do
                       :comments => [ Comment.new(:user => user, :text => "seven, height, one: two three"),
                         Comment.new(:user => user, :text => "five; nine")])
 
+      error.reload
       error._keywords.sort.should ==  ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'height', 'nine'].sort
     end
   end
