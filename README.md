@@ -1,22 +1,21 @@
 # ErrorNot
 
-A service to keep all your errors raised. You can push it by POST request
-and after, you can define if this error is resolved or not.
+A service to be sure that all errors in your apps are raised. You can push errors by POST request
+and then do their follow up (pending, resolved, etc) in the app.
 
 ## Features
 
-ErrorNot is :
+ErrorNot :
 
- - Multi projects
- - Allow mark error like resolved or not
- - Allow comment all error save in ErrorNot
- - Allow add several user to see, comment and mark resolved project by project
- - Notify by email only if error is new or re-raised after mark like resolved
- - Notify by a digest. The rythme of this digest send need to be define by cron
+* Is multi-project and multi-user (read / comment / edit follow-up)
+* Allows you to set a status to the error (pending, etc)
+* Allows you to comment the errors
+* Notifies you by email every time a new error is raised
+* Supports notification via a digest. The frequency of notification is set by a cron
 
 ## Requirements
 
-Currently you need all of those things to get ErrorNot to run:
+You will need
 
  - Ruby of 1.8.6 or greater
  - Rails 2.3.5
@@ -27,8 +26,8 @@ Currently you need all of those things to get ErrorNot to run:
 
  - fetch source from our github account ( git clone git://github.com/AF83/ErrorNot.git )
  - install rails gem ( gem install rails -v2.3.5 )
- - install all gem required by ErrorNot ( rake gems:install )
- - configure you database
+ - install all gems required by ErrorNot ( rake gems:install )
+ - configure your database
    - copy config/database.yml.sample to config/database.yml
    - update config/database.yml with your database connection and the table name
  - configure your email settings
@@ -43,9 +42,9 @@ Currently you need all of those things to get ErrorNot to run:
 
 ## Development
 
-If you want hack ErrorNot, you need launch all Test. This test made with rspec.
+If you want to hack ErrorNot, you need launch all Test. This test is made with rspec.
 
-You can install all gems needed with commant :
+You can install all gems needed with command :
 
  - RAILS_ENV=test rake gems:install
 
@@ -53,11 +52,11 @@ Now you can launch spec :
 
  - rake spec
 
-If you want fill your Database with a lot of fake data, you can launch task
+If you want to fill your Database with a lot of fake data, you can launch the task :
 
  - rake db:populate:default
 
-This task depend of :
+This task depends of :
 
  - rake db:populate:users
  - rake db:populate:projects
@@ -72,7 +71,7 @@ $ script/console
 > Project.first.members.first.email
 => "pinguidity@yachtdom.com"
 
-You have one email of user with almost one project. You can use this email to logged with.
+Every project has one related email. You can use this email to log in.
 
 ## License
 
