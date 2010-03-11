@@ -1,15 +1,15 @@
 fr:
   devise:
     sessions:
-      link: 'Se connection'
-      signed_in: 'Connection réussi.'
-      signed_out: 'Déconnection réussi.'
+      link: 'Se connecter'
+      signed_in: 'Connection réussie.'
+      signed_out: 'Déconnection réussie.'
       unauthenticated: 'Vous avez besoin de vous connecter ou déconnecter pour continuer.'
       unconfirmed: 'Vous devez confirmer votre compte avant de continuer.'
       locked: 'Votre compte est clos.'
       invalid: 'Email ou mot de passe invalide.'
       timeout: 'Votre session a expiré, connectez vous pour continuer.'
-      inactive: "Votre compte n'a pas été encore activé."
+      inactive: "Votre compte n'a pas encore été activé."
     passwords:
       link: 'Mot de passe perdu ?'
       send_instructions: "Vous allez recevoir dans quelque minute un email avec les instructions au sujet de votre réinitisalition de mot de passe."
