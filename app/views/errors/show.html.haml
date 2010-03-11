@@ -18,10 +18,31 @@
   %dt Parameters
   %dd
     %pre= @error.params.inspect
-  %dt First received on:
+  %dt This error has been received on:
   %dd= @error.raised_at
-  %dt Last received on:
+  %dt The last similar error has been received on:
   %dd= @error.last_raised_at
+
+  %dt Environment:
+  %dd
+    %ul
+      - @error.environment.each do |key, val|
+        %li="#{key}: #{val}"
+
+
+
+  %dt Backtrace:
+  %dd
+    - @error.backtrace.each do |line|
+      = '&nbsp;' * (line.match(/^ +/).to_a.first || '').length
+      = line
+      %br
+
+  %dt Data:
+  %dd
+    %ul
+      - @error.data.each do |key, val|
+        %li="#{key}: #{val}"
 
 - unless @error.same_errors.empty?
   %hr
