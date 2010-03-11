@@ -1,14 +1,14 @@
-%h1 All projects you can see
+%h1 Projects your are following:
 
 - unless @projects.empty?
   %table
     %thead
       %tr
         %th Project name
-        %th Errors reported
-        %th Errors resolved
-        %th Errors unresolved
-        %th leave it
+        %th Reported errors
+        %th Resolved errors
+        %th Unresolved errors
+        %th Stop following
     %tbody
       -@projects.each do |project|
         %tr
@@ -17,11 +17,11 @@
           %td.center= link_to project.nb_errors_resolved, project_errors_path(project, :resolved => 'y')
           %td.center= link_to project.nb_errors_unresolved, project_errors_path(project, :resolved => 'n')
           - if project.admin_member?(current_user)
-            %td.center= link_to 'delete', project_url(project), :method => :delete, :confirm => 'Are you sure?'
+            %td.center= link_to 'stop', project_url(project), :method => :delete, :confirm => "Do you really want to stop following the project #{project.name}?"
           - else
             %td.center= link_to 'leave it',leave_project_url(project)
   %p
-    =link_to 'Add a new project', new_project_path
+    =link_to 'Create a new project', new_project_path
 - else
   %p
     You have no project created. Create your

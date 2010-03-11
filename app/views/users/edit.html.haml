@@ -1,4 +1,4 @@
-%h1 Your information
+%h1 Your Profile
 %dl
   %dt Email:
   %dd= current_user.email
@@ -6,12 +6,12 @@
 - form_for @user, :url => user_url do |f|
   - field_set_tag 'Update my password' do
     %p
-      = f.label :current_password, 'Your actual password, please'
+      = f.label :current_password, 'Current password'
       = f.password_field :current_password
     %p.error
       = error_message_on @user, :current_password
     %p
-      = f.label :password, 'What password do you want?'
+      = f.label :password, 'New password'
       = f.password_field :password
     %p.error
       = error_message_on @user, :password
@@ -19,10 +19,9 @@
       = f.label :password_confirmation, 'Confirm the new password'
       = f.password_field :password_confirmation
     %p{:class => 'submit'}
-      = f.submit 'Update password'
+      = f.submit 'Update my password'
 
 - form_for @user, :url => update_notify_user_url do |f|
-  %p{:class => 'notice'}= flash[:notify_me]
   - field_set_tag 'Notify me' do
     %table.small
       %thead
@@ -40,10 +39,10 @@
             %td
               = check_box_tag 'notify_by_digest[]', project.id.to_s, project.member(@user).notify_by_digest
               - if project.member(@user).digest_send_at
-                last digest send at
+                Last digest sent on:
                 = l project.member(@user).digest_send_at
 
     %p{:class => 'submit'}
       = f.submit 'Update notifications'
 
-= link_to 'Cancel my account', user_path, :method => :delete, :confirm => 'Are you sure?'
+= link_to 'Close my account', user_path, :method => :delete, :confirm => 'Are you sure you want to close your account?'

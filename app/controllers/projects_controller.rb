@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(params[:project])
     @project.add_admin_member(current_user)
     if @project.save
-      flash[:notice] = 'Your project is create'
+      flash[:notice] = "The project #{@project.name} has been successfully created"
       redirect_to(project_errors_url(@project))
     else
       render :new

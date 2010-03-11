@@ -66,7 +66,7 @@ describe ProjectsController do
           post :create, :project => { :name => 'My big project' }
         end.should change(Project, :count)
         response.should redirect_to(project_errors_path(Project.last(:order => 'created_at')))
-        flash[:notice].should == 'Your project is create'
+        flash[:notice].should == 'The project My big project has been successfully created'
       end
 
       it 'should not redirect if bad project post' do

@@ -1,4 +1,4 @@
-%h1 All messages reports on project #{@project.name}
+%h1 Reported errors on project #{@project.name}
 
 - if @project.admin_member?(current_user)
   %p=link_to 'Edit this project', edit_project_url(@project)
@@ -24,9 +24,9 @@
   %thead
     %tr
       %th Message
-      %th Last raised
+      %th Last raised on
       %th Count
-      %th number of comments
+      %th Number of comments
       %th Resolved?
   %tbody
     - @errors.each do |error|

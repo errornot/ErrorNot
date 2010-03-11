@@ -1,11 +1,10 @@
 %menu
-  %p=link_to 'back to project', project_errors_url(@project)
+  %p=link_to "<< Back to project #{@project && @project.name}", project_errors_url(@project)
 
-%h1 Summary
+%h1 Error summary
 
 %p#resolved
-  resolved ?
-  = @error.resolved
+  = "This error is marked as #{@error.resolved ? 'resolved' : 'unresolved'}."
 
 - form_for @root_error do |f|
   = hidden_field_tag 'error[resolved]', !@error.resolved
@@ -19,9 +18,9 @@
   %dt Parameters
   %dd
     %pre= @error.params.inspect
-  %dt Received at
+  %dt First received on:
   %dd= @error.raised_at
-  %dt Last received at
+  %dt Last received on:
   %dd= @error.last_raised_at
 
 - unless @error.same_errors.empty?
@@ -57,4 +56,4 @@
   %p
     = text_area_tag :text
   %p
-    = submit_tag 'Add comment'
+    = submit_tag 'Add a comment'
