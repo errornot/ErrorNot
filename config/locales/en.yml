@@ -2,41 +2,45 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
   flash:
     users:
       update:
-        success_update_notify: 'You have change with succes your notify configuration'
+        success_update_notify: 'You have successfully changed your notifications'
     projects:
+      update:
+        success: 'You have successfully updated your application'
       add_member:
-        success: 'You have add a member to your project'
+        success: 'You have successfully added users to your project'
       remove_member:
         success: "Member successfully removed from the project"
         failure: "Could not remove the member from the project"
       leave:
-        refused: "You can't leave a project because you are an admin on this project"
+        refused: "You can't leave a project being the last admin"
+        success: "You just leaved {{project_name}}"
       admin:
-        failure: "Impossible to modify this member's rights"
+        failure: "You can not modify this member's rights"
         delete:
           success: "Successfully remove admin rigths from user"
         add:
           success: "Successfully added admin rights to user"
   layout:
     menu:
-      project: Projects
+      project: 'Project'
+      projects: 'Projects'
     user_nav:
-      profile: Profil
+      profile: 'Profile'
+      logout: 'Logout'
   member:
     status:
-      awaiting: 'awaiting'
-      unvalidate: 'un validate'
-      validate: 'validate'
+      awaiting: 'Awaiting'
+      unvalidate: 'Unvalidated'
+      validate: 'Validated'
       user:
     validation:
       email:
-        no_change: "can't be changed"
+        no_change: "Can not be changed"
   controllers:
     errors:
       comments:
         flash:
-          success: 'You comment is add to this error'
+          success: 'Your comment has been successfully added to the error'

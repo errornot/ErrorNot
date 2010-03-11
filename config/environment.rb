@@ -47,7 +47,8 @@ Rails::Initializer.run do |config|
 
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
-  config.i18n.default_locale = :fr
+  # Available locales: en, fr
+  config.i18n.default_locale = :en
 
   # Deliveries are disabled by default. Do NOT modify this section.
   # Define your email configuration in email.yml instead.

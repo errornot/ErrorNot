@@ -10,37 +10,37 @@ fr:
       update:
         success: 'Vous avez mis à jour votre application avec succès'
       add_member:
-        success: "Vous venez d'ajouter des utilisateurs à votre projet."
+        success: "Vous venez d'ajouter des utilisateurs à votre projet"
       remove_member:
         success: "Membre retiré du projet avec succès"
         failure: "Impossible de retirer le membre du projet"
       leave:
-        refused: "Vous ne pouvez pas quitter ce project car vous êtes un des administration de ce projet."
+        refused: "Vous ne pouvez pas quitter ce project car vous êtes le dernier administrateur"
         success: "Vous avez quitter le projet {{project_name}}"
       admin:
-        failure: "Impossible de modifier les permissions de ce membre."
+        failure: "Impossible de modifier les permissions de ce membre"
         delete: 
-          success: "Retrait d'un admin avec succès."
+          success: "Retrait des droits admin avec succès"
         add:
-          success: "Ajout d'un admin avec succès."
+          success: "Ajout d'un admin avec succès"
   layout:
     menu:
-      project: Projets
-      projects: Projets
+      project: 'Projet'
+      projects: 'Projets'
     user_nav:
-      profile: Profile
-      logout: Logout
+      profile: 'Profil'
+      logout: 'Déconnexion'
   member:
     status:
-      awaiting: 'en attente'
-      unvalidate: 'non validé'
-      validate: 'validé'
+      awaiting: 'En attente'
+      unvalidate: 'Non validé'
+      validate: 'Validé'
   user:
     validation:
       email:
-        no_change: 'ne peux être changé'
+        no_change: 'Ne peux être changé'
   controllers:
     errors:
       comments:
         flash:
-          success: 'Votre commentaire a été ajouté a cette erreur.'
+          success: "Votre commentaire a été ajouté à l'erreur"
