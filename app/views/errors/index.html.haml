@@ -7,10 +7,10 @@
   %p
     %label
       Limit to:
-      = select_tag 'resolved', options_for_select({:resolved => 'y', :un_resolved => 'n', :all => 'a'}, params[:resolved] || nil)
+      = select_tag 'resolved', options_for_select({:resolved => 'y', :pending => 'n', :all => 'a'}, params[:resolved] || nil)
     %label
       Order by:
-      = select_tag 'sort_by', options_for_select({:raised_at => 'last_raised_at', :nb_comments => 'nb_comments', :nb_errors => 'count'}, params[:sort_by] || 'last_raised_at')
+      = select_tag 'sort_by', options_for_select({:date => 'last_raised_at', 'number of comments' => 'nb_comments', 'number of errors' => 'count'}, params[:sort_by] || 'last_raised_at')
     %label
       Ascending order
       = check_box_tag 'asc_order', 1, params[:asc_order]
