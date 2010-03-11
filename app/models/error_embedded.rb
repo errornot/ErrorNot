@@ -11,6 +11,8 @@ class ErrorEmbedded
   delegate :same_errors, :to => :_root_document
   delegate :project, :to => :_root_document
   delegate :comments, :to => :_root_document
+  delegate :resolved, :to => :_root_document
+  delegate :count, :to => :_root_document
 
   def url
     request['url']
