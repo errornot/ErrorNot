@@ -28,12 +28,12 @@ Rails::Initializer.run do |config|
   # you must remove the Active Record framework.
   config.frameworks -= [ :active_record, :active_resource]
 
-  config.gem "mongo", :lib => 'mongo', :version => '0.18.3'
-  config.gem "mongo_ext", :lib => 'mongo', :version => '0.18.3'
-  config.gem "mongo_mapper", :version => '0.7.0'
-  config.gem "haml", :version => '2.2.20'
-  config.gem "warden", :version => '0.9.4'
-  config.gem "devise", :version => '1.0.3'
+  config.gem "mongo", :lib => 'mongo', :version => '0.19.1'
+  config.gem "mongo_ext", :lib => 'mongo', :version => '0.19.1'
+  config.gem "mongo_mapper", :version => '0.7.1'
+  config.gem "haml", :version => '2.2.21'
+  config.gem "warden", :version => '0.9.7'
+  config.gem "devise", :version => '1.0.4'
 
   # change this version with Rails 3.0 :(
   config.gem 'agnostic-will_paginate', :version => '3.0.0', :lib => 'will_paginate'
