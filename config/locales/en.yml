@@ -44,3 +44,7 @@ en:
       comments:
         flash:
           success: 'Your comment has been successfully added to the error'
+  views:
+    sessions:
+      new:
+        register: 'Register'

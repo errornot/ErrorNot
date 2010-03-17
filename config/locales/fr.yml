@@ -19,7 +19,7 @@ fr:
         success: "Vous avez quitter le projet {{project_name}}"
       admin:
         failure: "Impossible de modifier les permissions de ce membre"
-        delete: 
+        delete:
           success: "Retrait des droits admin avec succès"
         add:
           success: "Ajout d'un admin avec succès"
@@ -44,3 +44,7 @@ fr:
       comments:
         flash:
           success: "Votre commentaire a été ajouté à l'erreur"
+  views:
+    sessions:
+      new:
+        register: S'enregistrer
