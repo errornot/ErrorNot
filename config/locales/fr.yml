@@ -48,3 +48,9 @@ fr:
     sessions:
       new:
         register: S'enregistrer
+    projects:
+      index:
+        project_name: Nom du project
+        reported_errors: Erreurs reportées
+        resolved_errors: Erreurs résolues
+        pending_errors: Erreurs en attente

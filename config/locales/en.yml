@@ -48,3 +48,9 @@ en:
     sessions:
       new:
         register: 'Register'
+    projects:
+      index:
+        project_name: Project name
+        reported_errors: Reported errors
+        resolved_errors: Resolved errors
+        pending_errors: Pending errors
