@@ -4,10 +4,10 @@
   %table
     %thead
       %tr
-        %th Project name
-        %th Reported errors
-        %th Resolved errors
-        %th Unresolved errors
+        %th= t('views.projects.index.project_name')
+        %th= t('views.projects.index.reported_errors')
+        %th= t('views.projects.index.resolved_errors')
+        %th= t('views.projects.index.pending_errors')
         %th Stop following
     %tbody
       -@projects.each do |project|
