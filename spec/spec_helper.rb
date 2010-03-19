@@ -75,3 +75,7 @@ end
 def response_is_401
   response.status.should == "401 Unauthorized"
 end
+
+def response_is_404
+  response.code.should == "404"
+end
