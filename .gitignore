@@ -7,3 +7,4 @@ db/schema.rb
 .DS_Store
 log/*
 tmp/*
+app/views/sessions/__list_emails_users.erb
