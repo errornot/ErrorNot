@@ -34,15 +34,19 @@ namespace :db do
     end
 
     desc "default"
-    task :default => [:users, :projects, :errors, :comments, :same_errors]
+    task :default => [:drop, :users, :projects, :errors, :comments, :same_errors]
 
     desc "add some user activated"
     task :users => :environment do
       require_factories
       puts 'create some users'
-      generate(10) do
+      generate(5) do
         make_user
       end
+      users_list = User.all.map{|user| "<li>#{user.email}</li>"}.join('')
+      File.open("/var/www/errornot/site/prod/app/views/sessions/__list_emails_users.erb", 'w'){|f|
+        f.write(users_list)
+      }
     end
 
     desc "add some project by default 10 projects"
@@ -50,25 +54,27 @@ namespace :db do
       require_factories
       puts 'create some projects'
       generate(10) do
-        make_project_with_admin(User.all.rand)
+        admins = [User.all.rand, User.all.rand].uniq
+        simple_users = ([User.all.rand, User.all.rand, User.all.rand] - admins).uniq
+        saved_project_with_admins_and_users(admins, simple_users)
       end
     end
 
-    desc "add some errors on all project. By default add 1000 errors. You can define number with NB"
+    desc "add some errors on all project. By default add 300 errors. You can define number with NB"
     task :errors => :environment do
       require_factories
       puts 'create some errors'
-      generate(1000) do
+      generate(300) do
         Factory(:error, :project => Project.all.rand)
       end
     end
 
-    desc "Add some comment on all errors by default add 10000 comments. You can define number with NB"
+    desc "Add some comment on all errors by default add 1000 comments. You can define number with NB"
     task :comments => :environment do
       require 'randexp'
       puts 'create some comments'
       error_ids = Error.all.map(&:id)
-      generate(2_000) do
+      generate(1_000) do
         error = Error.find(error_ids.rand)
         user = error.project.members.rand.user
         error.comments.build(:user => user,
@@ -77,12 +83,12 @@ namespace :db do
       end
     end
 
-    desc "add some same errors on all project. By default add 3000 errors. You can define number with NB"
+    desc "add some same errors on all project. By default add 1000 errors. You can define number with NB"
     task :same_errors => :environment do
       require_factories
       puts 'create some same errors'
       errors_ids = Error.all.map(&:id)
-      generate(3000) do
+      generate(1000) do
         error = Error.find(errors_ids.rand)
         error_attribute = Factory.build(:error, :project => error.project,
                :message => error.message,

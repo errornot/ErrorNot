@@ -1,5 +1,12 @@
 <h2>Sign in</h2>
 
+<div class="demo">
+  <p>For this demo, you can use one of the following emails to login, with the password "passwordaf83".</p>
+  <ul>
+    <%= render :partial => "sessions/_list_emails_users" %>
+  </ul>
+</div>
+
 <% form_for resource_name, resource, :url => session_path(resource_name) do |f| -%>
   <p><%= f.label :email %></p>
   <p><%= f.text_field :email %></p>
