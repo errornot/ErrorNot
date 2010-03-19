@@ -54,3 +54,11 @@ en:
         reported_errors: Reported errors
         resolved_errors: Resolved errors
         pending_errors: Pending errors
+        stop_following: Stop following
+        leave_it: unfollow
+        can_t_unfollow: "You can't unfollow it, delete it"
+        create_project: Create a new project
+        h1: 'Projects you follow:'
+        no_project: 'You have no project created. Create your'
+        first_project: 'first one'
+
