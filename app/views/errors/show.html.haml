@@ -48,12 +48,14 @@
   %hr
   %h2
     Similar Errors
-    ( #{@error.count} )
+    ( #{@error.count - 1} )
 
   %ul
-    %li= link_to l(@root_error.raised_at, :format => :long_ordinal), project_error_url(@root_error.project, @root_error)
+    - if @root_error != @error
+      %li= link_to l(@root_error.raised_at, :format => :long_ordinal), project_error_url(@root_error.project, @root_error)
     - @error.same_errors.each do |same_error|
-      %li= link_to l(same_error.raised_at, :format => :long_ordinal), project_error_same_error_url(@root_error.project, @root_error, same_error._id)
+      - if @error != same_error
+        %li= link_to l(same_error.raised_at, :format => :long_ordinal), project_error_same_error_url(@root_error.project, @root_error, same_error._id)
 
 
 %hr
