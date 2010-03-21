@@ -37,7 +37,7 @@ footer p a { color: rgb(141, 198, 63); text-decoration: none; }
 
 
 /* #content */
-#content { width: 940px; margin: 0 auto auto 20%; margin-left: 15%:}
+#content { width: 940px; margin: 0 auto;}
 #content h1 { margin: 10px 0; font: normal 24px Arial; color: rgb(35, 31, 32); }
 #content h1:first-letter { margin: 0 3px 0 0; padding: 0 3px; color: #FFF; background: rgb(141, 198, 63); }
 #content h2 { margin: 10px 0; font: normal 18px Arial; color: rgb(35, 31, 32); }
@@ -54,6 +54,10 @@ footer p a { color: rgb(141, 198, 63); text-decoration: none; }
 #sidebar dt { font-weight: bold; }
 #sidebar dd { border-bottom: 1px solid }
 #sidebar dd.last { border-bottom: 0 }
+#sidebar h3 { text-align:center; margin-bottom: 5px;}
+#sidebar h3 a { text-decoration:none;}
+
+#error {margin: 0 auto auto 20% }
 
 /* form */
 form { margin: 10px 0; }

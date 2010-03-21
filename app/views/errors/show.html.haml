@@ -1,96 +1,97 @@
 - content_for :summary do
+  #sidebar
+    %h3
+      = link_to @project.name, project_url(@project)
+    %dl
+      %dt
+        Received at
+      %dd
+        = l(@error.raised_at, :format => :long_ordinal)
+      %dt
+        Most recent at
+      %dd
+        = l(@error.last_raised_at, :format => :long_ordinal)
+      %dt
+        Similar Errors
+      %dd.last
+        Occured
+        = @error.count
+        times
+
+#error
+  %h1 Error summary
+
+  %p#resolved
+    = "This error is marked as #{@error.resolved ? 'resolved' : 'unresolved'}."
+
+  - form_for @root_error do |f|
+    = hidden_field_tag 'error[resolved]', !@error.resolved
+    = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
+
   %dl
-    %dt
-      Received at
+    %dt Error
+    %dd=h @error.message
+    %dt URL
+    %dd=link_to @error.url
+    %dt Parameters
     %dd
-      = l(@error.raised_at, :format => :long_ordinal)
-    %dt
-      Most recent at
+      %pre= @error.params.inspect
+
+    %dt Environment:
     %dd
-      = l(@error.last_raised_at, :format => :long_ordinal)
-    %dt
+      %ul
+        - @error.environment.each do |key, val|
+          %li="#{key}: #{val}"
+
+
+
+    %dt Backtrace:
+    %dd
+      - @error.backtrace.each do |line|
+        = line
+        %br
+
+    %dt Data:
+    %dd
+      %ul
+        - @error.data.each do |key, val|
+          %li="#{key}: #{val}"
+
+  - unless @error.same_errors.empty?
+    %hr
+    %h2
       Similar Errors
-    %dd.last
-      Occured
-      = @error.count
-      times
+      ( #{@error.count - 1} )
 
-%menu
-  %p=link_to "<< Back to project #{@project && @project.name}", project_errors_url(@project)
-
-%h1 Error summary
-
-%p#resolved
-  = "This error is marked as #{@error.resolved ? 'resolved' : 'unresolved'}."
-
-- form_for @root_error do |f|
-  = hidden_field_tag 'error[resolved]', !@error.resolved
-  = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
-
-%dl
-  %dt Error
-  %dd=h @error.message
-  %dt URL
-  %dd=link_to @error.url
-  %dt Parameters
-  %dd
-    %pre= @error.params.inspect
-
-  %dt Environment:
-  %dd
     %ul
-      - @error.environment.each do |key, val|
-        %li="#{key}: #{val}"
+      - if @root_error != @error
+        %li= link_to l(@root_error.raised_at, :format => :long_ordinal), project_error_url(@root_error.project, @root_error)
+      - @error.same_errors.each do |same_error|
+        - if @error != same_error
+          %li= link_to l(same_error.raised_at, :format => :long_ordinal), project_error_same_error_url(@root_error.project, @root_error, same_error._id)
 
 
-
-  %dt Backtrace:
-  %dd
-    - @error.backtrace.each do |line|
-      = line
-      %br
-
-  %dt Data:
-  %dd
-    %ul
-      - @error.data.each do |key, val|
-        %li="#{key}: #{val}"
-
-- unless @error.same_errors.empty?
   %hr
   %h2
-    Similar Errors
-    ( #{@error.count - 1} )
+    Comments
+    = "( #{@error.comments.size} )"
 
-  %ul
-    - if @root_error != @error
-      %li= link_to l(@root_error.raised_at, :format => :long_ordinal), project_error_url(@root_error.project, @root_error)
-    - @error.same_errors.each do |same_error|
-      - if @error != same_error
-        %li= link_to l(same_error.raised_at, :format => :long_ordinal), project_error_same_error_url(@root_error.project, @root_error, same_error._id)
+  - if @error.comments.size < 1
+    %p There are no comments on this error
+  - else
+    %ul
+      - @error.comments.each do |comment|
+        %li
+          %h4
+            By
+            = comment.user_email
+            in
+            = l(comment.created_at)
+          %div
+            = simple_format(comment.text)
 
-
-%hr
-%h2
-  Comments
-  = "( #{@error.comments.size} )"
-
-- if @error.comments.size < 1
-  %p There are no comments on this error
-- else
-  %ul
-    - @error.comments.each do |comment|
-      %li
-        %h4
-          By
-          = comment.user_email
-          in
-          = l(comment.created_at)
-        %div
-          = simple_format(comment.text)
-
-- form_tag comment_project_error_url(@root_error.project, @root_error) do
-  %p
-    = text_area_tag :text
-  %p
-    = submit_tag 'Add a comment'
+  - form_tag comment_project_error_url(@root_error.project, @root_error) do
+    %p
+      = text_area_tag :text
+    %p
+      = submit_tag 'Add a comment'

@@ -20,10 +20,9 @@
         %ul
           %li= link_to t('layout.menu.projects'), projects_url
 
-    #sidebar
-      = yield :summary
 
     #content
+      = yield :summary
       = flash_to_html(flash)
       = yield
 
