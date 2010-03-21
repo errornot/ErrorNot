@@ -19,7 +19,10 @@
       - if user_signed_in?
         %ul
           %li= link_to t('layout.menu.projects'), projects_url
-    
+
+    #sidebar
+      = yield :summary
+
     #content
       = flash_to_html(flash)
       = yield

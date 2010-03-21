@@ -1,3 +1,20 @@
+- content_for :summary do
+  %dl
+    %dt
+      Received at
+    %dd
+      = l(@error.raised_at, :format => :long_ordinal)
+    %dt
+      Most recent at
+    %dd
+      = l(@error.last_raised_at, :format => :long_ordinal)
+    %dt
+      Similar Errors
+    %dd.last
+      Occured
+      = @error.count
+      times
+
 %menu
   %p=link_to "<< Back to project #{@project && @project.name}", project_errors_url(@project)
 
@@ -18,10 +35,6 @@
   %dt Parameters
   %dd
     %pre= @error.params.inspect
-  %dt This error has been received on:
-  %dd= @error.raised_at
-  %dt The last similar error has been received on:
-  %dd= @error.last_raised_at
 
   %dt Environment:
   %dd
