@@ -10,6 +10,8 @@ class Error
   key :environment, Hash
   key :data, Hash
   key :unresolved_at, Time
+  key :resolved_at, Time
+  key :resolveds_at, Array
 
   key :message, String, :required => true
 
@@ -107,6 +109,11 @@ class Error
     resolution = resolution == 'true' if resolution.kind_of?(String)
     if old_resolution && !resolution
       self.unresolved_at = Time.now
+    end
+
+    if !old_resolution && resolution
+      self.resolved_at = Time.now
+      self.resolveds_at << self.resolved_at.utc
     end
     write_attribute(:resolved, resolution)
   end
