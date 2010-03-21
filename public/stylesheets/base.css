@@ -58,6 +58,7 @@ footer p a { color: rgb(141, 198, 63); text-decoration: none; }
 #sidebar h3 a { text-decoration:none;}
 
 #error {margin: 0 auto auto 20% }
+#error form.edit_error { float: right; }
 
 /* form */
 form { margin: 10px 0; }
