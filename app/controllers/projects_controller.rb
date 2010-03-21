@@ -14,6 +14,10 @@ class ProjectsController < ApplicationController
     @project = Project.new
   end
 
+  def show
+    redirect_to project_errors_url(params[:id])
+  end
+
   def create
     @project = Project.new(params[:project])
     @project.add_admin_member(current_user)
