@@ -59,7 +59,9 @@
 
 
 %hr
-%h2 Comments
+%h2
+  Comments
+  = "( #{@error.comments.size} )"
 
 - if @error.comments.size < 1
   %p There are no comments on this error
