@@ -28,7 +28,6 @@
   %p#resolved
     = "This error is marked as #{@error.resolved ? 'resolved' : 'unresolved'}."
 
-
   %dl
     %dt Error
     %dd=h @error.message
@@ -38,25 +37,20 @@
     %dd
       %pre= @error.params.inspect
 
-    %dt Environment:
-    %dd
-      %ul
-        - @error.environment.each do |key, val|
-          %li="#{key}: #{val}"
+  %h2 Environment
+  %ul
+    - @error.environment.each do |key, val|
+      %li="#{key}: #{val}"
 
+  %h2 Backtrace
+  %ul
+    - @error.backtrace.each do |line|
+      %li= line
 
-
-    %dt Backtrace:
-    %dd
-      - @error.backtrace.each do |line|
-        = line
-        %br
-
-    %dt Data:
-    %dd
-      %ul
-        - @error.data.each do |key, val|
-          %li="#{key}: #{val}"
+  %h3 Data
+  %ul
+    - @error.data.each do |key, val|
+      %li="#{key}: #{val}"
 
   - unless @error.same_errors.empty?
     %hr
