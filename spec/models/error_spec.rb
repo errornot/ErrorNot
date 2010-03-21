@@ -223,4 +223,25 @@ describe Error do
     end
   end
 
+  describe 'mark like unresolved' do
+    it 'should send an email if mark like resolved before' do
+      pending
+      error = Factory(:error, :resolved => true)
+      error.resolved = false
+      UserMailer.expects(:deliver_error_notify).with{ |email, error|
+        email == user.email && error.kind_of?(Error)
+      }
+      error.save
+    end
+    it 'should not send an email if mark unresolved before' do
+      pending
+      error = Factory(:error, :resolved => false)
+      error.resolved = false
+      UserMailer.expects(:deliver_error_notify).with{ |email, error|
+        email == user.email && error.kind_of?(Error)
+      }.never
+      error.save
+    end
+  end
+
 end
