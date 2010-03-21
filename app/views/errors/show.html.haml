@@ -34,7 +34,6 @@
   %dt Backtrace:
   %dd
     - @error.backtrace.each do |line|
-      = '&nbsp;' * (line.match(/^ +/).to_a.first || '').length
       = line
       %br
 
