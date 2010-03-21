@@ -6,19 +6,19 @@ Error Message:
 
 Request:
 --------
-<% error.request.each |k,v| -%>
+<% error.request.each do |k,v| -%>
 - <%= k %> : <%= v %>
 <% end -%>
 
 Session:
 --------
-<% error.session.each |k,v| -%>
+<% error.session.each do |k,v| -%>
 - <%= k %> : <%= v %>
 <% end -%>
 
 Environment:
 ------------
-<% error.environment.each |k,v| -%>
+<% error.environment.each do |k,v| -%>
 - <%= k %> : <%= v %>
 <% end -%>
 
