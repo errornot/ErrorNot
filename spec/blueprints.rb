@@ -9,8 +9,8 @@ end
 
 Factory.define(:user) do |u|
   u.email { /\w+@\w+\.com/.gen }
-  u.password 'tintinpouet'
-  u.password_confirmation 'tintinpouet'
+  u.password 'passwordaf83'
+  u.password_confirmation 'passwordaf83'
 end
 
 Factory.define(:error) do |e|
