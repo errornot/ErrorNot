@@ -6,16 +6,24 @@ Error Message:
 
 Request:
 --------
-<%= error.request.inspect %>
+<% error.request.each do |k,v| -%>
+- <%= k %> : <%= v %>
+<% end -%>
 
 Session:
 --------
-<%= error.session.inspect %>
+<% error.session.each do |k,v| -%>
+- <%= k %> : <%= v %>
+<% end -%>
 
 Environment:
 ------------
-<%= error.environment.inspect %>
+<% error.environment.each do |k,v| -%>
+- <%= k %> : <%= v %>
+<% end -%>
 
 Backtrace:
 ----------
-<%= error.backtrace.inspect %>
+<% error.backtrace.each do |line| -%>
+<%= line.inspect %>
+<% end -%>

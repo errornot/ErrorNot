@@ -1,4 +1,4 @@
-/* 
+/*
   green rgb(141, 198, 63)
   dark rgb(35, 31, 32)
 */
@@ -11,7 +11,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 header, footer, aside, nav, article, #content { display: block; }
 
 span.hide { display: none; }
-  
+
 body { font: 13px/22px Arial; background: #FFF; }
 
 /* Header */
@@ -37,7 +37,7 @@ footer p a { color: rgb(141, 198, 63); text-decoration: none; }
 
 
 /* #content */
-#content { width: 940px; margin: 0 auto; }
+#content { width: 940px; margin: 0 auto;}
 #content h1 { margin: 10px 0; font: normal 24px Arial; color: rgb(35, 31, 32); }
 #content h1:first-letter { margin: 0 3px 0 0; padding: 0 3px; color: #FFF; background: rgb(141, 198, 63); }
 #content h2 { margin: 10px 0; font: normal 18px Arial; color: rgb(35, 31, 32); }
@@ -47,6 +47,18 @@ footer p a { color: rgb(141, 198, 63); text-decoration: none; }
 #content dl {  }
 #content dl dt { margin: 10px 0 0 0; font: bold 13px Arial; }
 #content dl dd {  }
+
+/* #sidebar */
+#sidebar { float: left; width: 15%; margin: 10px auto auto 10px;}
+#sidebar dl { border: 1px solid; padding: 0 5px 0 5px; }
+#sidebar dt { font-weight: bold; }
+#sidebar dd { border-bottom: 1px solid }
+#sidebar dd.last { border-bottom: 0 }
+#sidebar h3 { text-align:center; margin-bottom: 5px;}
+#sidebar h3 a { text-decoration:none;}
+
+#error {margin: 0 auto auto 20% }
+#error form.edit_error { float: right; }
 
 /* form */
 form { margin: 10px 0; }
@@ -64,7 +76,7 @@ table { width: 100%; margin: 20px 0; border-spacing: 0; border-bottom: 3px solid
 table.small { width: auto; }
 table tr { }
 table tr th { padding: 3px 3px 3px 10px; font: normal 12px Arial; color: rgb(141, 198, 63); background: rgb(35, 31, 32); text-align: left; border-right: 1px solid rgb(141, 198, 63); }
-table tr th:last-child, 
+table tr th:last-child,
 table tr td:last-child { border-right: none; }
 table tr:last-child td { border-bottom: none; }
 table tr td { padding: 5px 3px; font: normal 12px Arial; color: rgb(35, 31, 32); background: #FFF; text-align: left; border-right: 1px solid rgb(141, 198, 63); border-bottom: 2px solid rgb(141, 198, 63); }
