@@ -121,15 +121,19 @@ class Error
   private
 
   def resend_notify
-    send_notify if !resolved? && new_same_error?
+    send_notify if !resolved? && same_errors.length < 1 && new_same_error?
   end
 
   ##
   # Mark error like un_resolved if a new error is add
   # An new error is arrived if embedded has no id ( little hack )
+  # Resend a notification if was marked as resolved and re-raised.
   #
   def reactive_if_new_error
-    self.resolved = false if new_same_error?
+    if self.resolved && new_same_error?
+      self.resolved = false
+      send_notify if same_errors.length > 0
+    end
   end
 
   # Check if new error embedded
