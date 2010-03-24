@@ -6,6 +6,9 @@ and then do their follow up (pending, resolved, etc) in the app.
  - Info and screenshots are available on [our blog](http://dev.af83.com/git/lancement-de-errornot/2010/03/22).
  - [Here is a demo site to preview and send your own errors to](http://demo.errornot.af83.com/).
 
+ - On IRC: FreeNode / #errornot
+ - Mailing list: error_not@googlegroups.com, http://groups.google.com/group/error_not
+
 ## Features
 
 ErrorNot :
@@ -22,7 +25,7 @@ You will need
 
  - Ruby of 1.8.6 or greater
  - Rails 2.3.5
- - MongoMapper 0.7.0
+ - MongoMapper 0.7.1
  - A MongoDB 1.0.1 or greater
 
 ## Installing

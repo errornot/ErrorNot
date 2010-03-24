@@ -60,7 +60,6 @@ describe Error do
     end
   end
 
-
   describe '#resolved!' do
     it 'should save and mark error like resolved if unresolved' do
       error = Factory(:error, :resolved => false)
@@ -220,6 +219,56 @@ describe Error do
       error.resolved = 'false'
       error.save
       error.reload.unresolved_at.should_not == unresolved_at
+    end
+  end
+
+  describe '#resolved_at' do
+    it 'should be define when mark to resolved' do
+      error = Factory(:error)
+      error.resolved = true
+      error.save
+      error.resolved_at.should be_close(Time.now, 1.second)
+    end
+
+    it 'should not be define in first' do
+      error = Factory(:error)
+      error.resolved_at.should be_nil
+    end
+
+    it 'should not be change if no mark like resolved and not unresolved before' do
+      error = Factory(:error)
+      error.resolved = true
+      error.save
+      error.resolved_at.should be_close(Time.now, 1.second)
+      time = error.resolved_at
+      error.resolved = true
+      error.save
+      error.resolved_at.should == time
+      error.resolved = false
+      error.save
+      error.resolved_at.should == time
+    end
+  end
+
+  describe 'Callback' do
+    it 'should add time when mark like resolved' do
+      error = Factory(:error)
+      error.resolved = true
+      error.save
+      error.resolveds_at = [error.resolved_at]
+    end
+    it 'should add time when mark like resolved after already mark resolved and again unresolved' do
+      error = Factory(:error)
+      error.resolved = true
+      error.save
+      error.resolveds_at.should == [error.resolved_at]
+      time = error.resolved_at
+      error.resolved = false
+      error.save
+      error.resolveds_at.should == [time]
+      error.resolved = true
+      error.save
+      error.resolveds_at.should == [time,error.resolved_at]
     end
   end
 

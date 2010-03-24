@@ -1,4 +1,4 @@
-%h1 Projects you follow:
+%h1= t('views.projects.index.h1')
 
 - unless @projects.empty?
   %table
@@ -8,7 +8,7 @@
         %th= t('views.projects.index.reported_errors')
         %th= t('views.projects.index.resolved_errors')
         %th= t('views.projects.index.pending_errors')
-        %th Stop following
+        %th= t('views.projects.index.stop_following')
     %tbody
       -@projects.each do |project|
         %tr
@@ -16,13 +16,13 @@
           %td.center= link_to project.nb_errors_reported, project_errors_path(project)
           %td.center= link_to project.nb_errors_resolved, project_errors_path(project, :resolved => 'y')
           %td.center= link_to project.nb_errors_unresolved, project_errors_path(project, :resolved => 'n')
-          - if project.admin_member?(current_user)
-            %td.center= link_to 'stop', project_url(project), :method => :delete, :confirm => "Do you really want to stop following the project #{project.name}?"
+          - unless project.admin_member?(current_user)
+            %td.center= link_to t('views.projects.index.leave_it'),leave_project_url(project)
           - else
-            %td.center= link_to 'leave it',leave_project_url(project)
+            %td.center= t('views.projects.index.can_t_unfollow')
   %p
-    =link_to 'Create a new project', new_project_path
+    =link_to t('views.projects.index.create_project'), new_project_path
 - else
   %p
-    You have no project created. Create your
-    = link_to 'first one', new_project_path
+    = t('views.projects.index.no_project')
+    = link_to t('views.projects.index.first_project'), new_project_path

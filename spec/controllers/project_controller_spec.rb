@@ -89,6 +89,12 @@ describe ProjectsController do
         get :edit, :id => project.id.to_s
         response_is_401
       end
+
+      it 'should render 404 if project not exist' do
+        project = make_project_with_admin(Factory(:user))
+        get :edit, :id => project.id.to_s.next!
+        response_is_404
+      end
     end
 
     describe 'PUT #update' do
@@ -196,7 +202,7 @@ describe ProjectsController do
           project.member(user).admin?.should == false
           put :admins, :id => project.id.to_s, :user_id => user.id
           project.reload
-          project.member(user).admin?.should == true 
+          project.member(user).admin?.should == true
           response.should redirect_to(edit_project_url project )
         end
       end
@@ -207,11 +213,11 @@ describe ProjectsController do
           put :admins, :id => project.id.to_s, :user_id => @user.id
           project.reload
           project.member(@user).admin?.should == false
-          response.code.should eql '401' 
+          response.code.should eql '401'
         end
       end
     end
-    
+
     describe 'DELETE #admins' do
       describe 'user admin on this project' do
         it 'should be able to remove admin rights of another admin' do
@@ -220,7 +226,7 @@ describe ProjectsController do
           project.member(user).admin?.should == true
           delete :admins, :id => project.id.to_s, :user_id => user.id
           project.reload
-          project.member(user).admin?.should == false 
+          project.member(user).admin?.should == false
           response.should redirect_to(edit_project_url project)
         end
       end
@@ -259,7 +265,7 @@ describe ProjectsController do
     end
 
     describe 'DELETE #destroy' do
-      
+
       describe 'with the logged-in user admin on the project' do
         it 'should delete the project' do
           project = saved_project_with_admins_and_users([@user], [make_user])

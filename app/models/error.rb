@@ -10,6 +10,8 @@ class Error
   key :environment, Hash
   key :data, Hash
   key :unresolved_at, Time
+  key :resolved_at, Time
+  key :resolveds_at, Array
 
   key :message, String, :required => true
 
@@ -108,21 +110,30 @@ class Error
     if old_resolution && !resolution
       self.unresolved_at = Time.now
     end
+
+    if !old_resolution && resolution
+      self.resolved_at = Time.now
+      self.resolveds_at << self.resolved_at.utc
+    end
     write_attribute(:resolved, resolution)
   end
 
   private
 
   def resend_notify
-    send_notify if !resolved? && new_same_error?
+    send_notify if !resolved? && same_errors.length < 1 && new_same_error?
   end
 
   ##
   # Mark error like un_resolved if a new error is add
   # An new error is arrived if embedded has no id ( little hack )
+  # Resend a notification if was marked as resolved and re-raised.
   #
   def reactive_if_new_error
-    self.resolved = false if new_same_error?
+    if self.resolved && new_same_error?
+      self.resolved = false
+      send_notify if same_errors.length > 0
+    end
   end
 
   # Check if new error embedded

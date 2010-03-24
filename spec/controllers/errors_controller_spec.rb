@@ -41,6 +41,31 @@ describe ErrorsController do
       end.should change(Error, :count)
       response.should be_success
     end
+    
+    it 'should send an email the first time' do
+      Error.any_instance.expects(:send_notify_task)
+      post :create, error_request(@project.api_key)
+      response.should be_success
+    end
+
+    it 'should not send an email at the second same request' do
+      Error.any_instance.expects(:send_notify_task).once()
+      req = error_request(@project.api_key)
+      (1..2).each do
+        post :create, req
+        response.should be_success
+      end
+    end
+
+    it 'should send an email when error marked as solved and reraised' do
+      req = error_request(@project.api_key)
+      err = @resolveds.first
+      req['error']['backtrace'] = err.backtrace
+      req['error']['message'] = err.message
+      Error.any_instance.expects(:send_notify_task).once()
+      post :create, req
+      response.should be_success
+    end
 
     it 'should render 404 if bad API_KEY' do
       post :create, error_request("4b72f1b3ac2a926c98000002")
@@ -176,15 +201,17 @@ describe ErrorsController do
     end
 
     describe 'PUT update' do
-      it 'should mark resolved an error' do
+      it 'should mark resolved an error and should not call send_notify_task' do
         error = @un_resolveds.first
+        Error.any_instance.expects(:send_notify_task).never
         put :update, :id => error.id, :error => {:resolved => true}
         response.should redirect_to(project_error_path(@project, error))
         assert error.reload.resolved
       end
 
-      it 'should mark un_resolved an error' do
+      it 'should mark un_resolved an error and should not call send_notify_task' do
         error = @resolveds.first
+        Error.any_instance.expects(:send_notify_task).never
         put :update, :id => error.id, :error => {:resolved => false}
         response.should redirect_to(project_error_path(@project, error))
         assert !error.reload.resolved
