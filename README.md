@@ -3,7 +3,7 @@
 A service to be sure that all errors in your apps are raised. You can push errors by POST request
 and then do their follow up (pending, resolved, etc) in the app.
 
- - Info and screenshots are available on [our blog](http://dev.af83.com/git/lancement-de-errornot/2010/03/22).
+ - Info and screenshots are available on the [AF83 dev blog](http://dev.af83.com/git/launch-errornot-english-version/2010/03/24).
  - [Here is a demo site to preview and send your own errors to](http://demo.errornot.af83.com/).
 
  - On IRC: FreeNode / #errornot
@@ -18,6 +18,17 @@ ErrorNot :
 * Allows you to comment the errors
 * Notifies you by email every time a new error is raised
 * Supports notification via a digest. The frequency of notification is set by a cron
+
+
+## Authors
+  ErrorNot has been started by Cyril Mougel (shingara) as he was working for AF83.
+  Cyril Mougel and AF83 both continue to contribute to this project.
+
+  Many thanks to the ErrorNot or ErrorNot notifiers contributors:
+    - François de Metz (francois2metz) for the PHP plugin
+    - Cyril Mougel (shingara) for the Rails plugin
+    - Pierre Ruyssen (virtuo) for the Python plugin
+
 
 ## Requirements
 
