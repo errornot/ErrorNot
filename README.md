@@ -7,7 +7,7 @@ and then do their follow up (pending, resolved, etc) in the app.
  - [Here is a demo site to preview and send your own errors to](http://demo.errornot.af83.com/).
 
  - On IRC: FreeNode / #errornot
- - Mailing list: error_not@googlegroups.com, http://groups.google.com/group/error_not
+ - Mailing list: errornot@googlegroups.com, http://groups.google.com/group/errornot
 
 ## Features
 
@@ -59,9 +59,10 @@ You will need
 ## Using
 
   Depending of what is more convenient to your project, you can use one of the ErrorNot notifiers to send errors to ErrorNot:
- - [The Rails errornot notifier](http://github.com/AF83/errornot_notifier)
- - [The PHP errornot notifier](http://github.com/francois2metz/php-errornot)
- - [The Python errornot notifier](http://bitbucket.org/virtuo/errornot_notifier_py/wiki/Home) with support for WSGI applications (Django, Pylons...)
+
+   - The [Rails errornot notifier](http://github.com/shingara/errornot_notifier)
+   - The [PHP errornot notifier](http://github.com/francois2metz/php-errornot)
+   - The [Python errornot notifier](http://bitbucket.org/virtuo/errornot_notifier_py/wiki/Home) with support for WSGI applications (Django, Pylons...)
 
 ## Development
 
