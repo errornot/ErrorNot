@@ -27,7 +27,7 @@ ErrorNot :
   Many thanks to the ErrorNot or ErrorNot notifiers contributors:
 
    - François de Metz (francois2metz) for the PHP plugin
-   - Cyril Mougel (shingara) for the Rails plugin
+   - Cyril Mougel (shingara) for the Ruby plugin
    - Pierre Ruyssen (virtuo) for the Python plugin
 
 
@@ -61,7 +61,7 @@ You will need
 
   Depending of what is more convenient to your project, you can use one of the ErrorNot notifiers to send errors to ErrorNot:
 
-   - The [Rails errornot notifier](http://github.com/shingara/errornot_notifier)
+   - The [Ruby errornot notifier (Rails, Sinatra, Rack)](http://github.com/shingara/errornot_notifier)
    - The [PHP errornot notifier](http://github.com/francois2metz/php-errornot)
    - The [Python errornot notifier](http://bitbucket.org/virtuo/errornot_notifier_py/wiki/Home) with support for WSGI applications (Django, Pylons...)
 
