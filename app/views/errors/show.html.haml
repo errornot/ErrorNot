@@ -37,6 +37,17 @@
     %dd
       %pre= @error.params.inspect
 
+  %h2 Request
+  %ul
+    - @error.request.each do |key, val|
+      - unless ['url', 'params'].include? key
+        %li="#{key}: #{val}"
+
+  %h2 Session
+  %ul
+    - @error.session.each do |key, val|
+      %li="#{key}: #{val}"
+
   %h2 Environment
   %ul
     - @error.environment.each do |key, val|
@@ -48,7 +59,7 @@
     = line.to_s
     %br
 
-  %h3 Data
+  %h2 Data
   %ul
     - @error.data.each do |key, val|
       %li="#{key}: #{val}"
