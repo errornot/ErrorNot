@@ -42,7 +42,7 @@ You will need
 
 ## Installing
 
- - fetch source from our github account ( git clone git://github.com/AF83/ErrorNot.git )
+ - fetch source from our github account ( git clone git://github.com/errornot/ErrorNot.git )
  - install rails gem ( gem install rails -v2.3.5 )
  - install all gems required by ErrorNot ( rake gems:install )
  - configure your database
