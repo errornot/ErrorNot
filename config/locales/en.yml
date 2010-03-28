@@ -53,9 +53,11 @@ en:
   views:
     sessions:
       new:
+        title: "Sign in"
         register: 'Register'
     projects:
       index:
+        title: "Projects"
         project_name: 'Project name'
         reported_errors: 'Reported errors'
         resolved_errors: 'Resolved errors'
@@ -67,4 +69,15 @@ en:
         h1: 'Projects you follow:'
         no_project: 'You have no project created. Create your'
         first_project: 'first one.'
-
+      edit:
+        title: "Edit"
+      new:
+        title: "New project"
+    users:
+      edit:
+        title: Your profile
+      new:
+        title: "New user"
+    errors:
+      index:
+        title: Errors

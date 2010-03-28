@@ -1,6 +1,8 @@
+- @title = t('views.projects.edit.title')
+
 %h1 Update your project
 
-%p 
+%p
   = "API key: #{@project.api_key}"
   = link_to 'Reset', reset_apikey_project_url(@project), :method => :put
 
