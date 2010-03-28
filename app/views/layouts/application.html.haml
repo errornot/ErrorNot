@@ -3,7 +3,7 @@
   %head
     %meta{ :content => "text/html; charset=utf-8", "http-equiv" => "Content-Type" }
     %link{ :href => "/stylesheets/base.css", :title => "Base CSS", :rel => "stylesheet", :type => "text/css", :media => "screen" }
-    %title AF83 ErrorNot
+    %title ErrorNot
   %body
     %header
       %p
@@ -28,14 +28,9 @@
 
     %footer
       %p
+        Powered by
         %a{ :href => "http://github.com/errornot/ErrorNot/" }
           %span
-            GitHub
+            Errornot
         ="-"
-        %a{ :href => "http://demo.errornot.af83.com/" }
-          %span
-            Demo
-        ="-"
-        %a{ :href => "http://groups.google.com/group/errornot" }
-          %span
-            Mailing List
+        = Errornot::VERSION
