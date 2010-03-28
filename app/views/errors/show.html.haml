@@ -55,8 +55,7 @@
 
   %h2 Backtrace
   - @error.backtrace.each do |line|
-    = '&nbsp;' * (line.to_s.match(/^ +/).to_a.first || '').length
-    = line.to_s
+    = line.to_s.gsub(/^(\s+)/){ |x|  '&nbsp;' * ($1.size) }
     %br
 
   %h2 Data
