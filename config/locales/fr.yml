@@ -75,3 +75,8 @@ fr:
     errors:
       index:
         title: Erreurs
+      show:
+        subnav:
+          summary: Résumé
+          backtrace: Backtrace
+          request: Requête

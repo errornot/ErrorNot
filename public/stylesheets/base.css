@@ -35,6 +35,11 @@ footer { clear: both; width: 100%; height: 24px; margin: 40px 0 0 0; background:
 footer p { padding: 5px 0 0 0; text-align: center; font: normal 13px Arial; color: rgb(141, 198, 63); }
 footer p a { color: rgb(141, 198, 63); text-decoration: none; }
 
+/* subnav */
+#subnav { height: 34px; border-bottom: 8px solid; margin: 0 auto; border-top: 8px solid;}
+#subnav li { display: block; float: left; margin: 0 0; padding: 2px 25px;}
+#subnav li a { font: normal 13px/13px Arial; color: rgb(141, 198, 63); text-decoration: none; text-transform: uppercase; }
+
 
 /* #content */
 #content { width: 940px; margin: 0 auto;}
@@ -57,8 +62,6 @@ footer p a { color: rgb(141, 198, 63); text-decoration: none; }
 #sidebar h3 { text-align:center; margin-bottom: 5px;}
 #sidebar h3 a { text-decoration:none;}
 
-#error {margin: 0 auto auto 20% }
-#error form.edit_error { float: right; }
 
 /* form */
 form { margin: 10px 0; }
@@ -84,3 +87,10 @@ table tr:nth-child(2n) td { background: rgba(141, 198, 63, 0.2); }
 
 table tr td.center { text-align: center;}
 table tr td a { font: normal 12px Arial; color: rgb(35, 31, 32); }
+
+/* #resolved */
+
+#resolved {  height: 40px; }
+
+#error {margin: 0 auto auto 20% }
+#error form.edit_error { float: right; }

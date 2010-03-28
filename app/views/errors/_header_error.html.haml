@@ -1,0 +1,13 @@
+#resolved
+  - form_for @root_error, :html => {:class => 'edit_error'}  do |f|
+    = hidden_field_tag 'error[resolved]', !@error.resolved
+    = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
+
+  %p#resolved_button
+    = image_tag( @root_error.resolved ? 'accept-icon.png' : 'delete-icon.png')
+    = "This error is marked as #{@root_error.resolved ? 'resolved' : 'unresolved'}."
+
+%ul#subnav
+  %li=link_to t('views.errors.show.subnav.summary'), project_error_url(@project, @error)
+  %li=link_to t('views.errors.show.subnav.backtrace'), backtrace_project_error_url(@project, @error)
+  %li=link_to t('views.errors.show.subnav.request'), request_info_project_error_url(@project, @error)

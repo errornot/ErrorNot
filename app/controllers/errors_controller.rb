@@ -1,7 +1,7 @@
 class ErrorsController < ApplicationController
 
   before_filter :authenticate_user!, :except => [:create]
-  before_filter :load_project, :only => [:show, :index, :comment]
+  before_filter :load_project, :only => [:show, :index, :comment, :backtrace, :request_info]
   before_filter :load_error, :only => [:update]
   before_filter :check_api_key, :only => [:create]
 
@@ -41,6 +41,12 @@ class ErrorsController < ApplicationController
       flash[:notice] = t('controller.errors.comments.flash.failed')
     end
     redirect_to project_error_url(@project, @error)
+  end
+
+  [:backtrace, :request_info].each do |resum|
+    define_method(resum) do
+      @root_error = @error = @project.error_reports.find(params[:id])
+    end
   end
 
   private

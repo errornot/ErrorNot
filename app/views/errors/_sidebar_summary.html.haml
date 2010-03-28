@@ -1,0 +1,19 @@
+- content_for :summary do
+  #sidebar
+    %h3
+      = link_to @project.name, project_url(@project)
+    %dl
+      %dt
+        Received at
+      %dd
+        = l(@error.raised_at, :format => :long_ordinal)
+      %dt
+        Most recent at
+      %dd
+        = l(@error.last_raised_at, :format => :long_ordinal)
+      %dt
+        Similar Errors
+      %dd.last
+        Occured
+        = @error.count
+        times

@@ -81,3 +81,8 @@ en:
     errors:
       index:
         title: Errors
+      show:
+        subnav:
+          summary: Summary
+          backtrace: Backtrace
+          request: Request

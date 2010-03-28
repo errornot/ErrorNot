@@ -1,34 +1,11 @@
 - @title = @root_error.message
 
-- content_for :summary do
-  #sidebar
-    %h3
-      = link_to @project.name, project_url(@project)
-    %dl
-      %dt
-        Received at
-      %dd
-        = l(@error.raised_at, :format => :long_ordinal)
-      %dt
-        Most recent at
-      %dd
-        = l(@error.last_raised_at, :format => :long_ordinal)
-      %dt
-        Similar Errors
-      %dd.last
-        Occured
-        = @error.count
-        times
+= render :partial => 'sidebar_summary'
 
 #error
-  - form_for @root_error, :html => {:class => 'edit_error'}  do |f|
-    = hidden_field_tag 'error[resolved]', !@error.resolved
-    = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
+  = render :partial => 'header_error'
 
-  %h1 Error summary
-
-  %p#resolved
-    = "This error is marked as #{@error.resolved ? 'resolved' : 'unresolved'}."
+  %h2 Summary
 
   %dl
     %dt Error
@@ -39,11 +16,6 @@
     %dd
       %pre= @error.params.inspect
 
-  %h2 Request
-  %ul
-    - @error.request.each do |key, val|
-      - unless ['url', 'params'].include? key
-        %li="#{key}: #{val}"
 
   %h2 Session
   %ul
@@ -54,11 +26,6 @@
   %ul
     - @error.environment.each do |key, val|
       %li="#{key}: #{val}"
-
-  %h2 Backtrace
-  - @error.backtrace.each do |line|
-    = line.to_s.gsub(/^(\s+)/){ |x|  '&nbsp;' * ($1.size) }
-    %br
 
   %h2 Data
   %ul
