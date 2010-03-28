@@ -92,6 +92,23 @@ namespace :db do
         error.save!
       end
     end
+
+    task :full_same_error => :environment do
+      require_factories
+      pr = Project.first
+      puts "project #{pr.id}"
+      err = Error.new JSON.parse(File.read('error.json'))
+      err.project = pr
+      err.save!
+      puts "error #{err.id}"
+      generate(2_000) do
+        e = pr.error_with_message_and_backtrace(err.message, err.backtrace)
+        e.request = err.request
+        e.session = err.session
+        e.raised_at = Time.now
+        e.save!
+      end
+    end
   end
 end
 
