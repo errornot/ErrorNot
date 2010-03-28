@@ -86,3 +86,6 @@ en:
           summary: Summary
           backtrace: Backtrace
           request: Request
+          session: Session
+          data: Data
+          similar_error: Similar errors

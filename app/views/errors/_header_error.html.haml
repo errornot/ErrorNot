@@ -11,3 +11,7 @@
   %li=link_to t('views.errors.show.subnav.summary'), project_error_url(@project, @error)
   %li=link_to t('views.errors.show.subnav.backtrace'), backtrace_project_error_url(@project, @error)
   %li=link_to t('views.errors.show.subnav.request'), request_info_project_error_url(@project, @error)
+  %li=link_to t('views.errors.show.subnav.session'), session_info_project_error_url(@project, @error)
+  %li=link_to t('views.errors.show.subnav.data'), data_project_error_url(@project, @error)
+  %li=link_to t('views.errors.show.subnav.similar_error') + "(#{@error.count})", similar_error_project_error_url(@project, @error)
+

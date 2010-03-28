@@ -1,0 +1,11 @@
+- @title = @root_error.message
+
+= render :partial => 'sidebar_summary'
+
+#error
+  = render :partial => 'header_error'
+
+  %h2 Data
+  %ul
+    - @error.data.each do |key, val|
+      %li="#{key}: #{val}"

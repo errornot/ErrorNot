@@ -80,3 +80,6 @@ fr:
           summary: Résumé
           backtrace: Backtrace
           request: Requête
+          session: Session
+          data: Data
+          similar_error: Erreurs similaire

@@ -1,9 +1,9 @@
 - @title = @root_error.message
 
-= render :partial => 'sidebar_summary'
+= render :partial => 'errors/sidebar_summary'
 
 #error
-  = render :partial => 'header_error'
+  = render :partial => 'errors/header_error'
 
   %h2 Summary
 
@@ -16,37 +16,14 @@
     %dd
       %pre= @error.params.inspect
 
-
-  %h2 Session
-  %ul
-    - @error.session.each do |key, val|
-      %li="#{key}: #{val}"
-
   %h2 Environment
   %ul
     - @error.environment.each do |key, val|
       %li="#{key}: #{val}"
 
-  %h2 Data
-  %ul
-    - @error.data.each do |key, val|
-      %li="#{key}: #{val}"
-
   - unless @error.same_errors.empty?
     %hr
-    %h2
-      Similar Errors
-      ( #{@error.count - 1} )
 
-    %ul
-      - if @root_error != @error
-        %li= link_to l(@root_error.raised_at, :format => :long_ordinal), project_error_url(@root_error.project, @root_error)
-      - @error.same_errors.each do |same_error|
-        - if @error != same_error
-          %li= link_to l(same_error.raised_at, :format => :long_ordinal), project_error_same_error_url(@root_error.project, @root_error, same_error._id)
-
-
-  %hr
   %h2
     Comments
     = "( #{@error.comments.size} )"

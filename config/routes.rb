@@ -9,6 +9,9 @@ ActionController::Routing::Routes.draw do |map|
     project.resources :errors, :except => [:new, :create, :update],
       :member => {:comment => :post,
         :backtrace => :get,
+        :session_info => :get,
+        :data => :get,
+        :similar_error => :get,
         :request_info => :get} do |error|
       error.resources :same_errors, :only => [:show]
     end
