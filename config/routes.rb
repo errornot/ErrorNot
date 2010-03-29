@@ -13,7 +13,12 @@ ActionController::Routing::Routes.draw do |map|
         :data => :get,
         :similar_error => :get,
         :request_info => :get} do |error|
-      error.resources :same_errors, :only => [:show]
+      error.resources :same_errors, :only => [:show], :member => {
+        :backtrace => :get,
+        :session_info => :get,
+        :data => :get,
+        :similar_error => :get,
+        :request_info => :get}
     end
   end
 
