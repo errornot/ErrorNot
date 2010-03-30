@@ -15,6 +15,8 @@ class ErrorEmbedded
   delegate :project, :to => :root_error
   delegate :comments, :to => :root_error
   delegate :resolved, :to => :root_error
+  delegate :message, :to => :root_error
+  delegate :backtrace, :to => :root_error
   delegate :count, :to => :root_error
 
   after_create :reactive_error
