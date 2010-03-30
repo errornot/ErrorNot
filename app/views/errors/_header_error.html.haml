@@ -8,15 +8,15 @@
     = "This error is marked as #{@root_error.resolved ? 'resolved' : 'unresolved'}."
 
 %ul#subnav
-  %li=link_to t('views.errors.show.subnav.summary'), controller == 'errors' ? project_error_url(@project, @error) : project_error_same_error_url(@root_error.project, @root_error, @error)
-  %li=link_to t('views.errors.show.subnav.backtrace'), controller == 'errors' ? backtrace_project_error_url(@project, @error) : backtrace_project_error_same_error_url(@root_error.project, @root_error, @error)
+  %li=link_to t('views.errors.show.subnav.summary'), params['controller'] == 'errors' ? project_error_url(@project, @error) : project_error_same_error_url(@root_error.project, @root_error, @error)
+  %li=link_to t('views.errors.show.subnav.backtrace'), params['controller'] == 'errors' ? backtrace_project_error_url(@project, @error) : backtrace_project_error_same_error_url(@root_error.project, @root_error, @error)
 
-  %li=link_to t('views.errors.show.subnav.request'), controller == 'errors' ? request_info_project_error_url(@project, @error) : request_info_project_error_same_error_url(@root_error.project, @root_error, @error)
+  %li=link_to t('views.errors.show.subnav.request'), params['controller'] == 'errors' ? request_info_project_error_url(@project, @error) : request_info_project_error_same_error_url(@root_error.project, @root_error, @error)
 
-  %li=link_to t('views.errors.show.subnav.session'), controller == 'errors' ? session_info_project_error_url(@project, @error) : session_info_project_error_same_error_url(@root_error.project, @root_error, @error)
+  %li=link_to t('views.errors.show.subnav.session'), params['controller'] == 'errors' ? session_info_project_error_url(@project, @error) : session_info_project_error_same_error_url(@root_error.project, @root_error, @error)
 
-  %li=link_to t('views.errors.show.subnav.data'), controller == 'errors' ? data_project_error_url(@project, @error) : data_project_error_same_error_url(@root_error.project, @root_error, @error)
+  %li=link_to t('views.errors.show.subnav.data'), params['controller'] == 'errors' ? data_project_error_url(@project, @error) : data_project_error_same_error_url(@root_error.project, @root_error, @error)
 
-  %li=link_to t('views.errors.show.subnav.similar_error') + "(#{@error.count})", controller == 'errors' ? similar_error_project_error_url(@project, @error) : similar_error_project_error_same_error_url(@root_error.project, @root_error, @error)
+  %li=link_to t('views.errors.show.subnav.similar_error') + "(#{@error.count})", params['controller'] == 'errors' ? similar_error_project_error_url(@project, @error) : similar_error_project_error_same_error_url(@root_error.project, @root_error, @error)
 
 
