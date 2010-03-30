@@ -52,12 +52,12 @@ def make_error_with_data(datas)
   count = datas.delete(:count) || 0
   nb_comments = datas.delete(:nb_comments) || 0
   error = Factory(:error, datas)
-  count.times { error.same_errors.build(:raised_at => error.raised_at) }
   nb_comments.times {
     error.comments.build(:user => error.project.members.rand.user,
                          :text => /[:paragraph:]/.gen)
   }
   error.save!
+  count.times { error.same_errors.create(:raised_at => error.raised_at) }
   error
 end
 

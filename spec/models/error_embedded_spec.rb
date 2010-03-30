@@ -46,6 +46,7 @@ describe ErrorEmbedded do
                             :backtrace => error.backtrace)
     error_embedded = project.error_with_message_and_backtrace(error_2.message,
                                                               error_2.backtrace)
+    p 'expect'
     UserMailer.expects(:deliver_error_notify).with{ |email, error|
       email == user.email && error.kind_of?(Error)
     }

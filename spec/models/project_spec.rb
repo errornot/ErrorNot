@@ -301,7 +301,7 @@ describe Project do
       new_error = project.error_with_message_and_backtrace(error_2.message,
                                                             error_2.backtrace)
       new_error.should be_kind_of(ErrorEmbedded)
-      new_error._root_document.should == error
+      new_error.root_error.should == error
     end
   end
 

@@ -34,20 +34,15 @@ class Error
 
   ## Callback
   before_create :define_unresolved_at
+  before_create :update_last_raised_at
 
   before_save :update_comments
   before_save :update_count
-  before_save :reactive_if_new_error
 
   after_create :send_notify
 
   after_save :update_nb_errors_in_project
   after_save :update_keywords
-  after_save :update_last_raised_at
-
-
-  after_update :resend_notify
-
 
   timestamps!
 
@@ -87,13 +82,6 @@ class Error
   end
 
   ##
-  # Call by update_last_raised_at
-  def update_last_raised_at_task
-    last_raised_at = same_errors.empty? ? raised_at : same_errors.sort_by(&:raised_at).last.raised_at
-    Error.collection.update({:_id => _id}, {'$set' => {:last_raised_at => last_raised_at.utc}})
-  end
-
-  ##
   # Call by send_notify
   def send_notify_task
     Project.find(project_id).members.each do |member|
@@ -120,29 +108,12 @@ class Error
 
   private
 
-  def resend_notify
-    send_notify if !resolved? && same_errors.length < 1 && new_same_error?
-  end
-
-  ##
-  # Mark error like un_resolved if a new error is add
-  # An new error is arrived if embedded has no id ( little hack )
-  # Resend a notification if was marked as resolved and re-raised.
-  #
-  def reactive_if_new_error
-    if self.resolved && new_same_error?
-      self.resolved = false
-      send_notify if same_errors.length > 0
-    end
-  end
-
-  # Check if new error embedded
-  def new_same_error?
-    same_errors.any?{|error| error.new? }
-  end
-
   def define_unresolved_at
     self.unresolved_at = Time.now unless self.unresolved_at
+  end
+
+  def update_last_raised_at
+    self.last_raised_at ||= raised_at
   end
 
 end

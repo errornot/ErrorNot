@@ -41,7 +41,7 @@ describe ErrorsController do
       end.should change(Error, :count)
       response.should be_success
     end
-    
+
     it 'should send an email the first time' do
       Error.any_instance.expects(:send_notify_task)
       post :create, error_request(@project.api_key)
@@ -183,6 +183,7 @@ describe ErrorsController do
                                :nb_comments => 7, :project => @project, :resolved => false, :raised_at => 4.days.ago)
           make_error_with_data(:count => 5,
                                :nb_comments => 2, :project => @project, :resolved => false, :raised_at => 1.days.ago)
+          @project.reload
         end
 
         [:nb_comments, :count, :last_raised_at].each do |sorted_by|
