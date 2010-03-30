@@ -57,6 +57,12 @@ You will need
  - You can now register your self /user/new
  - Have fun
 
+## Upgrading
+
+If you upgrade your errornot, you need launch the task to migration your database if needed
+
+  rake db:mongo_migrate
+
 ## Using
 
   Depending of what is more convenient to your project, you can use one of the ErrorNot notifiers to send errors to ErrorNot:
