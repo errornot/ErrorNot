@@ -29,6 +29,7 @@ ErrorNot :
    - François de Metz (francois2metz) for the PHP plugin
    - Cyril Mougel (shingara) for the Ruby plugin
    - Pierre Ruyssen (virtuo) for the Python plugin
+   - Damien Tournoud (DamZ) for the Drupal plugin
 
 
 ## Requirements
@@ -63,6 +64,7 @@ You will need
 
    - The [Ruby errornot notifier (Rails, Sinatra, Rack)](http://github.com/shingara/errornot_notifier)
    - The [PHP errornot notifier](http://github.com/francois2metz/php-errornot)
+   - The [Drupal notifier](http://drupal.org/project/errornot)
    - The [Python errornot notifier](http://bitbucket.org/virtuo/errornot_notifier_py/wiki/Home) with support for WSGI applications (Django, Pylons...)
 
 ## Development
