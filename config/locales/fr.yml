@@ -47,9 +47,11 @@ fr:
   views:
     sessions:
       new:
+        title: "Connection"
         register: S'enregistrer
     projects:
       index:
+        title: "Projets"
         project_name: Nom du project
         reported_errors: Erreurs reportées
         resolved_errors: Erreurs résolues
@@ -61,3 +63,23 @@ fr:
         h1: 'Projets que vous suivez:'
         no_project: "Vous n'avez pas de project créer. Créer votre"
         first_project: 'premier project'
+      edit:
+        title: "Editer"
+      new:
+        title: "Nouveau projet"
+    users:
+      edit:
+        title: votre profil
+      new:
+        title: "Nouvel utilisateur"
+    errors:
+      index:
+        title: Erreurs
+      show:
+        subnav:
+          summary: Résumé
+          backtrace: Backtrace
+          request: Requête
+          session: Session
+          data: Data
+          similar_error: Erreurs similaire

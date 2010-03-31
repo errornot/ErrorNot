@@ -1,32 +1,11 @@
-- content_for :summary do
-  #sidebar
-    %h3
-      = link_to @project.name, project_url(@project)
-    %dl
-      %dt
-        Received at
-      %dd
-        = l(@error.raised_at, :format => :long_ordinal)
-      %dt
-        Most recent at
-      %dd
-        = l(@error.last_raised_at, :format => :long_ordinal)
-      %dt
-        Similar Errors
-      %dd.last
-        Occured
-        = @error.count
-        times
+- @title = @root_error.message
+
+= render :partial => 'errors/sidebar_summary'
 
 #error
-  - form_for @root_error, :html => {:class => 'edit_error'}  do |f|
-    = hidden_field_tag 'error[resolved]', !@error.resolved
-    = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
+  = render :partial => 'errors/header_error'
 
-  %h1 Error summary
-
-  %p#resolved
-    = "This error is marked as #{@error.resolved ? 'resolved' : 'unresolved'}."
+  %h2 Summary
 
   %dl
     %dt Error
@@ -37,48 +16,14 @@
     %dd
       %pre= @error.params.inspect
 
-  %h2 Request
-  %ul
-    - @error.request.each do |key, val|
-      - unless ['url', 'params'].include? key
-        %li="#{key}: #{val}"
-
-  %h2 Session
-  %ul
-    - @error.session.each do |key, val|
-      %li="#{key}: #{val}"
-
   %h2 Environment
   %ul
     - @error.environment.each do |key, val|
       %li="#{key}: #{val}"
 
-  %h2 Backtrace
-  - @error.backtrace.each do |line|
-    = '&nbsp;' * (line.to_s.match(/^ +/).to_a.first || '').length
-    = line.to_s
-    %br
-
-  %h2 Data
-  %ul
-    - @error.data.each do |key, val|
-      %li="#{key}: #{val}"
-
   - unless @error.same_errors.empty?
     %hr
-    %h2
-      Similar Errors
-      ( #{@error.count - 1} )
 
-    %ul
-      - if @root_error != @error
-        %li= link_to l(@root_error.raised_at, :format => :long_ordinal), project_error_url(@root_error.project, @root_error)
-      - @error.same_errors.each do |same_error|
-        - if @error != same_error
-          %li= link_to l(same_error.raised_at, :format => :long_ordinal), project_error_same_error_url(@root_error.project, @root_error, same_error._id)
-
-
-  %hr
   %h2
     Comments
     = "( #{@error.comments.size} )"

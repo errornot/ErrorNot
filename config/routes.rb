@@ -6,8 +6,19 @@ ActionController::Routing::Routes.draw do |map|
                                        :leave => [:delete, :get],
                                        :admins => [:put, :delete],
                                        :reset_apikey => [:put]} do |project|
-    project.resources :errors, :except => [:new, :create, :update], :member => {:comment => :post} do |error|
-      error.resources :same_errors, :only => [:show]
+    project.resources :errors, :except => [:new, :create, :update],
+      :member => {:comment => :post,
+        :backtrace => :get,
+        :session_info => :get,
+        :data => :get,
+        :similar_error => :get,
+        :request_info => :get} do |error|
+      error.resources :same_errors, :only => [:show], :member => {
+        :backtrace => :get,
+        :session_info => :get,
+        :data => :get,
+        :similar_error => :get,
+        :request_info => :get}
     end
   end
 

@@ -1,0 +1,10 @@
+- @title = @root_error.message
+
+= render :partial => 'errors/sidebar_summary'
+
+#error
+  = render :partial => 'errors/header_error'
+
+  %h2 Backtrace
+  - @error.backtrace.each do |line|
+    = line.to_s.gsub(/^(\s+)/){ |x|  '&nbsp;' * ($1.size) }

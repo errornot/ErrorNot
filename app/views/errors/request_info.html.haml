@@ -1,0 +1,12 @@
+- @title = @root_error.message
+
+= render :partial => 'errors/sidebar_summary'
+
+#error
+  = render :partial => 'errors/header_error'
+
+  %h2 Request
+  %ul
+    - @error.request.each do |key, val|
+      - unless ['url', 'params'].include? key
+        %li="#{key}: #{val}"

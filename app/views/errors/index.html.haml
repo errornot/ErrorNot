@@ -1,3 +1,5 @@
+- @title = t('views.errors.index.title')
+
 %h1 Reported errors on project #{@project.name}
 
 - if @project.admin_member?(current_user)
@@ -37,7 +39,7 @@
         %td= error.last_raised_at
         %td= error.count
         %td= error.comments.size
-        %td= check_box_tag 'resolved', 1, error.resolved
+        %td= image_tag( error.resolved ? 'accept-icon.png' : 'delete-icon.png')
 
 = will_paginate @errors
 

@@ -1,3 +1,5 @@
+<% @title = t('views.users.new.title') %>
+
 <% form_for @user, :url => user_path do |f| -%>
   <%= f.error_messages %>
   <p><%= f.label :email %></p>

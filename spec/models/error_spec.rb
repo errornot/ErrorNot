@@ -129,9 +129,8 @@ describe Error do
     end
     it 'should return last raised_at of error_embedded if error has error_embedded' do
       error = Factory(:error, :raised_at => 3.days.ago)
-      error.same_errors.build(:raised_at => 2.days.ago)
-      last_raised = error.same_errors.build(:raised_at => 1.day.ago).raised_at
-      error.save
+      error.same_errors.create(:raised_at => 2.days.ago)
+      last_raised = error.same_errors.create(:raised_at => 1.day.ago).raised_at
       error.reload
       error.last_raised_at.should == last_raised
     end
@@ -149,27 +148,6 @@ describe Error do
 
       error.reload
       error._keywords.sort.should ==  ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'height', 'nine'].sort
-    end
-  end
-
-  describe '#new_same_error?' do
-    it 'should be true if new error and other before' do
-      error = make_error_with_data(:count => 2)
-      error.same_errors.build(:raised_at => Time.now)
-      error.send(:new_same_error?).should be_true
-    end
-    it 'should be false if several error but no new' do
-      error = make_error_with_data(:count => 2)
-      error.reload
-      error.send(:new_same_error?).should be_false
-    end
-    it 'should be false if no same_errors' do
-      Factory(:error).send(:new_same_error?).should be_false
-    end
-    it 'should be true if new error add and none before' do
-      error = Factory(:error)
-      error.same_errors.build(:raised_at => Time.now)
-      error.send(:new_same_error?).should be_true
     end
   end
 
