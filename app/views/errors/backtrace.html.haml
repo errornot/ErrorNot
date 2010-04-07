@@ -6,5 +6,6 @@
   = render :partial => 'errors/header_error'
 
   %h2 Backtrace
-  - @error.backtrace.each do |line|
-    = line.to_s.gsub(/^(\s+)/){ |x|  '&nbsp;' * ($1.size) }
+  %pre
+    - @error.backtrace.each do |line|
+      = line.to_s.gsub(/^(\s+)/){ |x| $1.size }
