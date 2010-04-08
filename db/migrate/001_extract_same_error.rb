@@ -1,3 +1,4 @@
+ActionMailer::Base.delivery_method = :test
 puts 'extract error_embedded from error collection'
 Error.collection.find.each do |er|
   if er['same_errors']
