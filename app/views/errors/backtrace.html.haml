@@ -8,4 +8,4 @@
   %h2 Backtrace
   %pre
     - @error.backtrace.each do |line|
-      = line.to_s.gsub(/^(\s+)/){ |x| $1.size }
+      = line.to_s.gsub(/^(\s+)/){ |x| '&nbsp;'*$1.size }
