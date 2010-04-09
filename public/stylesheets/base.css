@@ -72,7 +72,7 @@ form p input[type="checkbox"] { float: left; }
 form p input[type="submit"] { margin: 20px 0 10px 0; padding: 3px 10px; border: none; font: normal 13px Arial; color: #FFF; text-transform: uppercase; background: rgb(141, 198, 63); }
 form p textarea { width: 400px; height: 200px; font: normal 13px Arial; border: 1px solid rgb(141, 198, 63); border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; }
 form fieldset { position: relative; margin: 20px 0 0 0; padding: 40px 0 0 0; border-top: 2px solid rgb(35, 31, 32); }
-form fieldset legend { position: absolute; margin: -40px 0 0 0; padding: 3px 20px; font: normal 14px/20px Arial; text-transform: uppercase; color: #FFF; background: rgb(35, 31, 32); }
+form fieldset legend { padding: 3px 20px; font: normal 14px/20px Arial; text-transform: uppercase; color: #FFF; background: rgb(35, 31, 32); }
 
 /* table */
 table { width: 100%; margin: 20px 0; border-spacing: 0; border-bottom: 3px solid rgb(35, 31, 32); }
