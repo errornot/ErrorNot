@@ -15,7 +15,7 @@ class ErrorsController < ApplicationController
     @error = @project.error_with_message_and_backtrace(params[:error][:message],
                                                        params[:error][:backtrace])
     if @error.update_attributes(params[:error])
-      render :status => 200, :text => 'error create'
+      render :status => 200, :text => 'error created'
     else
       render :status => 422, :text => @error.errors.full_messages
     end

@@ -35,11 +35,12 @@ class Error
   ## Callback
   before_create :define_unresolved_at
   before_create :update_last_raised_at
+  before_create :update_count
 
   before_save :update_comments
-  before_save :update_count
 
   after_create :send_notify
+  after_create :limit_errors
 
   after_save :update_nb_errors_in_project
   after_save :update_keywords
@@ -78,7 +79,10 @@ class Error
   end
 
   def update_count
-    self.count = 1 + same_errors.length
+    self.count = 1 + self.count
+    if self.count >= 10
+      self.same_errors.first.delete
+    end
   end
 
   ##
@@ -106,7 +110,7 @@ class Error
     write_attribute(:resolved, resolution)
   end
 
-  private
+private
 
   def define_unresolved_at
     self.unresolved_at = Time.now unless self.unresolved_at

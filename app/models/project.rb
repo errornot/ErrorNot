@@ -108,11 +108,11 @@ class Project
     error = error_reports.first(:message => message,
                         :backtrace => backtrace,
                         :project_id => self.id)
-    unless error
+    if error
+      error.same_errors.build
+    else
       error_reports.build(:message => message,
                           :backtrace => backtrace)
-    else
-      error.same_errors.build
     end
   end
 
