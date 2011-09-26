@@ -85,7 +85,7 @@ class Project
       else
         members.build(:email => email.strip,
                       :admin => false)
-        UserMailer.deliver_project_invitation(email.strip, self)
+        UserMailer.project_invitation(email.strip, self).deliver
       end
     end
     save!

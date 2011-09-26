@@ -92,8 +92,8 @@ describe Member do
       2.of { Factory(:error,
                      :unresolved_at => 2.minutes.ago.utc,
                      :project => member._root_document) }
-      UserMailer.expects(:deliver_error_digest_notify).with(member.email,
-                                                            errors_not_digest_send.sort_by(&:last_raised_at))
+      UserMailer.expects(:error_digest_notify).with(member.email,
+                                                    errors_not_digest_send.sort_by(&:last_raised_at))
       member.send_digest.should be_true
       Project.find(member._root_document.id).member(member.user).digest_send_at.should be_within(1.second).of(Time.now)
     end
@@ -104,7 +104,7 @@ describe Member do
       2.of { Factory(:error,
                      :unresolved_at => 2.minutes.ago.utc,
                      :project => member._root_document) }
-      UserMailer.expects(:deliver_error_digest_notify).never
+      UserMailer.expects(:error_digest_notify).never
       member.send_digest.should be_true
       Project.find(member._root_document.id).member(member.user).digest_send_at.should be_within(1.second).of(Time.now)
     end

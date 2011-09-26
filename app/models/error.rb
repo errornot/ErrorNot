@@ -88,7 +88,7 @@ class Error
   def send_notify_task
     Project.find(project_id).members.each do |member|
       if member.notify_by_email?
-        UserMailer.deliver_error_notify(member.email, self)
+        UserMailer.error_notify(member.email, self).deliver
       end
     end
   end

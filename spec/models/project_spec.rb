@@ -207,7 +207,7 @@ describe Project do
     end
 
     it 'should add member if only one emails send and email is on a user' do
-      UserMailer.expects(:deliver_project_invitation).never
+      UserMailer.expects(:project_invitation).never
       @project.add_member_by_email(' foo@example.com ')
       @project.reload
       @project.member_include?(@user_1).should be_true
@@ -215,7 +215,7 @@ describe Project do
       @project.member_include?(@user_3).should be_false
     end
     it 'should add member if all emails separate by comma send and email is on users' do
-      UserMailer.expects(:deliver_project_invitation).never
+      UserMailer.expects(:project_invitation).never
       @project.add_member_by_email(' foo@example.com , bar@example.com ')
       @project.reload
       @project.member_include?(@user_1).should be_true
@@ -224,7 +224,7 @@ describe Project do
     end
 
     it 'should send an email to email which no in register' do
-      UserMailer.expects(:deliver_project_invitation).with("yahoo@yahoo.org",
+      UserMailer.expects(:project_invitation).with("yahoo@yahoo.org",
                                                                   @project)
       @project.add_member_by_email(' foo@example.com, yahoo@yahoo.org ')
       @project.reload
@@ -234,7 +234,7 @@ describe Project do
     end
 
     it "should create member object with only email data in member's project" do
-      UserMailer.expects(:deliver_project_invitation).with('yahoo@yahoo.org', @project)
+      UserMailer.expects(:project_invitation).with('yahoo@yahoo.org', @project)
       lambda do
         @project.add_member_by_email('yahoo@yahoo.org')
       end.should change(@project.members, :size)
