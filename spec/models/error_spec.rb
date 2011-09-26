@@ -153,7 +153,7 @@ describe Error do
 
   describe '#unresolved_at' do
     it 'should be define when create' do
-      Factory(:error, :unresolved_at => nil).unresolved_at.should be_close(Time.now, 1.second)
+      Factory(:error, :unresolved_at => nil).unresolved_at.should be_within(1.second).of(Time.now)
     end
 
     it 'should not change if new same error added' do
@@ -205,7 +205,7 @@ describe Error do
       error = Factory(:error)
       error.resolved = true
       error.save
-      error.resolved_at.should be_close(Time.now, 1.second)
+      error.resolved_at.should be_within(1.second).of(Time.now)
     end
 
     it 'should not be define in first' do
@@ -217,7 +217,7 @@ describe Error do
       error = Factory(:error)
       error.resolved = true
       error.save
-      error.resolved_at.should be_close(Time.now, 1.second)
+      error.resolved_at.should be_within(1.second).of(Time.now)
       time = error.resolved_at
       error.resolved = true
       error.save
