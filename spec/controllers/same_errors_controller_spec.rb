@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe SameErrorsController do
 
-  integrate_views
+  render_views
 
   before do
     @user = make_user

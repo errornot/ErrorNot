@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ProjectsController do
 
-  integrate_views
+  render_views
 
   describe 'with an anonymous user' do
     it 'should not see index' do

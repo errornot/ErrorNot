@@ -1,6 +1,6 @@
 class Error
   include MongoMapper::Document
-  include Callbacks::ErrorCallback
+  include ::Callbacks::ErrorCallback
 
   key :resolved, Boolean, :index => true
   key :session, Hash
@@ -22,11 +22,13 @@ class Error
   key :project_id, ObjectId, :required => true, :index => true
   belongs_to :project
 
-  has_many :comments
-  include_errors_from :comments
+  many :comments
+  # TODO: find an equivalent in ActiveModel
+  # include_errors_from :comments
 
-  has_many :same_errors, :class_name => 'ErrorEmbedded'
-  include_errors_from :same_errors
+  many :same_errors, :class_name => 'ErrorEmbedded'
+  # TODO: find an equivalent in ActiveModel
+  # include_errors_from :same_errors
 
   # To keep track of some metrics:
   key :nb_comments, Integer, :required => true, :default => 0

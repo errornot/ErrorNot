@@ -1,68 +1,50 @@
-ActionController::Routing::Routes.draw do |map|
-  # The priority is based upon order of creation: first created -> highest priority.
+ErrorNot::Application.routes.draw do
+  resources :projects do
 
-  map.resources :projects, :member => {:add_member => :put,
-                                       :remove_member => :delete,
-                                       :leave => [:delete, :get],
-                                       :admins => [:put, :delete],
-                                       :reset_apikey => [:put]} do |project|
-    project.resources :errors, :except => [:new, :create, :update],
-      :member => {:comment => :post,
-        :backtrace => :get,
-        :session_info => :get,
-        :data => :get,
-        :similar_error => :get,
-        :request_info => :get} do |error|
-      error.resources :same_errors, :only => [:show], :member => {
-        :backtrace => :get,
-        :session_info => :get,
-        :data => :get,
-        :similar_error => :get,
-        :request_info => :get}
-    end
-  end
+    member do
+      put :add_member
+      delete :remove_member
+      get :leave
+      delete :leave
+      put :admins
+      delete :admin
+      put :reset_apikey
+    end # member
+    
+    resources :errors, :except => [:new, :create, :update] do
 
-  map.resources :errors, :only => [:create, :update]
+      member do
+        post :comment
+        get :backtrace
+        get :session_info
+        get :data
+        get :similar_error
+        get :request_info
+      end # member
+      
+      resources :same_errors, :only => [:show] do
 
-  map.devise_for :users
-  map.resource :user, :collection => {:update_notify => :put}
-  map.root :controller => :projects, :action => :index
+        member do
+          get :backtrace
+          get :session_info
+          get :data
+          get :similar_error
+          get :request_info
+        end # member
 
-  # Sample of regular route:
-  #   map.connect 'products/:id', :controller => 'catalog', :action => 'view'
-  # Keep in mind you can assign values other than :controller and :action
+      end # resources :same_errors
 
-  # Sample of named route:
-  #   map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
-  # This route can be invoked with purchase_url(:id => product.id)
+    end # resources :errors
 
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   map.resources :products
+  end # resources :projects
 
-  # Sample resource route with options:
-  #   map.resources :products, :member => { :short => :get, :toggle => :post }, :collection => { :sold => :get }
+  resources :errors, :only => [:create, :update]
 
-  # Sample resource route with sub-resources:
-  #   map.resources :products, :has_many => [ :comments, :sales ], :has_one => :seller
-
-  # Sample resource route with more complex sub-resources
-  #   map.resources :products do |products|
-  #     products.resources :comments
-  #     products.resources :sales, :collection => { :recent => :get }
-  #   end
-
-  # Sample resource route within a namespace:
-  #   map.namespace :admin do |admin|
-  #     # Directs /admin/products/* to Admin::ProductsController (app/controllers/admin/products_controller.rb)
-  #     admin.resources :products
-  #   end
-
-  # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  # map.root :controller => "welcome"
-
-  # See how all your routes lay out with "rake routes"
-
-  # Install the default routes as the lowest priority.
-  # Note: These default routes make all actions in every controller accessible via GET requests. You should
-  # consider removing or commenting them out if you're using named routes and resources.
-end
+  devise_for :users
+  
+  resource :user do
+    put :update_notify, :on => :collection
+  end # resource :user
+  
+  root :to => "projects#index"
+end # ErrorNot::Application.routes.draw

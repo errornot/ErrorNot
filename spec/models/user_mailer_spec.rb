@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe UserMailer do
   include EmailSpec::Helpers
   include EmailSpec::Matchers
-  include ActionController::UrlWriter
+  include Rails.application.routes.url_helpers
 
   describe '#project_invitation' do
     before do

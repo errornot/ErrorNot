@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe UsersController do
 
-  integrate_views
+  render_views
 
   describe 'with anonymous user' do
     describe 'GET #new' do

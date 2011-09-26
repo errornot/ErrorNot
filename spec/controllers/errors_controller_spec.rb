@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ErrorsController do
 
-  integrate_views
+  render_views
 
   def error_request(api_key, hash={})
     {'api_key' => api_key,
@@ -34,7 +34,7 @@ describe ErrorsController do
     @un_resolveds = 2.of { Factory(:error, :project => @project, :resolved => false) }
   end
 
-  describe 'POST #create', :shared => true do
+  shared_examples_for 'POST #create' do
     it 'should success with a good request' do
       lambda do
         post :create, error_request(@project.api_key)
