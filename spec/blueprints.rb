@@ -17,7 +17,7 @@ Factory.define(:error) do |e|
   e.project { Factory(:project) }
   e.message { /[:paragraph:]/.gen }
   e.resolved false
-  e.raised_at { (1..500).to_a.rand.day.ago }
+  e.raised_at { (1..500).to_a.random_element.day.ago }
   e.backtrace ['[PROJECT_ROOT]/vendor/gems/mongo-0.18/lib/../lib/mongo/types/objectid.rb:73:in `from_string',
   '[PROJECT_ROOT]/vendor/gems/mongo_mapper-0.6.4/lib/mongo_mapper/finder_options.rb:64:in `to_mongo_criteria']
   e.request {
@@ -53,8 +53,7 @@ def make_error_with_data(datas)
   nb_comments = datas.delete(:nb_comments) || 0
   error = Factory(:error, datas)
   nb_comments.times {
-    index = rand error.project.members.size
-    error.comments.build(:user => error.project.members[index].user,
+    error.comments.build(:user => error.project.members.random_element.user,
                          :text => /[:paragraph:]/.gen)
   }
   error.save!

@@ -50,7 +50,7 @@ namespace :db do
       require_factories
       puts 'create some projects'
       generate(10) do
-        make_project_with_admin(User.all.rand)
+        make_project_with_admin(User.all.random_element)
       end
     end
 
@@ -59,7 +59,7 @@ namespace :db do
       require_factories
       puts 'create some errors'
       generate(1000) do
-        Factory(:error, :project => Project.all.rand)
+        Factory(:error, :project => Project.all.random_element)
       end
     end
 
@@ -69,8 +69,8 @@ namespace :db do
       puts 'create some comments'
       error_ids = Error.all.map(&:id)
       generate(2_000) do
-        error = Error.find(error_ids.rand)
-        user = error.project.members.rand.user
+        error = Error.find(error_ids.random_element)
+        user = error.project.members.random_element.user
         error.comments.build(:user => user,
                              :text => /[:paragraph:]/.gen)
         error.save!
@@ -83,7 +83,7 @@ namespace :db do
       puts 'create some same errors'
       errors_ids = Error.all.map(&:id)
       generate(3000) do
-        error = Error.find(errors_ids.rand)
+        error = Error.find(errors_ids.random_element)
         error_attribute = Factory.build(:error, :project => error.project,
                :message => error.message,
                :backtrace => error.backtrace,

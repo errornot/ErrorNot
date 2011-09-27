@@ -1,5 +1,5 @@
 class Array 
-  def rand 
-    self[super(self.length)] 
+  def random_element
+    self[Kernel.rand(length)]
   end 
 end
