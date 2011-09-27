@@ -93,7 +93,8 @@ describe Member do
                      :unresolved_at => 2.minutes.ago.utc,
                      :project => member._root_document) }
       UserMailer.expects(:error_digest_notify).with(member.email,
-                                                    errors_not_digest_send.sort_by(&:last_raised_at))
+                                                    errors_not_digest_send.sort_by(&:last_raised_at)).returns UserMailer
+      UserMailer.expects(:deliver)
       member.send_digest.should be_true
       Project.find(member._root_document.id).member(member.user).digest_send_at.should be_within(1.second).of(Time.now)
     end

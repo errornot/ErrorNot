@@ -23,6 +23,7 @@ group :development, :test do
 end
 
 group :test do
+  gem "timecop"
   gem "randexp", "~> 0.1.5"
   gem "factory_girl", "~> 2.1.2"
   gem "email_spec", "~> 1.2.1"

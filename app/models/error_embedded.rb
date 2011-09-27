@@ -1,5 +1,5 @@
 class ErrorEmbedded
-  include MongoMapper::Document
+  include MongoMapper::EmbeddedDocument
 
   key :session, Hash
   key :raised_at, Time, :required => true
@@ -8,7 +8,7 @@ class ErrorEmbedded
   key :data, Hash
   key :error_id, ObjectId
 
-  belongs_to :root_error, :class_name => 'Error', :foreign_key => 'error_id'
+  alias_method :root_error, :_parent_document
 
   delegate :last_raised_at, :to => :root_error
   delegate :same_errors, :to => :root_error
@@ -19,10 +19,8 @@ class ErrorEmbedded
   delegate :backtrace, :to => :root_error
   delegate :count, :to => :root_error
 
-  after_create :reactive_error
-
+  after_save :reactive_error
   after_save :update_last_raised_at
-  after_save :update_error_count
 
   def url
     request['url']
@@ -37,7 +35,7 @@ class ErrorEmbedded
   def reactive_error
     if root_error.resolved
       root_error.resolved = false
-      root_error.send_notify
+      root_error.send_notify unless new?
       root_error.save!
     end
   end
@@ -49,11 +47,6 @@ class ErrorEmbedded
       root_error.last_raised_at = raised_at
       root_error.save
     end
-  end
-
-  def update_error_count
-    root_error.update_count
-    root_error.save
   end
 
 end

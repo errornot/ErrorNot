@@ -21,8 +21,7 @@ class Project
   validate :need_members
   validate :need_admin_members
 
-  # TODO: find an equivalent in ActiveModel
-  # include_errors_from :members
+  validates_associated :members
 
   ## CALLBACK
   before_validation :gen_api_key, :on => :create

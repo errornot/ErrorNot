@@ -2,7 +2,7 @@ class Error
   include MongoMapper::Document
   include ::Callbacks::ErrorCallback
 
-  key :resolved, Boolean, :index => true
+  key :resolved, Boolean, :index => true, :default => false
   key :session, Hash
   key :raised_at, Time, :required => true
   key :backtrace, Array
@@ -23,12 +23,10 @@ class Error
   belongs_to :project
 
   many :comments
-  # TODO: find an equivalent in ActiveModel
-  # include_errors_from :comments
+  validates_associated :comments
 
   many :same_errors, :class_name => 'ErrorEmbedded'
-  # TODO: find an equivalent in ActiveModel
-  # include_errors_from :same_errors
+  validates_associated :same_errors
 
   # To keep track of some metrics:
   key :nb_comments, Integer, :required => true, :default => 0
@@ -60,7 +58,6 @@ class Error
     self.resolved = true
     save!
   end
-
 
   ##
   # code to update keywords
@@ -97,6 +94,7 @@ class Error
     old_resolution = read_attribute(:resolved)
     # check if string and replace it by a bool. Controller send String, not bool
     resolution = resolution == 'true' if resolution.kind_of?(String)
+
     if old_resolution && !resolution
       self.unresolved_at = Time.now
     end
@@ -105,6 +103,7 @@ class Error
       self.resolved_at = Time.now
       self.resolveds_at << self.resolved_at.utc
     end
+
     write_attribute(:resolved, resolution)
   end
 

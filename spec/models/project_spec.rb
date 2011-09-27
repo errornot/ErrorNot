@@ -224,8 +224,8 @@ describe Project do
     end
 
     it 'should send an email to email which no in register' do
-      UserMailer.expects(:project_invitation).with("yahoo@yahoo.org",
-                                                                  @project)
+      UserMailer.expects(:project_invitation).with("yahoo@yahoo.org", @project).returns UserMailer
+      UserMailer.expects(:deliver)
       @project.add_member_by_email(' foo@example.com, yahoo@yahoo.org ')
       @project.reload
       @project.member_include?(@user_1).should be_true
@@ -234,7 +234,8 @@ describe Project do
     end
 
     it "should create member object with only email data in member's project" do
-      UserMailer.expects(:project_invitation).with('yahoo@yahoo.org', @project)
+      UserMailer.expects(:project_invitation).with('yahoo@yahoo.org', @project).returns UserMailer
+      UserMailer.expects(:deliver)
       lambda do
         @project.add_member_by_email('yahoo@yahoo.org')
       end.should change(@project.members, :size)
