@@ -13,7 +13,7 @@ describe UsersController do
       end
       it 'should fill email if email send by argument' do
         get :new, :email => 'foo@example.com'
-        response.body.should have_tag('input[type=?][value=?]', 'text', 'foo@example.com')
+        response.body.should have_css("input[type=text][value='foo@example.com']")
       end
     end
   end

@@ -17,12 +17,14 @@ gem "haml-rails", "~> 0.3.4"
 gem "devise", "~> 1.4.7"
 gem "devise-mongo_mapper", :git => "git://github.com/proxygear/devise-mongo_mapper.git"
 gem "will_paginate", "~> 3.0.1"
+gem "dynamic_form"
 
 group :development, :test do
   gem "rspec-rails", "~> 2.6.1"
 end
 
 group :test do
+  gem "capybara"
   gem "timecop"
   gem "randexp", "~> 0.1.5"
   gem "factory_girl", "~> 2.1.2"

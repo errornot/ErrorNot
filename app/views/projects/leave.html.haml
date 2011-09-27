@@ -6,6 +6,6 @@
   %p
     you want really leave this project ?
 
-  - form_tag leave_project_url(@project), :method => :delete do
+  = form_tag leave_project_url(@project), :method => :delete do
     = submit_tag 'Leave'
 

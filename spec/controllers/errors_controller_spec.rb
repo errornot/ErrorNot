@@ -75,7 +75,7 @@ describe ErrorsController do
     it 'should render 422 if avoid raised_at' do
       post :create, error_request(@project.api_key, :raised_at => nil)
       response.code.should == "422"
-      response.body.should == "Raised at can't be empty"
+      response.body.should == "Raised at can't be blank"
     end
   end
 
@@ -85,17 +85,17 @@ describe ErrorsController do
 
     it 'should not access to see an error' do
       get :show, :project_id => @project.id, :id => @resolveds.first.id
-      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+      response.should redirect_to(new_user_session_path)
     end
 
     it 'should not access to see all errors' do
       get :index, :project_id => @project.id
-      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+      response.should redirect_to(new_user_session_path)
     end
 
     it 'should not update an error' do
       put :update, :id => @un_resolveds.first.id, :error => {:resolved => true}
-      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+      response.should redirect_to(new_user_session_path)
     end
   end
 
@@ -115,7 +115,7 @@ describe ErrorsController do
         project = Factory(:project)
         error = Factory(:error, :project => project)
         get :show, :project_id => project.id, :id => error.id
-        response.status.should == "401 Unauthorized"
+        response.status.should == 401
       end
 
     end
@@ -141,17 +141,17 @@ describe ErrorsController do
 
       it 'should limit to resolved errors if resolved=y params send' do
         get :index, :project_id => @project.id, :resolved => 'y'
-        assert_equal @resolveds.map(&:id).sort, assigns[:errors].map(&:id).sort
+        @resolveds.should =~ assigns[:errors]
       end
 
       it 'should limit to un_resolved errors if resolved=n params send' do
         get :index, :project_id => @project.id, :resolved => 'n'
-        assert_equal @un_resolveds.map(&:id).sort, assigns[:errors].map(&:id).sort
+        @un_resolveds.should =~ assigns[:errors]
       end
 
       it 'should not limit to resolved errors if resolved= with empty value params send' do
         get :index, :project_id => @project.id, :resolved => nil
-        assert_equal @project.error_reports.map(&:id).sort, assigns[:errors].map(&:id).sort
+        @project.error_reports.should =~ assigns[:errors]
       end
 
       it 'should limit to errors having one of the given search word in their keywords' do
@@ -222,7 +222,7 @@ describe ErrorsController do
         project = Factory(:project)
         error = Factory(:error, :project => project)
         put :update, :id => error.id, :error => {:resolved => true}
-        response.status.should == '401 Unauthorized'
+        response.status.should == 401
       end
     end
 

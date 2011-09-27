@@ -7,6 +7,11 @@ require 'rspec/rails'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+require "devise/test_helpers"
+require 'capybara/rspec'
+require 'capybara/rails'
+require 'blueprints'
+
 RSpec.configure do |config|
   config.mock_with :mocha
   config.before(:each) do
@@ -14,25 +19,13 @@ RSpec.configure do |config|
       coll.remove
     end
   end
-end
-
-require 'blueprints'
-
-require "devise/test_helpers"
-class ActionController::TestCase
-  include Devise::TestHelpers
-end
-
-class BSON::ObjectID
-  def <=>(object)
-    self.to_s <=> object.to_s
-  end
+  config.include Devise::TestHelpers, :type => :controller
 end
 
 def response_is_401
-  response.status.should == "401 Unauthorized"
+  response.status.should == 401
 end
 
 def response_is_404
-  response.code.should == "404"
+  response.status.should == 404
 end

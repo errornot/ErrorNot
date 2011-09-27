@@ -9,15 +9,15 @@
 - field_set_tag 'Project' do
   = error_messages_for :project
 
-  - form_for @project do |f|
+  = form_for @project do |f|
     %p
       %label='Name :'
       = f.text_field :name
     %p
       = f.submit 'update'
 
-- field_set_tag 'Members' do
-  - form_tag add_member_project_url(@project), :method => :put do
+= field_set_tag 'Members' do
+  = form_tag add_member_project_url(@project), :method => :put do
     %p
       = label_tag 'Email'
       %br/

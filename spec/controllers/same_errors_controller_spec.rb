@@ -20,7 +20,7 @@ describe SameErrorsController do
       get :show, :project_id => @project.id,
         :error_id => @project.error_reports.first.id,
         :id => @project.error_reports.first.same_errors.first.id
-      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+      response.should redirect_to(new_user_session_path)
     end
   end
 
@@ -45,7 +45,7 @@ describe SameErrorsController do
         get :show, :project_id => project.id,
           :error_id => error.id,
           :id => error.same_errors.first.id
-        response.status.should == "401 Unauthorized"
+        response_is_401
       end
 
     end

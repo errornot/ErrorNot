@@ -1,0 +1,12 @@
+- @title = t('views.users.new.title')
+
+= form_for @user, :url => user_path do |f|
+  = f.error_messages
+  %p= f.label :email
+  %p= f.text_field :email
+  %p= f.label :password
+  %p= f.password_field :password
+  %p= f.label :password_confirmation
+  %p= f.password_field :password_confirmation
+
+  %p.submit= f.submit "Sign Up"

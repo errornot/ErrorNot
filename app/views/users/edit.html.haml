@@ -5,7 +5,7 @@
   %dt Email:
   %dd= current_user.email
 
-- form_for @user, :url => user_url do |f|
+= form_for @user, :url => user_url do |f|
   - field_set_tag 'Update my password' do
     %p
       = f.label :current_password, 'Current password'
@@ -23,7 +23,7 @@
     %p{:class => 'submit'}
       = f.submit 'Update my password'
 
-- form_for @user, :url => update_notify_user_url do |f|
+= form_for @user, :url => update_notify_user_url do |f|
   - field_set_tag 'Notify me' do
     %table.small
       %thead
