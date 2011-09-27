@@ -2,8 +2,8 @@
 module ApplicationHelper
   def flash_to_html(flash)
     flash.map {|key, val|
-      "<div class=\"#{key}\">#{val}</div>"
-    }.join('')
+      "<div class=\"#{key}\">#{h(val)}</div>"
+    }.join('').html_safe
   end
 
   def title_header
