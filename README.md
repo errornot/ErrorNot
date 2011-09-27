@@ -37,22 +37,22 @@ ErrorNot :
 You will need
 
  - Ruby of 1.8.6 or greater
- - Rails 2.3.5
- - MongoMapper 0.7.1
+ - Rails 3.1.0
+ - MongoMapper 0.9.2
  - A MongoDB 1.0.1 or greater
 
 ## Installing
 
  - fetch source from our github account ( git clone git://github.com/errornot/ErrorNot.git )
- - install rails gem ( gem install rails -v2.3.5 )
- - install all gems required by ErrorNot ( rake gems:install )
+ - install bundler gem ( `gem install bundler` )
+ - install all gems required by ErrorNot ( `bundle` )
  - configure your database
    - copy config/database.yml.sample to config/database.yml
    - update config/database.yml with your database connection and the table name
  - configure your email settings
    - copy config/email.yaml.sample to config/email.yml
    - update it with email configuration (sendmail or smtp information)
- - Start the server in production mode : ruby script/server -e production
+ - Start the server in production mode : `rails s -e production`
  - If you want that your user can be received their notification by digest, you need
    add the rake task `RAILS_ENV=production rake notify:digest` in your crontab
  - You can now register your self /user/new
@@ -62,7 +62,7 @@ You will need
 
 If you upgrade your errornot, you need launch the task to migration your database if needed
 
-  rake db:mongo_migrate
+  `rake db:mongo_migrate`
 
 ## Using
 
@@ -79,30 +79,30 @@ If you want to hack ErrorNot, you need launch all Test. This test is made with r
 
 You can install all gems needed with command :
 
- - RAILS_ENV=test rake gems:install
+ - `bundle`
 
 Now you can launch spec :
 
- - rake spec
+ - `rake spec`
 
 If you want to fill your Database with a lot of fake data, you can launch the task :
 
- - rake db:populate:default
+ - `rake db:populate:default`
 
 This task depends of :
 
- - rake db:populate:users
- - rake db:populate:projects
- - rake db:populate:errors
- - rake db:populate:comments
- - rake db:populate:same_errors
+ - `rake db:populate:users`
+ - `rake db:populate:projects`
+ - `rake db:populate:errors`
+ - `rake db:populate:comments`
+ - `rake db:populate:same_errors`
 
 When you have generated some data, you can fetch a user account by console and use the
 default password 'tintinpouet'
 
-$ script/console
-> Project.first.members.first.email
-=> "pinguidity@yachtdom.com"
+    $ rails c
+    > Project.first.members.first.email
+    => "pinguidity@yachtdom.com"
 
 Every project has one related email. You can use this email to log in.
 
@@ -120,4 +120,3 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see [http://www.fsf.org/licensing/licenses/agpl-3.0.html](http://www.fsf.org/licensing/licenses/agpl-3.0.html)
-
