@@ -7,3 +7,6 @@ db/schema.rb
 .DS_Store
 log/*
 tmp/*
+
+.bundle
+.sass-cache/

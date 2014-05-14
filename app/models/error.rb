@@ -1,8 +1,8 @@
 class Error
   include MongoMapper::Document
-  include Callbacks::ErrorCallback
+  include ::Callbacks::ErrorCallback
 
-  key :resolved, Boolean, :index => true
+  key :resolved, Boolean, :index => true, :default => false
   key :session, Hash
   key :raised_at, Time, :required => true
   key :backtrace, Array
@@ -22,11 +22,11 @@ class Error
   key :project_id, ObjectId, :required => true, :index => true
   belongs_to :project
 
-  has_many :comments
-  include_errors_from :comments
+  many :comments
+  validates_associated :comments
 
-  has_many :same_errors, :class_name => 'ErrorEmbedded'
-  include_errors_from :same_errors
+  many :same_errors, :class_name => 'ErrorEmbedded'
+  validates_associated :same_errors
 
   # To keep track of some metrics:
   key :nb_comments, Integer, :required => true, :default => 0
@@ -59,7 +59,6 @@ class Error
     save!
   end
 
-
   ##
   # code to update keywords
   # Not call in direct
@@ -86,7 +85,7 @@ class Error
   def send_notify_task
     Project.find(project_id).members.each do |member|
       if member.notify_by_email?
-        UserMailer.deliver_error_notify(member.email, self)
+        UserMailer.error_notify(member.email, self).deliver
       end
     end
   end
@@ -95,6 +94,7 @@ class Error
     old_resolution = read_attribute(:resolved)
     # check if string and replace it by a bool. Controller send String, not bool
     resolution = resolution == 'true' if resolution.kind_of?(String)
+
     if old_resolution && !resolution
       self.unresolved_at = Time.now
     end
@@ -103,6 +103,7 @@ class Error
       self.resolved_at = Time.now
       self.resolveds_at << self.resolved_at.utc
     end
+
     write_attribute(:resolved, resolution)
   end
 

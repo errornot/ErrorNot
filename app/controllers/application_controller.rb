@@ -9,11 +9,11 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
-  rescue_from Mongo::InvalidObjectID do
+  rescue_from BSON::InvalidObjectId do
     render_404
   end
 
-  rescue_from  MongoMapper::DocumentNotFound do
+  rescue_from MongoMapper::DocumentNotFound do
     render_404
   end
 

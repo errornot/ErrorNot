@@ -19,14 +19,13 @@ describe ErrorEmbedded do
       error_embedded = project.error_with_message_and_backtrace(error_2.message,
                                                                 error_2.backtrace)
       error_embedded.update_attributes(:raised_at => nil)
-      error_embedded._root_document.should_not be_valid
+      error_embedded.root_error.should_not be_valid
     end
   end
 
   it 'should reactivate resolved in error root if resolved mark like true' do
     project = make_project_with_admin
-    error = Factory(:error, :project => project,
-                    :resolved => true)
+    error = Factory(:error, :project => project, :resolved => true)
     error_2 = Factory.build(:error, :project => project,
                             :message => error.message,
                             :backtrace => error.backtrace)
@@ -46,9 +45,10 @@ describe ErrorEmbedded do
                             :backtrace => error.backtrace)
     error_embedded = project.error_with_message_and_backtrace(error_2.message,
                                                               error_2.backtrace)
-    UserMailer.expects(:deliver_error_notify).with{ |email, error|
+    UserMailer.expects(:error_notify).with{ |email, error|
       email == user.email && error.kind_of?(Error)
-    }
+    }.returns UserMailer
+    UserMailer.expects(:deliver)
     error_embedded.update_attributes(error_2.attributes)
   end
 

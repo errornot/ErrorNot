@@ -4,8 +4,8 @@ class User
 
   ## Include default devise modules.
   ## Others available are :lockable, :timeoutable and :activatable.
-  devise :authenticatable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
-
+  plugin MongoMapper::Devise
+  devise :database_authenticatable, :registerable, :confirmable, :recoverable, :rememberable, :trackable, :validatable
   after_save :check_member_project
   validate :not_change_email
 

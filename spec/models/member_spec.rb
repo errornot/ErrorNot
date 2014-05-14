@@ -34,12 +34,12 @@ describe Member do
       member = make_member(:notify_by_digest => false)
       member.notify_by_digest = true
       member.save
-      member.digest_send_at.should be_close(Time.now.utc, 1.seconds)
+      member.digest_send_at.should be_within(1.second).of(Time.now)
     end
 
     it 'should be nil if notify_by_define become false' do
       member = make_member(:notify_by_digest => true)
-      member.digest_send_at.should be_close(Time.now.utc, 1.seconds)
+      member.digest_send_at.should be_within(1.second).of(Time.now)
       member.notify_by_digest = false
       member.save
       member.digest_send_at.should be_nil
@@ -92,10 +92,11 @@ describe Member do
       2.of { Factory(:error,
                      :unresolved_at => 2.minutes.ago.utc,
                      :project => member._root_document) }
-      UserMailer.expects(:deliver_error_digest_notify).with(member.email,
-                                                            errors_not_digest_send.sort_by(&:last_raised_at))
+      UserMailer.expects(:error_digest_notify).with(member.email,
+                                                    errors_not_digest_send.sort_by(&:last_raised_at)).returns UserMailer
+      UserMailer.expects(:deliver)
       member.send_digest.should be_true
-      Project.find(member._root_document.id).member(member.user).digest_send_at.should be_close(Time.now.utc, 1.seconds)
+      Project.find(member._root_document.id).member(member.user).digest_send_at.should be_within(1.second).of(Time.now)
     end
 
     it 'should not send email if all error already send before' do
@@ -104,9 +105,9 @@ describe Member do
       2.of { Factory(:error,
                      :unresolved_at => 2.minutes.ago.utc,
                      :project => member._root_document) }
-      UserMailer.expects(:deliver_error_digest_notify).never
+      UserMailer.expects(:error_digest_notify).never
       member.send_digest.should be_true
-      Project.find(member._root_document.id).member(member.user).digest_send_at.should be_close(Time.now.utc, 1.seconds)
+      Project.find(member._root_document.id).member(member.user).digest_send_at.should be_within(1.second).of(Time.now)
     end
   end
 end

@@ -1,18 +1,20 @@
-# SQLite version 3.x
-#   gem install sqlite3-ruby (not necessary on OS X Leopard)
 development:
+  host: 127.0.0.1
+  port: 27017
   adapter: mongodb
-  database: error_logger_dev
+  database: error_not_development
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
+  host: 127.0.0.1
+  port: 27017
   adapter: mongodb
-  database: error_logger_test
+  database: error_not_test
 
+# set these environment variables on your prod server
 production:
+  host: 127.0.0.1
+  port: 27017
   adapter: mongodb
-  database: error_logger
-  username: XXXX
-  password: XXX
+  database: error_not
+  username: <%= ENV['MONGO_USERNAME'] %>
+  password: <%= ENV['MONGO_PASSWORD'] %>

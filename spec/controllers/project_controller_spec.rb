@@ -2,28 +2,28 @@ require 'spec_helper'
 
 describe ProjectsController do
 
-  integrate_views
+  render_views
 
   describe 'with an anonymous user' do
     it 'should not see index' do
       get :index
-      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+      response.should redirect_to(new_user_session_path)
     end
     it 'should not see show' do
       get :show, :id => Factory(:project).id
-      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+      response.should redirect_to(new_user_session_path)
     end
     it 'should not can create project' do
       post :create, :project => { :name => 'My big project' }
-      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+      response.should redirect_to(new_user_session_path)
     end
     it 'should not can edit a project' do
       get :edit, :id => Factory(:project).id.to_s
-      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+      response.should redirect_to(new_user_session_path)
     end
     it 'should not be able to reset the key api of a project' do
       put :reset_apikey, :id => Factory(:project).id
-      response.should redirect_to(new_user_session_path('unauthenticated' => true))
+      response.should redirect_to(new_user_session_path)
     end
   end
 
@@ -132,11 +132,12 @@ describe ProjectsController do
       it 'should call project.remove_member! and redirect_to edit with flash[:notice] if user is admin on project' do
         project = make_project_with_admin(@user)
         Project.any_instance.expects(:remove_member!).with(:email => 'foo@bar.com').returns(true)
-        UserMailer.expects(:deliver_project_removal).with(:removed_email => 'foo@bar.com',
-                                                          :remover_email => @user.email,
-                                                          :project => nil){|removed, remover, project2|
+        UserMailer.expects(:project_removal).with(:removed_email => 'foo@bar.com',
+                                          :remover_email => @user.email,
+                                          :project => nil){|removed, remover, project2|
           project2.id.to_s == project.id.to_s
-        }
+        }.returns UserMailer
+        UserMailer.expects(:deliver)
         put :remove_member, :user_email => 'foo@bar.com', :id => project.id.to_s
         response.should redirect_to(edit_project_url(project))
         flash[:notice].should_not be_nil
@@ -155,7 +156,7 @@ describe ProjectsController do
           project = make_project_with_admin(@user)
           get :leave, :id => project.id.to_s
           response.should be_success
-          response.should_not have_tag('form')
+          response.body.should_not have_css('form')
         end
       end
       describe 'user not admin on this project' do
@@ -163,7 +164,7 @@ describe ProjectsController do
           project = make_project_with_admin(make_user)
           get :leave, :id => project.id.to_s
           response.should be_success
-          response.should have_tag('form')
+          response.body.should have_css('form')
         end
       end
     end
@@ -213,7 +214,7 @@ describe ProjectsController do
           put :admins, :id => project.id.to_s, :user_id => @user.id
           project.reload
           project.member(@user).admin?.should == false
-          response.code.should eql '401'
+          response_is_401
         end
       end
     end
@@ -293,7 +294,7 @@ describe ProjectsController do
             delete :destroy, :id => project.id
           end.should change(Project, :count).by(0)
           Project.find(project.id).should be
-          response.code.should eql '401'
+          response_is_401
         end
       end
     end

@@ -7,7 +7,7 @@
   |
   %span=link_to 'Delete this project', project_url(@project), :method => :delete, :confirm => "Do you really want to delete the project #{@project.name}? There is no way back!"
 
-- form_tag project_errors_url(@project.id), :method => :get do
+= form_tag project_errors_url(@project.id), :method => :get do
   %p
     %label
       Limit to:

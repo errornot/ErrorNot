@@ -14,6 +14,6 @@
             = "#{key}:"
             %ul
               - val.each do |k,v|
-                %li="#{k}: <code>#{h v}</code>"
+                %li!="#{k}: <code>#{h v}</code>"
         - else
           %li="#{key}: #{val}"

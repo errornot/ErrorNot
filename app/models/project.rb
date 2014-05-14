@@ -16,15 +16,15 @@ class Project
     end
   end
 
-  has_many :members
+  many :members
 
   validate :need_members
   validate :need_admin_members
 
-  include_errors_from :members
+  validates_associated :members
 
   ## CALLBACK
-  before_validation_on_create :gen_api_key
+  before_validation :gen_api_key, :on => :create
   before_save :update_members_data
 
   def add_admin_member(user)
@@ -84,7 +84,7 @@ class Project
       else
         members.build(:email => email.strip,
                       :admin => false)
-        UserMailer.deliver_project_invitation(email.strip, self)
+        UserMailer.project_invitation(email.strip, self).deliver
       end
     end
     save!
@@ -159,7 +159,7 @@ class Project
   end
 
   def gen_api_key
-    self.api_key = ActiveSupport::SecureRandom.hex(12)
+    self.api_key = SecureRandom.hex(12)
   end
 
   private

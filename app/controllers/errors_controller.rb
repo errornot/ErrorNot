@@ -17,7 +17,7 @@ class ErrorsController < ApplicationController
     if @error.update_attributes(params[:error])
       render :status => 200, :text => 'error create'
     else
-      render :status => 422, :text => @error.errors.full_messages
+      render :status => 422, :text => @error.errors.full_messages.first
     end
   end
 

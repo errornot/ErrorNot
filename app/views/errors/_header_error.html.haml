@@ -1,5 +1,5 @@
 #resolved
-  - form_for @root_error, :html => {:class => 'edit_error'}  do |f|
+  = form_for @root_error, :html => {:class => 'edit_error'}  do |f|
     = hidden_field_tag 'error[resolved]', !@error.resolved
     = f.submit @error.resolved ? 'Unresolved' : 'Resolved'
 
